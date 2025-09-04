@@ -1,0 +1,137 @@
+@extends('layouts.app')
+
+@section('content')
+@section('title', env('APP_NAME') . ' | Payments Report')
+<style type="text/css">
+    .button-container {
+        display: flex;
+        /* justify-content: space-between; */
+        padding-left: 35px;
+    }
+
+    .button-container button {
+        margin-right: 15px;
+        /* Adjust as needed */
+    }
+
+    .custom-select {
+    --geeks-form-select-bg-img: url(data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E);
+    -moz-padding-start: calc(1rem - 3px);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--geeks-input-bg);
+    background-image: var(--geeks-form-select-bg-img), var(--geeks-form-select-bg-icon, none);
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 16px 12px;
+    border: var(--geeks-border-width) solid var(--geeks-input-border);
+    border-radius: .375rem;
+    color: #000;
+    display: block;
+    font-size: 12px;
+    /* font-weight: bold; */
+    line-height: 1.6;
+    padding: .2rem 3rem .2rem 1rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    width: 100%;
+}
+</style>
+
+@php
+    $navWG = Session::get('workGroup');
+@endphp
+<!-- Container fluid -->
+<section class="container-fluid p-4">
+    <div class="row">
+        <!-- Page Header -->
+        <div class="col-lg-12 col-md-12 col-12">
+            <div class="border-bottom pb-4 mb-4 d-flex justify-content-between align-items-center">
+                <div class="mb-2 mb-lg-0">
+                    <h1 class="mb-1 h4 fw-bold">
+                        Payment Report
+                    </h1>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <!-- Tab -->
+            <div class="tab-content">
+                <!-- Tab pane -->
+
+                <!-- tab pane -->
+                <div class="tab-pane fade show active" id="tabPaneList" role="tabpanel" aria-labelledby="tabPaneList">
+                    <!-- card -->
+                    <div class="card mb-4">
+                        <!-- table -->
+                        <form method="POST" action="{{ route("report.processPaymentReport") }}">
+                            @csrf
+                            <div class="col-12 col-lg-7 table-responsive overflow-y-hidden ps-4 mt-5 pe-4 mb-5">
+                                <table class="table mb-0 text-nowrap table-hover table-centered table-bordered"
+                                    style="font-size: 12px">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Period</th>
+                                            <td scope="col">
+                                                <select name="period" class="custom-select" data-width="100%">
+                                                    <option value="">---Select---</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Payment Batch</th>
+                                            <td scope="col">
+                                                <select name="period" class="custom-select" data-width="100%">
+                                                    <option value="">---Select---</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Payment File</th>
+                                            <td scope="col">
+                                                <select name="period" class="custom-select" data-width="100%">
+                                                    <option value="">---Select---</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Payment Status</th>
+                                            <td scope="col">
+                                                <select name="period" class="custom-select" data-width="100%">
+                                                    <option value="All">---All---</option>
+                                                    <option value="Pending">PENDING</option>
+                                                    <option value="In Progress">IN PROGRESS</option>
+                                                    <option value="Failed">FAILED</option>
+                                                    <option value="Paid">PAID</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-end" colspan="2"><button
+                                                    class="btn btn-primary btn-sm">Submit</button></th>
+                                        </tr>
+                                    </thead>
+
+                                </table>
+                                <a href="{{ route("report.home", [$navWG->id]) }}"><button class="btn btn-default btn-sm mt-4" type="button" style="border: 1px solid #ccc; font-size: 10px"><< Back to List of Reports</button></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script type="text/javascript">
+    document.getElementById("navReports").classList.add('show');
+    document.getElementById("reports").classList.add('active');
+</script>
+
+@endsection
