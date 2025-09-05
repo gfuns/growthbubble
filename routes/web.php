@@ -115,4 +115,8 @@ Route::group([
     Route::get('/activate-customer/{id}', [AdminController::class, 'activateCustomer'])->name('admin.activateCustomer');
 
     Route::get('/task-categories', [AdminController::class, 'taskCategories'])->name('admin.taskCategories');
+
+    Route::post('/storeTaskCategory', [AdminController::class, 'storeTaskCategory'])->name('admin.storeTaskCategory');
+
+    Route::post('/updateTaskCategory', [AdminController::class, 'updateTaskCategory'])->name('admin.updateTaskCategory');
 });

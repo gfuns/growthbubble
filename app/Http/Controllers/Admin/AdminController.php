@@ -1087,6 +1087,70 @@ class AdminController extends Controller
     }
 
     /**
+     * storeTaskCategory
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeTaskCategory(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'category' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $category           = new TaskCategory;
+        $category->category = $request->category;
+        if ($category->save()) {
+            toast('Task Category Created Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+
+        }
+    }
+
+    /**
+     * updateTaskCategory
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function updateTaskCategory(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required',
+            'category'    => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $category           = TaskCategory::find($request->category_id);
+        $category->category = $request->category;
+        if ($category->save()) {
+            toast('Task Category Updated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
      * getMarkers Helper Function
      *
      * @param mixed lastRecord

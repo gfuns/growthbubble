@@ -77,7 +77,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="staff" href="{{ route('admin.staffManagement') }}">
+                    <a class="nav-link " id="subscriptions" href="#">
                         <i class="nav-icon fe fe-dollar-sign me-2"></i>
                         Customer Subscriptions
                     </a>

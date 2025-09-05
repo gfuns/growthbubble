@@ -20,14 +20,14 @@
         <li class="dropdown ms-2">
             <a class="rounded-circle" href="#" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="avatar avatar-md avatar-indicators avatar-online">
-                    <img alt="avatar" src="{{ Auth::user()->photo == null ? asset('assets/images/avatar/avatar.webp') : Auth::user()->photo }}" class="rounded-circle" >
+                    <img alt="avatar" src="{{ Auth::user()->profile_photo == null ? asset('assets/images/avatar/avatar.webp') : Auth::user()->profile_photo }}" class="rounded-circle" >
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                 <div class="dropdown-item">
                     <div class="d-flex">
                         <div class="avatar avatar-md avatar-indicators avatar-online">
-                            <img alt="avatar" src="{{ Auth::user()->photo == null ? asset('assets/images/avatar/avatar.webp') : Auth::user()->photo }}" class="rounded-circle" >
+                            <img alt="avatar" src="{{ Auth::user()->profile_photo == null ? asset('assets/images/avatar/avatar.webp') : Auth::user()->profile_photo }}" class="rounded-circle" >
                         </div>
                         <div class="ms-3 lh-1">
                             <h5 class="mb-1">{{ Auth::user()->last_name." ". Auth::user()->other_names}}</h5>
