@@ -46,7 +46,9 @@
             },
             drawCallback: function(settings) {
                 $('.dataTables_paginate').hide(); // hide pagination controls
-            }
+            },
+            scrollY: '230px', // inside your 400px card; adjust for header/padding
+            scrollCollapse: true,
         });
 
         $('#prodTable2').DataTable({
@@ -58,7 +60,9 @@
             },
             drawCallback: function(settings) {
                 $('.dataTables_paginate').hide(); // hide pagination controls
-            }
+            },
+            scrollY: '230px', // inside your 400px card; adjust for header/padding
+            scrollCollapse: true,
         });
 
         $('#prodTable3').DataTable({
@@ -70,7 +74,9 @@
             },
             drawCallback: function(settings) {
                 $('.dataTables_paginate').hide(); // hide pagination controls
-            }
+            },
+            scrollY: '230px', // inside your 400px card; adjust for header/padding
+            scrollCollapse: true,
         });
 
 

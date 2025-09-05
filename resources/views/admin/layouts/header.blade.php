@@ -161,9 +161,46 @@
         }
 
         .wrap-text {
-  white-space: normal;     /* Allows text to wrap to the next line */
-  word-wrap: break-word;   /* Breaks long words if needed */
-  overflow-wrap: break-word; /* Modern standard for word breaking */
-}
+            white-space: normal;
+            /* Allows text to wrap to the next line */
+            word-wrap: break-word;
+            /* Breaks long words if needed */
+            overflow-wrap: break-word;
+            /* Modern standard for word breaking */
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar {
+            width: 3.5px;
+            /* thickness */
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        .dataTables_scrollBody::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .scrollable-card-body {
+            height: calc(100% - 60px);
+            /* adjust header height */
+            overflow-y: scroll;
+            /* ensures scrollbar always shows */
+        }
+
+        /* For WebKit browsers (Chrome, Safari, Edge) */
+        .scrollable-card-body::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 3.5px;
+            /* scrollbar width */
+        }
+
+        .scrollable-card-body::-webkit-scrollbar-thumb {
+            background-color: #c1c1c1;
+            /* scrollbar color */
+            border-radius: 6px;
+        }
     </style>
 </head>

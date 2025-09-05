@@ -107,13 +107,13 @@
 
         </div>
     </div>
-    <div class="col-12">
+    <div class="col-12 mb-5">
         <!-- Card -->
 
         <div class="row">
             <div class="col-lg-8 col-md-12 col-12">
                 <!-- Card -->
-                <div class="card h-75 mb-4">
+                <div class="card mb-4" style="height: 400px">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-12">
                             <!-- Card header -->
@@ -137,7 +137,7 @@
                                 <!-- Table -->
                                 <div class="tab-content" id="tabContent">
                                     @foreach ($products as $prod)
-                                        <div class="tab-pane fade @if ($loop->first) active show @endif"
+                                        <div class="tab-pane fade active @if ($loop->first) show @endif "
                                             id="product{{ $prod->id }}" role="tabpanel"
                                             aria-labelledby="tab-{{ $prod->id }}">
                                             <!-- Table -->
@@ -154,12 +154,76 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <td>1</td>
-                                                        <td>Test Task</td>
-                                                        <td>High</td>
-                                                        <td>Start Date</td>
-                                                        <td>Status</td>
-
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -171,7 +235,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-4 h-75">
+                <div class="card mb-4" style="height: 400px">
                     <!-- Card header -->
                     <div class="card-header p-0">
                         <div>
@@ -231,7 +295,7 @@
             </div>
 
             <div class="col-lg-4 col-12">
-                <div class="card mb-4 h-75">
+                <div class="card mb-4" style="height: 400px;">
                     <div class="card-header p-2">
                         <div class="ms-2 text-dark fw-bold">Statistics By Project Status</div>
                     </div>
@@ -242,14 +306,103 @@
                     </div>
                 </div>
 
-                <div class="card mb-4">
-                    <div class="card-header p-2">
-                        <div class="ms-2 text-dark fw-bold">Latest Activities</div>
+                <div class="card" style="height: 400px;">
+                    <!-- Card header -->
+                    <div class="card-header card-header-height d-flex align-items-center">
+                        <h4 class="mb-0">Recent Activities</h4>
                     </div>
-                    <div id="" class="card-body">
-                        <!-- Earning chart -->
-                        <div id="traffic" class="apex-charts d-flex justify-content-center"></div>
-                        {{-- <canvas id="myLineChart" height="445"></canvas> --}}
+                    <!-- Card body -->
+                    <div class="card-body scrollable-card-body">
+                        <!-- List group -->
+                        <ul class="list-group list-group-flush list-timeline-activity">
+                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-online">
+                                            <img alt="avatar" src="../../assets/images/avatar/avatar-6.jpg"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">Dianna Smiley</h4>
+                                                <p class="mb-0">Just Created a task ”Building A WordPress Site”</p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">2m ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- List group -->
+                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-offline">
+                                            <img alt="avatar" src="../../assets/images/avatar/avatar-7.jpg"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">Irene Hargrove</h4>
+                                                <p class="mb-0">Commented on the Task “Building A WordPress Site” Says “Hi, I neeed a payment gateway...
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">1 hour ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- List group -->
+                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-busy">
+                                            <img alt="avatar" src="../../assets/images/avatar/avatar-4.jpg"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">Trevor Bradle</h4>
+                                                <p class="mb-0">Just marked the task “Building A WordPress Site” as complete..</p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">2 hours ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item px-0 pt-0 border-0">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-away">
+                                            <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">John Deo</h4>
+                                                <p class="mb-0">Just created a task “Building A WordPress Site”</p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">3 hours ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
