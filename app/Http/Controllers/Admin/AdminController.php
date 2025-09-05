@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Models\UserPermission;
 use App\Models\UserRole;
 use Auth;
-use Carbon\Carbon;
 use Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -39,32 +38,9 @@ class AdminController extends Controller
             "prFees"   => 0,
         ];
 
-        $year   = Carbon::now()->year;
-        $months = collect(range(1, 12));
+        $products = Product::all();
 
-        $datasets = [
-            'registrations' => [],
-            'renewals'      => [],
-            'poa'           => [],
-            'award_letters' => [],
-            'processing'    => [],
-        ];
-
-        foreach ($months as $m) {
-            $datasets['registrations'][] = 0;
-
-            $datasets['renewals'][] = 0;
-
-            $datasets['poa'][] = 0;
-
-            $datasets['award_letters'][] = 0;
-
-            $datasets['processing'][] = 0;
-        }
-
-        $dataSets = json_encode($datasets);
-
-        return view("admin.dashboard", compact("params", "dataSets"));
+        return view("admin.dashboard", compact("params", "products"));
     }
 
     /**

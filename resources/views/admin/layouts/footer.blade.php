@@ -37,7 +37,31 @@
             table.page.len(100).draw(); // Set the page length to 100
         });
 
-        $('#myTasks').DataTable({
+        $('#prodTable1').DataTable({
+            search: true, // disable pagination
+            paging: true, // disable pagination
+            info: false,
+            language: {
+                lengthMenu: "_MENU_" // only show the dropdown
+            },
+            drawCallback: function(settings) {
+                $('.dataTables_paginate').hide(); // hide pagination controls
+            }
+        });
+
+        $('#prodTable2').DataTable({
+            search: true, // disable pagination
+            paging: true, // disable pagination
+            info: false,
+            language: {
+                lengthMenu: "_MENU_" // only show the dropdown
+            },
+            drawCallback: function(settings) {
+                $('.dataTables_paginate').hide(); // hide pagination controls
+            }
+        });
+
+        $('#prodTable3').DataTable({
             search: true, // disable pagination
             paging: true, // disable pagination
             info: false,
