@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscription_plans', function (Blueprint $table) {
+        Schema::create('task_categories', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer('product_id')->unsigned();
-            $table->string('plan');
-            $table->enum('frequency', ["monthly", "quarterly", "yearly"]);
-            $table->double('price', 12, 2);
+            $table->string('category');
             $table->timestamps();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscription_plans');
+        Schema::dropIfExists('task_categories');
     }
 };

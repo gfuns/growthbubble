@@ -39,105 +39,143 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-3 col-12">
-            <div class="col-lg-12 col-12">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-lg-4 col-12">
                 <!-- Card -->
                 <div class="card mb-3">
                     <!-- Card body -->
                     <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Filed Returns</h4>
-                            <div>
-                                <span class="bi bi-pencil-square fs-3 text-success"></span>
-                            </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="fs-6 text-dark text-uppercase fw-bold">Projects In Progress</div>
+                            <div class="fs-6 text-dark fw-bold">0/5</div>
                         </div>
-                        <h4 class="fw-bold mb-0">
-                            <span class="fs-5">&#8358;{{ number_format($params['regs'], 2) }}</span>
-                        </h4>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-12">
+            <div class="col-lg-4 col-12">
                 <!-- Card -->
                 <div class="card mb-3">
                     <!-- Card body -->
                     <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Personal Income Taxes</h4>
-                            <div>
-                                <span class="bi bi-arrow-clockwise fs-3 text-success"></span>
-                            </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="fs-6 text-dark text-uppercase fw-bold">Queued Tasks</div>
+                            <div class="fs-6 text-dark fw-bold">0/5</div>
                         </div>
-                        <h4 class="fw-bold mb-0">&#8358;{{ number_format($params['renewals'], 2) }}</h4>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-12">
+            <div class="col-lg-4 col-12">
                 <!-- Card -->
                 <div class="card mb-3">
                     <!-- Card body -->
                     <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Development Levies</h4>
-                            <div>
-                                <span class="fa fa-gavel fs-3 text-success"></span>
-                            </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="fs-6 text-dark text-uppercase fw-bold">Completed Tasks</div>
+                            <div class="fs-6 text-dark fw-bold">0/5</div>
                         </div>
-                        <h4 class="fw-bold mb-0">&#8358;{{ number_format($params['poas'], 2) }}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12 col-12">
-                <!-- Card -->
-                <div class="card mb-3">
-                    <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Other Taxes/Revenue</h4>
-                            <div>
-                                <span class="bi bi-award-fill fs-3 text-success"></span>
-                            </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <h4 class="fw-bold mb-0">&#8358;{{ number_format($params['awards'], 2) }}</h4>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-12">
-                <!-- Card -->
-                <div class="card mb-3">
-                    <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">MDA Taxes/Revenue</h4>
-                            <div>
-                                <span class="bi bi-cash-coin fs-3 text-success"></span>
-                            </div>
-                        </div>
-                        <h4 class="fw-bold mb-0">&#8358;{{ number_format($params['prFees'], 2) }}</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-9 col-12">
-            <!-- Card -->
-            <div class="card mb-4">
-                <!-- Card header -->
-                <div
-                    class="card-header align-items-center card-header-height d-flex justify-content-between align-items-center">
-                    <div>
-                        <h4 class="mb-0">Revenue Generation Graph/Statistics</h4>
-                    </div>
-                </div>
-                <!-- Card body -->
-                <div id="" class="card-body">
-                    <!-- Earning chart -->
-                    <canvas id="myLineChart" height="445"></canvas>
-                    {{-- <div id="myLineChart"></div> --}}
-                </div>
-            </div>
+
         </div>
     </div>
+    <div class="col-12">
+        <!-- Card -->
+
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-12">
+                <!-- Card -->
+                <div class="card mb-4 h-100">
+                    <!-- Card header -->
+                        <div class="card-header p-0">
+                            <div>
+                                <!-- Nav -->
+                                <ul class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link text-dark fw-bold active" href="" role="tab"><i></i> My Tasks</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link text-dark fw-bold" href="" role="tab">My Projects</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link text-dark fw-bold" href="" role="tab">My Reminders</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="">
+
+                            <!-- Table -->
+                            <div class="tab-content" id="tabContent">
+                                <!--Tab pane -->
+                                <div class="tab-pane fade active show" id="courses" role="tabpanel"
+                                    aria-labelledby="courses-tab">
+                                    <!-- Card header -->
+
+                                    <!-- Table -->
+                                    <div class="table-responsive">
+                                        <table id="myTasks" class="table mb-0 table-hover" style="font-size: 13px">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Priority</th>
+                                                    <th>Start Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <td>1</td>
+                                                <td>Test Task</td>
+                                                <td>High</td>
+                                                <td>Start Date</td>
+                                                <td>Status</td>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-12">
+                <div class="card mb-4 h-100">
+                    <div class="card-header p-2">
+                        <div class="ms-2 text-dark fw-bold">Statistics By Project Status</div>
+                    </div>
+                    <div id="" class="card-body">
+                        <!-- Earning chart -->
+                        <div id="traffic" class="apex-charts d-flex justify-content-center"></div>
+                        {{-- <canvas id="myLineChart" height="445"></canvas> --}}
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
 
 </section>
 

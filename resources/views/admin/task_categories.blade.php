@@ -65,7 +65,7 @@
                                     </thead>
                                     <tbody class="text-dark">
                                         <!-- Table body -->
-                                        @foreach ($productPlans as $plan)
+                                        @foreach ($taskcategories as $cat)
                                             <tr>
                                                 <td style="vertical-align: top !important">{{ $loop->index + 1 }}</td>
                                                 <td style="vertical-align: top !important">{{ $plan->product->product }}
@@ -105,7 +105,7 @@
                                             </tr>
                                         @endforeach
 
-                                        @if (count($productPlans) < 1)
+                                        @if (count($taskcategories) < 1)
                                             <tr>
                                                 <td colspan="5">
                                                     <center>No Record Found</center>
@@ -266,7 +266,7 @@
 @endif
 <script type="text/javascript">
     document.getElementById("platSettings").classList.add('show');
-    document.getElementById("plans").classList.add('active');
+    document.getElementById("categories").classList.add('active');
 </script>
 
 @endsection

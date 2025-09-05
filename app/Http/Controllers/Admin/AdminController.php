@@ -3,11 +3,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\AccountCreationMail as AccountCreationMail;
-use App\Models\Mda;
+use App\Mail\CustomerCreationMail as CustomerCreationMail;
 use App\Models\PlatformFeature;
 use App\Models\Product;
 use App\Models\SubscriptionPlan;
-use App\Models\TaxOffice;
+use App\Models\TaskCategory;
 use App\Models\User;
 use App\Models\UserPermission;
 use App\Models\UserRole;
@@ -314,7 +314,7 @@ class AdminController extends Controller
      */
     public function userRoles()
     {
-        $userRoles = UserRole::where("id", ">", 0)->get();
+        $userRoles = UserRole::where("id", ">", 1)->get();
         return view("admin.role_management", compact("userRoles"));
     }
 
@@ -389,15 +389,13 @@ class AdminController extends Controller
      */
     public function staffManagement()
     {
-        $status     = request()->status;
-        $search     = request()->search;
-        $userRoles  = UserRole::where("id", ">", 3)->get();
-        $mdas       = Mda::all();
-        $taxOffices = TaxOffice::all();
+        $status    = request()->status;
+        $search    = request()->search;
+        $userRoles = UserRole::where("id", ">", 1)->get();
 
         $query = User::query();
 
-        $query->where("role_id", ">", 3);
+        $query->where("role_id", ">", 0);
 
         if (isset(request()->search)) {
             $query->whereLike(["last_name", "other_names", "email", "phone_number"], $search);
@@ -409,29 +407,26 @@ class AdminController extends Controller
 
         $lastRecord = $query->count();
         $marker     = $this->getMarkers($lastRecord, request()->page);
-        $users      = $query->paginate(50);
+        $staffList  = $query->paginate(50);
 
-        return view("admin.user_management", compact('users', 'userRoles', 'status', 'search', "mdas", "taxOffices"));
+        return view("admin.staff_management", compact('staffList', 'userRoles', 'status', 'search'));
     }
 
     /**
-     * storeUser
+     * storeStaff
      *
      * @param Request request
      *
      * @return void
      */
-    public function storeUser(Request $request)
+    public function storeStaff(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'other_names'  => 'required',
             'last_name'    => 'required',
+            'first_name'   => 'required',
             'email'        => 'required|unique:users',
             'phone_number' => 'required|unique:users',
             'role'         => 'required',
-            'category'     => 'required',
-            'mda'          => 'required_if:category,mda admin',
-            'tax_office'   => 'required_if:category,birs area office',
         ]);
 
         if ($validator->fails()) {
@@ -441,26 +436,21 @@ class AdminController extends Controller
             return back();
         }
 
-        $role                = UserRole::find($request->role);
-        $user                = new User;
-        $user->other_names   = $request->other_names;
-        $user->last_name     = $request->last_name;
-        $user->email         = $request->email;
-        $user->phone_number  = $request->phone_number;
-        $user->password      = Hash::make($request->phone_number);
-        $user->role          = $role->role;
-        $user->role_id       = $role->id;
-        $user->category      = $request->category;
-        $user->mda_id        = $request->mda;
-        $user->tax_office_id = $request->tax_office;
-        $user->token         = Str::random(60);
+        $user               = new User;
+        $user->last_name    = $request->last_name;
+        $user->other_names  = $request->first_name;
+        $user->email        = $request->email;
+        $user->phone_number = $request->phone_number;
+        $user->password     = Hash::make($request->phone_number);
+        $user->role_id      = $request->role;
+        $user->token        = Str::random(60);
         if ($user->save()) {
             try {
                 Mail::to($user)->send(new AccountCreationMail($user, $user->phone_number));
             } catch (\Exception $e) {
                 report($e);
             }
-            toast('User Information Stored Successfully.', 'success');
+            toast('Staff Information Stored Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');
@@ -469,17 +459,17 @@ class AdminController extends Controller
     }
 
     /**
-     * updateUser
+     * updateStaff
      *
      * @param Request request
      *
      * @return void
      */
-    public function updateUser(Request $request)
+    public function updateStaff(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'user_id'      => 'required',
-            'other_names'  => 'required',
+            'first_name'   => 'required',
             'last_name'    => 'required',
             'email'        => 'required',
             'phone_number' => 'required',
@@ -495,29 +485,24 @@ class AdminController extends Controller
 
         $emailTaken = User::where("id", "!=", $request->user_id)->where("email", $request->email)->first();
         if (isset($emailTaken)) {
-            toast('This Email Has Already Been Taken By Another User.', 'error');
+            toast('This Email Has Already Been Taken By Another Staff.', 'error');
             return back();
         }
 
         $phoneTaken = User::where("id", "!=", $request->user_id)->where("phone_number", $request->phone_number)->first();
         if (isset($phoneTaken)) {
-            toast('This Phone Number Has Already Been Taken By Another User.', 'error');
+            toast('This Phone Number Has Already Been Taken By Another Staff.', 'error');
             return back();
         }
 
-        $role                = UserRole::find($request->role);
-        $user                = User::find($request->user_id);
-        $user->other_names   = $request->other_names;
-        $user->last_name     = $request->last_name;
-        $user->email         = $request->email;
-        $user->phone_number  = $request->phone_number;
-        $user->role          = $role->role;
-        $user->role_id       = $role->id;
-        $user->category      = $request->category;
-        $user->mda_id        = $request->mda;
-        $user->tax_office_id = $request->tax_office;
+        $user               = User::find($request->user_id);
+        $user->last_name    = $request->last_name;
+        $user->other_names  = $request->first_name;
+        $user->email        = $request->email;
+        $user->phone_number = $request->phone_number;
+        $user->role_id      = $request->role;
         if ($user->save()) {
-            toast('User Information Updated Successfully.', 'success');
+            toast('Staff Information Updated Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');
@@ -526,18 +511,18 @@ class AdminController extends Controller
     }
 
     /**
-     * suspendUser
+     * suspendStaff
      *
      * @param mixed id
      *
      * @return void
      */
-    public function suspendUser($id)
+    public function suspendStaff($id)
     {
         $user         = User::find($id);
         $user->status = "suspended";
         if ($user->save()) {
-            toast('User Account Suspended Successfully.', 'success');
+            toast('Staff Account Suspended Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');
@@ -546,18 +531,18 @@ class AdminController extends Controller
     }
 
     /**
-     * activateUser
+     * activateStaff
      *
      * @param mixed id
      *
      * @return void
      */
-    public function activateUser($id)
+    public function activateStaff($id)
     {
         $user         = User::find($id);
         $user->status = "active";
         if ($user->save()) {
-            toast('User Account Activated Successfully.', 'success');
+            toast('Staff Account Activated Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');
@@ -849,9 +834,10 @@ class AdminController extends Controller
     public function storeProductPlan(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product' => 'required',
-            'plan'    => 'required',
-            'pricing' => 'required|numeric',
+            'product'   => 'required',
+            'plan'      => 'required',
+            'frequency' => 'required',
+            'pricing'   => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -864,6 +850,7 @@ class AdminController extends Controller
         $plan             = new SubscriptionPlan;
         $plan->product_id = $request->product;
         $plan->plan       = $request->plan;
+        $plan->frequency  = $request->frequency;
         $plan->pricing    = $request->pricing;
         if ($plan->save()) {
             toast('Product Plan Added Successfully.', 'success');
@@ -885,10 +872,11 @@ class AdminController extends Controller
     public function updateProductPlan(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'plan_id' => 'required',
-            'product' => 'required',
-            'plan'    => 'required',
-            'pricing' => 'required|numeric',
+            'plan_id'   => 'required',
+            'product'   => 'required',
+            'plan'      => 'required',
+            'frequency' => 'required',
+            'pricing'   => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -901,6 +889,7 @@ class AdminController extends Controller
         $plan             = SubscriptionPlan::find($request->plan_id);
         $plan->product_id = $request->product;
         $plan->plan       = $request->plan;
+        $plan->frequency  = $request->frequency;
         $plan->pricing    = $request->pricing;
         if ($plan->save()) {
             toast('Product Plan Updated Successfully.', 'success');
@@ -910,6 +899,223 @@ class AdminController extends Controller
             return back();
 
         }
+    }
+
+    /**
+     * registeredCustomers
+     *
+     * @return void
+     */
+    public function registeredCustomers()
+    {
+        $status = request()->status;
+        $search = request()->search;
+
+        $query = User::query();
+
+        $query->where("role_id", 0);
+
+        if (isset(request()->search)) {
+            $query->whereLike(["last_name", "other_names", "email", "phone_number"], $search);
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $customers  = $query->paginate(50);
+
+        return view("admin.registered_customers", compact('customers', 'status', 'search'));
+    }
+
+    /**
+     * storeCustomer
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeCustomer(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'last_name'         => 'required',
+            'first_name'        => 'required',
+            'email'             => 'required|unique:users',
+            'phone_number'      => 'required|unique:users',
+            'organization_name' => 'nullable',
+            'contact_address'   => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $customer                  = new User;
+        $customer->last_name       = $request->last_name;
+        $customer->other_names     = $request->first_name;
+        $customer->email           = $request->email;
+        $customer->phone_number    = $request->phone_number;
+        $customer->password        = Hash::make($request->phone_number);
+        $customer->role_id         = 0;
+        $customer->organization    = ucwords(strtolower($request->organization_name));
+        $customer->contact_address = $request->contact_address;
+        $customer->token           = Str::random(60);
+        if ($customer->save()) {
+            try {
+                Mail::to($customer)->send(new CustomerCreationMail($customer, $customer->phone_number));
+            } catch (\Exception $e) {
+                report($e);
+            }
+            toast('Customer Account Created Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * updateCustomer
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function updateCustomer(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'customer_id'       => 'required',
+            'last_name'         => 'required',
+            'first_name'        => 'required',
+            'email'             => 'required',
+            'phone_number'      => 'required',
+            'organization_name' => 'nullable',
+            'contact_address'   => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $emailTaken = User::where("id", "!=", $request->customer_id)->where("email", $request->email)->first();
+        if (isset($emailTaken)) {
+            toast('This Email Has Already Been Taken By Another Customer.', 'error');
+            return back();
+        }
+
+        $phoneTaken = User::where("id", "!=", $request->customer_id)->where("phone_number", $request->phone_number)->first();
+        if (isset($phoneTaken)) {
+            toast('This Phone Number Has Already Been Taken By Another Customer.', 'error');
+            return back();
+        }
+
+        $customer                  = User::find($request->customer_id);
+        $customer->last_name       = $request->last_name;
+        $customer->other_names     = $request->first_name;
+        $customer->email           = $request->email;
+        $customer->phone_number    = $request->phone_number;
+        $customer->password        = Hash::make($request->phone_number);
+        $customer->organization    = ucwords(strtolower($request->organization_name));
+        $customer->contact_address = $request->contact_address;
+        $customer->token           = Str::random(60);
+        if ($customer->save()) {
+            toast('Customer Information Updated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * suspendCustomer
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function suspendCustomer($id)
+    {
+        $user         = User::find($id);
+        $user->status = "suspended";
+        if ($user->save()) {
+            toast('Customer Account Suspended Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * activateCustomer
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function activateCustomer($id)
+    {
+        $user         = User::find($id);
+        $user->status = "active";
+        if ($user->save()) {
+            toast('Customer Account Activated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * taskCategories
+     *
+     * @return void
+     */
+    public function taskCategories()
+    {
+        $taskcategories = TaskCategory::all();
+        return view("admin.task_categories", compact("taskcategories"));
+    }
+
+    /**
+     * getMarkers Helper Function
+     *
+     * @param mixed lastRecord
+     * @param mixed pageNum
+     *
+     * @return void
+     */
+    public function getMarkers($lastRecord, $pageNum)
+    {
+        if ($pageNum == null) {
+            $pageNum = 1;
+        }
+        $end    = (50 * ((int) $pageNum));
+        $marker = [];
+        if ((int) $pageNum == 1) {
+            $marker["begin"] = (int) $pageNum;
+            $marker["index"] = (int) $pageNum;
+        } else {
+            $marker["begin"] = number_format(((50 * ((int) $pageNum)) - 49), 0);
+            $marker["index"] = number_format(((50 * ((int) $pageNum)) - 49), 0);
+        }
+
+        if ($end > $lastRecord) {
+            $marker["end"] = number_format($lastRecord, 0);
+        } else {
+            $marker["end"] = number_format($end, 0);
+        }
+
+        return $marker;
     }
 
 }

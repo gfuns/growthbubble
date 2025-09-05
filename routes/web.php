@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\TwofactorController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,8 @@ Route::get('/forgot-password', [App\Http\Controllers\HelperController::class, 'f
 Route::post('/login/validate2fa', [TwofactorController::class, 'validate2fa'])->name('login.validate2fa');
 
 Route::post('/login/2fa', [TwofactorController::class, 'verify2FA'])->name('login.2fa');
+
+Route::get('/account/email/verify/{token}', [OnboardingController::class, 'verifyWithLink']);
 
 Route::group([
     'prefix'     => 'portal/admin',
@@ -100,4 +103,16 @@ Route::group([
     Route::post('/storeProductPlan', [AdminController::class, 'storeProductPlan'])->name('admin.storeProductPlan');
 
     Route::post('/updateProductPlan', [AdminController::class, 'updateProductPlan'])->name('admin.updateProductPlan');
+
+    Route::get('/registered-customers', [AdminController::class, 'registeredCustomers'])->name('admin.customers');
+
+    Route::post('/storeCustomer', [AdminController::class, 'storeCustomer'])->name('admin.storeCustomer');
+
+    Route::post('/updateCustomer', [AdminController::class, 'updateCustomer'])->name('admin.updateCustomer');
+
+    Route::get('/suspend-customer/{id}', [AdminController::class, 'suspendCustomer'])->name('admin.suspendCustomer');
+
+    Route::get('/activate-customer/{id}', [AdminController::class, 'activateCustomer'])->name('admin.activateCustomer');
+
+    Route::get('/task-categories', [AdminController::class, 'taskCategories'])->name('admin.taskCategories');
 });
