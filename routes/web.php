@@ -119,4 +119,18 @@ Route::group([
     Route::post('/storeTaskCategory', [AdminController::class, 'storeTaskCategory'])->name('admin.storeTaskCategory');
 
     Route::post('/updateTaskCategory', [AdminController::class, 'updateTaskCategory'])->name('admin.updateTaskCategory');
+
+    Route::get('/projects', [AdminController::class, 'customerProjects'])->name('admin.customerProjects');
+
+    Route::post('/storeProject', [AdminController::class, 'storeProject'])->name('admin.storeProject');
+
+    Route::post('/updateProject', [AdminController::class, 'updateProject'])->name('admin.updateProject');
+
+    Route::get('/project/close/{id}', [AdminController::class, 'closeProject'])->name('admin.closeProject');
+
+    Route::get('/tasks', [AdminController::class, 'customerTasks'])->name('admin.customerTasks');
+
+    Route::post('/storeTask', [AdminController::class, 'storeTask'])->name('admin.storeTask');
+
+    Route::post('/updateTask', [AdminController::class, 'updateTask'])->name('admin.updateTask');
 });

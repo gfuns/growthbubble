@@ -6,6 +6,7 @@ use App\Mail\AccountCreationMail as AccountCreationMail;
 use App\Mail\CustomerCreationMail as CustomerCreationMail;
 use App\Models\PlatformFeature;
 use App\Models\Product;
+use App\Models\Project;
 use App\Models\SubscriptionPlan;
 use App\Models\TaskCategory;
 use App\Models\User;
@@ -1119,6 +1120,132 @@ class AdminController extends Controller
         $category->category = $request->category;
         if ($category->save()) {
             toast('Task Category Updated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * customerProjects
+     *
+     * @return void
+     */
+    public function customerProjects()
+    {
+        $status = request()->status;
+        $search = request()->search;
+
+        $query = Project::query();
+
+        if (isset(request()->search)) {
+            $query->where(function ($param) use ($search) {
+                $param->whereLike(["project_title"], $search);
+            })
+                ->orWhereHas('user', function ($param) use ($search) {
+                    $param->whereLike(["last_name", "other_names"], $search);
+                });
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        $lastRecord       = $query->count();
+        $marker           = $this->getMarkers($lastRecord, request()->page);
+        $customerProjects = $query->paginate(50);
+        $customers        = User::where("role_id", 0)->get();
+
+        return view("admin.customer_projects", compact("customerProjects", "customers", "search", "status", "marker", "lastRecord"));
+    }
+
+    /**
+     * storeProject
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeProject(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'customer'            => 'required',
+            'project_title'       => 'required',
+            'project_description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $project                      = new Project;
+        $project->user_id             = $request->customer;
+        $project->project_title       = $request->project_title;
+        $project->project_description = $request->project_description;
+        $project->creator             = Auth::user()->id;
+        if ($project->save()) {
+            toast('Customer Project Created Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * updateProject
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function updateProject(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'project_id'          => 'required',
+            'customer'            => 'required',
+            'project_title'       => 'required',
+            'project_description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $project                      = Project::find($request->project_id);
+        $project->user_id             = $request->customer;
+        $project->project_title       = $request->project_title;
+        $project->project_description = $request->project_description;
+        $project->creator             = Auth::user()->id;
+        if ($project->save()) {
+            toast('Customer Project Updated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * closeProject
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function closeProject($id)
+    {
+        $project         = Project::find($id);
+        $project->status = "closed";
+        if ($project->save()) {
+            toast('Customer Project Closed Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');

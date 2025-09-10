@@ -37,7 +37,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="dashboard" href="{{ route('admin.dashboard') }}">
+                    <a class="nav-link " id="projects" href="{{ route('admin.customerProjects') }}">
                         <i class="nav-icon fe fe-briefcase me-2"></i>
                         Project Management
                     </a>
@@ -51,7 +51,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="dashboard" href="{{ route('admin.dashboard') }}">
+                    <a class="nav-link " id="tasks" href="{{ route('admin.customerTasks') }}">
                         <i class="nav-icon fe fe-check-circle me-2"></i>
                         Task Management
                     </a>
