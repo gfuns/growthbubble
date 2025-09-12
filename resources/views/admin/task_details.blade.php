@@ -88,39 +88,50 @@
                                 </div>
 
                                 <div class="row mb-2">
+
                                     <div class="mb-3 col-md-7">
-                                        <label class="form-label d-block">All Necessary Access Provided?</label>
-                                        <span class="text-dark">{{ ucwords($task->provided_access) }}</span>
+                                        <label class="form-label d-block">Priority:</label>
+                                        <span class="text-dark">{{ ucwords($task->priority) }}</span>
                                     </div>
 
                                     <div class="mb-3 col-md-5">
-                                        <label class="form-label d-block">Task Created By:</label>
-                                        <span class="text-dark">{{ $task->creator() }}</span>
+                                        <label class="form-label d-block">All Necessary Access Provided?</label>
+                                        <span class="text-dark">{{ ucwords($task->provided_access) }}</span>
                                     </div>
 
                                 </div>
 
                                 <div class="row mb-2">
                                     <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">Task Created By:</label>
+                                        <span class="text-dark">{{ $task->creator() }}</span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
                                         <label class="form-label d-block">Task Assigned To:</label>
                                         <span
                                             class="text-dark">{{ isset($task->assignee) ? $task->assignee->last_name . ' ' . $task->assignee->other_names : 'NIL' }}</span>
                                     </div>
 
-                                    <div class="mb-3 col-md-5">
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="mb-3 col-md-7">
                                         <label class="form-label d-block">Task Assigned By:</label>
                                         <span
                                             class="text-dark">{{ isset($task->assignor) ? $task->assignor->last_name . ' ' . $task->assignor->other_names : 'NIL' }}</span>
                                     </div>
 
-                                </div>
-
-                                <div class="row">
-                                    <div class="mb-3 col-md-7">
+                                    <div class="mb-3 col-md-5">
                                         <label class="form-label d-block">Date Assigned:</label>
                                         <span
                                             class="text-dark">{{ isset($task->date_assigned) ? date_format(new DateTime($task->date_assigned), 'jS F, Y') : 'NIL' }}</span>
                                     </div>
+
+                                </div>
+
+                                <div class="row">
 
                                     <div class="mb-3 col-md-5">
                                         <label class="form-label d-block">Task Status:</label>
@@ -138,7 +149,6 @@
                                                 class="badge text-danger bg-light-danger">{{ ucwords($task->status) }}</span>
                                         @endif
                                     </div>
-
                                 </div>
 
 
@@ -186,9 +196,8 @@
                         <div class="col-md-8 mb-2"></div>
                         <div class="col-12 mb-4">
                             <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                data-bs-target="#updateTask"
-                                 data-priority="{{ $task->priority }}"
-                                 data-status="{{ $task->status }}">Manage Task Information</button>
+                                data-bs-target="#updateTask" data-priority="{{ $task->priority }}"
+                                data-status="{{ $task->status }}">Manage Task Information</button>
 
                         </div>
 
@@ -198,7 +207,7 @@
                 </div>
 
 
-                <div class="card" style="height: 555px;">
+                <div class="card" style="height: 625px;">
                     <!-- Card header -->
                     <div class="card-header card-header-height d-flex align-items-center">
                         <h4 class="mb-0">Recent Task Activities</h4>
@@ -207,99 +216,44 @@
                     <div class="card-body scrollable-card-body">
                         <!-- List group -->
                         <ul class="list-group list-group-flush list-timeline-activity">
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-online">
-                                            <img alt="avatar"
-                                                src="{{ asset('assets/images/avatar/avatar-6.jpg') }}"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Dianna Smiley</h4>
-                                                <p class="mb-0">Just Created a task ”Building A WordPress Site”</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">2m ago</span>
+                            @foreach ($activities as $activity)
+                                <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-md avatar-indicators avatar-online">
+                                                <img alt="avatar" src="{{ $activity->user->profile_photo }}"
+                                                    class="rounded-circle">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- List group -->
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-offline">
-                                            <img alt="avatar"
-                                                src="{{ asset('assets/images/avatar/avatar-7.jpg') }}"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Irene Hargrove</h4>
-                                                <p class="mb-0">Commented on the Task “Building A WordPress Site”
-                                                    Says “Hi, I neeed a payment gateway...
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">1 hour ago</span>
+                                        <div class="col ms-n2">
+                                            <div class="d-flex flex-column gap-1">
+                                                <div>
+                                                    <h4 class="mb-0 h5">
+                                                        {{ $activity->user->last_name . ' ' . $activity->user->other_names }}
+                                                    </h4>
+                                                    <p class="mb-0">
+                                                        @php
+                                                            $plainText = strip_tags($activity->activity);
+                                                            $comment = Str::limit(strip_tags($plainText), 80, '...');
+                                                        @endphp
+
+                                                        <a href="" data-bs-toggle="modal" data-bs-target="#viewActivity"
+                                                                data-activity="{{ $activity->user->last_name . ' ' . $activity->user->other_names. " ".$activity->activity }}" class="text-dark">
+                                                        @php
+                                                            echo $comment;
+                                                        @endphp
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span
+                                                        class="fs-6">{{ $activity->created_at->diffForHumans() }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            <!-- List group -->
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-busy">
-                                            <img alt="avatar"
-                                                src="{{ asset('assets/images/avatar/avatar-4.jpg') }}"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Trevor Bradle</h4>
-                                                <p class="mb-0">Just marked the task “Building A WordPress Site” as
-                                                    complete..</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">2 hours ago</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item px-0 pt-0 border-0">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-away">
-                                            <img alt="avatar"
-                                                src="{{ asset('assets/images/avatar/avatar-1.jpg') }}"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">John Deo</h4>
-                                                <p class="mb-0">Just created a task “Building A WordPress Site”</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">3 hours ago</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -315,6 +269,21 @@
 </script>
 
 @endsection
+
+
+<div class="modal fade" id="viewActivity" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p id="activity"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="taskAssignment" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
 <div class="modal-dialog modal-dialog-centered modal-md">
@@ -364,7 +333,7 @@
 </div>
 
 <div class="modal fade" id="updateTask" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
-<div class="modal-dialog modal-dialog-centered modal-md">
+<div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title mb-0" id="newCatgoryLabel">
@@ -374,12 +343,13 @@
         </div>
         <div class="modal-body">
 
-            <form class="needs-validation" novalidate method="post" action="{{ route('admin.updateTask') }}">
+            <form class="needs-validation" novalidate method="post" action="{{ route('admin.updateTask') }}"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <!-- form group -->
 
-                    <div class="mb-3 col-12">
+                    <div class="mb-3 col-md-6 col-12">
                         <label class="form-label">Priority </label>
                         <select id="taskPriority" name="task_priority" class="form-control" data-width="100%"
                             required>
@@ -391,7 +361,7 @@
                         <div class="invalid-feedback">Please select task priority.</div>
                     </div>
 
-                    <div class="mb-3 col-12">
+                    <div class="mb-3 col-md-6 col-12">
                         <label class="form-label">Task Status </label>
                         <select id="taskStat" name="task_status" class="form-control" data-width="100%"
                             required>
@@ -405,10 +375,22 @@
                         <div class="invalid-feedback">Please select task status.</div>
                     </div>
 
-                    <div id="taxPayablediv" class="mb-3 col-12">
+                    <div class="mb-3 col-12">
                         <label class="form-label">Comment </label>
-                        <textarea class="form-control" name="comment" style="resize: none" rows="5" placeholder="Comment"></textarea>
+                        <div id="editor" style="height: 250px">
+                            <p>&nbsp;</p>
+                        </div>
+                        <input type="hidden" name="comment" id="hiddenContent">
+
                         <div class="invalid-feedback">Please select team member.</div>
+                    </div>
+
+                    <div class="mb-3 col-md-12">
+                        <!-- Title -->
+                        <label class="form-label">Attach Files</label>
+                        <input type="file" name="attached_files" id=""
+                            class="form-control text-dark" placeholder="Attached Files">
+                        <div class="invalid-feedback">Please provide a response.</div>
                     </div>
 
                     <input type="hidden" name="task_id" value="{{ $task->id }}"
@@ -417,7 +399,8 @@
                     <div class="col-md-12 border-bottom"></div>
                     <!-- button -->
                     <div class="col-12 mt-4">
-                        <button id="submitbutton2" class="btn btn-success" type="submit">Save Changes</button>
+                        <button id="submitbutton2" class="btn btn-success" type="submit">Submit Task
+                            Update</button>
                         <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
                             aria-label="Close">Cancel</button>
                     </div>
@@ -428,3 +411,15 @@
     </div>
 </div>
 </div>
+
+@section('customjs')
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    quill.on('text-change', function() {
+        document.getElementById('hiddenContent').value = quill.root.innerHTML;
+    });
+</script>
+@endsection

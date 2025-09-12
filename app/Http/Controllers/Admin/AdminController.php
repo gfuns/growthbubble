@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Models\SubscriptionPlan;
 use App\Models\TaskActivities;
 use App\Models\TaskCategory;
+use App\Models\TaskConversation;
 use App\Models\User;
 use App\Models\UserPermission;
 use App\Models\UserRole;
@@ -1528,11 +1529,14 @@ class AdminController extends Controller
      *
      * @return void
      */
-    public function updateTask()
+    public function updateTask(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'task_id'     => 'required',
-            'team_member' => 'required',
+            'task_id'        => 'required',
+            'task_priority'  => 'required',
+            'task_status'    => 'required',
+            'comment'        => 'nullable',
+            'attached_files' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -1541,6 +1545,45 @@ class AdminController extends Controller
             toast($errors, 'error');
             return back();
         }
+        try {
+            DB::beginTransaction();
+
+            $task           = CustomerTasks::find($request->task_id);
+            $task->priority = $request->task_priority;
+            $task->status   = $request->task_status;
+            $task->save();
+
+            if (isset($request->comment)) {
+                $activity           = new TaskActivities;
+                $activity->task_id  = $task->id;
+                $activity->user_id  = Auth::user()->id;
+                $activity->activity = "Added comment " . $request->comment;
+                $activity->save();
+            }
+
+            if (isset($request->comment)) {
+                $conversation          = new TaskConversation;
+                $conversation->task_id = $task->id;
+                $conversation->user_id = Auth::user()->id;
+                $conversation->comment = $request->comment;
+                if ($request->has('attached_files')) {
+                    $uploadedFileUrl             = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                    $conversation->uploaded_file = $uploadedFileUrl;
+                }
+                $conversation->save();
+            }
+
+            DB::commit();
+            toast('Task Successfully Updated.', 'success');
+            return back();
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+
     }
 
     /**
