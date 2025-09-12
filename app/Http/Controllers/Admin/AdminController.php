@@ -1469,10 +1469,11 @@ class AdminController extends Controller
      */
     public function taskDetails($id)
     {
-        $task       = CustomerTasks::find($id);
-        $staffList  = User::where("role_id", ">", 1)->get();
-        $activities = TaskActivities::orderBy("id", "desc")->where("task_id", $id)->get();
-        return view("admin.task_details", compact("task", "staffList", "activities"));
+        $task          = CustomerTasks::find($id);
+        $staffList     = User::where("role_id", ">", 1)->get();
+        $activities    = TaskActivities::orderBy("id", "desc")->where("task_id", $id)->get();
+        $conversations = TaskConversation::where("task_id", $id)->get();
+        return view("admin.task_details", compact("task", "staffList", "activities", "conversations"));
     }
 
     /**
@@ -1561,7 +1562,7 @@ class AdminController extends Controller
                 $activity->save();
             }
 
-            if (isset($request->comment)) {
+            if (isset($request->comment) || isset($request->uploaded_file)) {
                 $conversation          = new TaskConversation;
                 $conversation->task_id = $task->id;
                 $conversation->user_id = Auth::user()->id;

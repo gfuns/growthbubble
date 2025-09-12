@@ -176,6 +176,10 @@
                 <!-- card -->
                 <div id="assessmentSummary" class="card mb-4">
                     <!-- card body -->
+                    <div class="card-header card-header-height d-flex align-items-center">
+                        <h4 class="mb-0">Update Task Progress</h4>
+                    </div>
+
                     <div class="card-body">
 
                         @if (!isset($task->assigned_to))
@@ -191,7 +195,7 @@
                         @endif
 
                         <div class="mb-2">
-                            Manage Task Progress.
+                            Update task progress and activities.
                         </div>
                         <div class="col-md-8 mb-2"></div>
                         <div class="col-12 mb-4">
@@ -206,8 +210,33 @@
 
                 </div>
 
+                <!-- card -->
+                <div id="assessmentSummary" class="card mb-4">
+                    <!-- card body -->
+                    <div class="card-header card-header-height d-flex align-items-center">
+                        <h4 class="mb-0">Conversations</h4>
+                        <span class="badge bg-danger text-white ms-auto">{{ number_format(count($conversations), 0) }}</span>
+                    </div>
 
-                <div class="card" style="height: 625px;">
+                    <div class="card-body">
+
+                        <div class="mb-2">
+                            This task has {{ number_format(count($conversations), 0) }} conversations.
+                        </div>
+                        <div class="col-md-8 mb-2"></div>
+                        <div class="col-12 mb-4">
+                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                data-bs-target="#viewConversations">View Conversations</button>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="card" style="height: 425px;">
                     <!-- Card header -->
                     <div class="card-header card-header-height d-flex align-items-center">
                         <h4 class="mb-0">Recent Task Activities</h4>
@@ -237,11 +266,13 @@
                                                             $comment = Str::limit(strip_tags($plainText), 80, '...');
                                                         @endphp
 
-                                                        <a href="" data-bs-toggle="modal" data-bs-target="#viewActivity"
-                                                                data-activity="{{ $activity->user->last_name . ' ' . $activity->user->other_names. " ".$activity->activity }}" class="text-dark">
-                                                        @php
-                                                            echo $comment;
-                                                        @endphp
+                                                        <a href="" data-bs-toggle="modal"
+                                                            data-bs-target="#viewActivity"
+                                                            data-activity="{{ $activity->user->last_name . ' ' . $activity->user->other_names . ' ' . $activity->activity }}"
+                                                            class="text-dark">
+                                                            @php
+                                                                echo $comment;
+                                                            @endphp
                                                         </a>
                                                     </p>
                                                 </div>
@@ -272,17 +303,17 @@
 
 
 <div class="modal fade" id="viewActivity" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-body">
-                <p id="activity"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
-            </div>
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+        <div class="modal-body">
+            <p id="activity"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
         </div>
     </div>
+</div>
 </div>
 
 <div class="modal fade" id="taskAssignment" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
@@ -412,6 +443,77 @@
 </div>
 </div>
 
+<div class="modal fade" id="viewConversations" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
+<div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                Conversations For This Task Are Below:
+            </h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="height: 650px;">
+
+            <div class="scrollable-card-body">
+
+                @foreach ($conversations as $chat)
+                    @if (Auth::user()->id == $chat->user_id)
+                        <!-- My message -->
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="p-2 rounded bg-success text-white" style="max-width: 75%;">
+                                @php echo $chat->comment; @endphp
+                            </div>
+                        </div>
+
+                        @if (isset($chat->uploaded_file))
+                            <div class="d-flex justify-content-end mb-3">
+                                <div class="rounded border" style="max-width: 20%;">
+                                    <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
+                                        class="img-fluid rounded" alt="Shared Image">
+                                </div>
+                            </div>
+                        @endif
+                    @else
+                        <!-- Other person's message -->
+                        <div class="d-flex mb-3">
+                            <img src="{{ $chat->user->profile_photo ?? 'https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg' }}"
+                                class="rounded-circle me-2" alt="User" style="height: 35px; width:35px">
+                            <div>
+                                <h6 class="mb-1 small fw-bold">
+                                    {{ $chat->user->last_name . ' ' . $chat->user->other_names }}</h6>
+                                <div class="p-2 rounded bg-light border" style="max-width: 75%;">
+                                    @php echo $chat->comment; @endphp
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (isset($chat->uploaded_file))
+                            <div class="d-flex mb-3">
+                                <div class="rounded border" style="margin-left: 45px; max-width: 20%;">
+                                    <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
+                                        class="img-fluid rounded" alt="Shared Image">
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+                @endforeach
+
+                {{-- <div class="card-footer bg-white">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Type a message...">
+                    <button class="btn btn-primary">Send</button>
+                </div>
+                </div> --}}
+
+            </div>
+
+            {{-- <div class="modal-footer">
+            <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
+            </div> --}}
+        </div>
+    </div>
+</div>
+</div>
 @section('customjs')
 <script>
     var quill = new Quill('#editor', {
