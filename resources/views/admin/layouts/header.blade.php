@@ -162,6 +162,10 @@
             width: 100%;
         }
 
+        .no-wrap{
+            white-space: nowrap;
+        }
+
         .wrap-text {
             white-space: normal;
             /* Allows text to wrap to the next line */
@@ -173,6 +177,7 @@
 
         .dataTables_scrollBody::-webkit-scrollbar {
             width: 3.5px;
+            height: 3.5px;
             /* thickness */
         }
 

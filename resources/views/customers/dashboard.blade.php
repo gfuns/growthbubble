@@ -52,7 +52,7 @@
                                 <span class="bi bi-lightbulb fs-3 text-primary"></span>
                             </div>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }}</h4>
+                        <h4 class="fw-bold mb-1">0</h4>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                                 <span class="bi bi-list-ol fs-3 text-primary"></span>
                             </div>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['queuedTasks'], 0) }}</h4>
+                        <h4 class="fw-bold mb-1">0</h4>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                                 <span class="bi bi-arrow-clockwise fs-3 text-primary"></span>
                             </div>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['recurringTasks'], 0) }}</h4>
+                        <h4 class="fw-bold mb-1">0</h4>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                                 <span class="bi bi-check2-circle fs-3 text-primary"></span>
                             </div>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['completedTasks'], 0) }}</h4>
+                        <h4 class="fw-bold mb-1">0</h4>
                     </div>
                 </div>
             </div>
@@ -148,33 +148,82 @@
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Phone Number</th>
+                                                            <th>Priority</th>
+                                                            <th>Start Date</th>
                                                             <th>Status</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @php
-                                                            $sno = 1;
-                                                        @endphp
-                                                        @foreach ($prod->customers as $cust)
-                                                            <tr>
-                                                                <td>{{ $sno++ }}</td>
-                                                                <td>{{ $cust->customer->last_name . ', ' . $cust->customer->other_names }}
-                                                                </td>
-                                                                <td>{{ $cust->customer->email }}</td>
-                                                                <td>{{ $cust->customer->phone_number }}</td>
-                                                                <td>
-                                                                    @if ($cust->customer->status == 'active')
-                                                                        <span
-                                                                            class="badge text-success bg-light-success">Active</span>
-                                                                    @else
-                                                                        <span
-                                                                            class="badge text-danger bg-light-danger">Suspended</span>
-                                                                    @endif
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Test Task</td>
+                                                            <td>High</td>
+                                                            <td>Start Date</td>
+                                                            <td>Status</td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -193,8 +242,14 @@
                             <!-- Nav -->
                             <ul class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link text-dark fw-bold active" role="tab"><i></i>
-                                        Customer Tasks</a>
+                                    <a class="nav-link text-dark fw-bold active" href="" role="tab"><i></i>
+                                        My Tasks</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link text-dark fw-bold" href="" role="tab">My Projects</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link text-dark fw-bold" href="" role="tab">My Reminders</a>
                                 </li>
                             </ul>
                         </div>
@@ -214,55 +269,19 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th>#</th>
-                                                <th>Task</th>
-                                                <th>Client</th>
+                                                <th>Name</th>
                                                 <th>Priority</th>
-                                                <th class="no-wrap">Due Date</th>
+                                                <th>Start Date</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($tasks as $tsk)
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td class="no-wrap">{{ $tsk->title }}</td>
-                                                <td class="no-wrap">{{ $tsk->user->last_name . ', ' . $tsk->user->other_names }}</td>
-                                                <td>{{ ucwords($tsk->priority) }}</td>
-                                                <td>{{ $tsk->due_date ?? "NIL" }}</td>
-                                                <td>
-                                                    @if ($tsk->status == 'queued' || $tsk->status == 'on hold')
-                                                        <span
-                                                            class="badge text-primary bg-light-primary">{{ ucwords($tsk->status) }}</span>
-                                                    @elseif ($tsk->status == 'in progress')
-                                                        <span
-                                                            class="badge text-warning bg-light-warning">{{ ucwords($tsk->status) }}</span>
-                                                    @elseif ($tsk->status == 'completed')
-                                                        <span
-                                                            class="badge text-success bg-light-success">{{ ucwords($tsk->status) }}</span>
-                                                    @elseif ($tsk->status == 'cancelled')
-                                                        <span
-                                                            class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
-                                                    @endif
-                                                </td>
-                                                 <td class="align-middle">
-                                                <div class="hstack gap-4">
-                                                    <span class="dropdown dropstart">
-                                                        <a class="btn btn-primary bg-light-primary text-primary btn-sm"
-                                                            href="#" role="button" data-bs-toggle="dropdown"
-                                                            data-bs-offset="-20,20" aria-expanded="false">
-                                                            Action</a>
+                                            <td>1</td>
+                                            <td>Test Task</td>
+                                            <td>High</td>
+                                            <td>Start Date</td>
+                                            <td>Status</td>
 
-                                                        <span class="dropdown-menu"><span
-                                                                class="dropdown-header">Action</span>
-                                                            <a href="{{ route("admin.taskDetails", [$tsk->id]) }}" class="dropdown-item">
-                                                                <i class="fe fe-eye dropdown-item-icon"></i>View
-                                                                Task Details</a>
-
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -330,8 +349,7 @@
                                         <div class="d-flex flex-column gap-1">
                                             <div>
                                                 <h4 class="mb-0 h5">Irene Hargrove</h4>
-                                                <p class="mb-0">Commented on the Task “Building A WordPress Site”
-                                                    Says “Hi, I neeed a payment gateway...
+                                                <p class="mb-0">Commented on the Task “Building A WordPress Site” Says “Hi, I neeed a payment gateway...
                                                 </p>
                                             </div>
                                             <div>
@@ -354,8 +372,7 @@
                                         <div class="d-flex flex-column gap-1">
                                             <div>
                                                 <h4 class="mb-0 h5">Trevor Bradle</h4>
-                                                <p class="mb-0">Just marked the task “Building A WordPress Site” as
-                                                    complete..</p>
+                                                <p class="mb-0">Just marked the task “Building A WordPress Site” as complete..</p>
                                             </div>
                                             <div>
                                                 <span class="fs-6">2 hours ago</span>

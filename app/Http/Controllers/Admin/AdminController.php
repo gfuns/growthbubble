@@ -38,16 +38,16 @@ class AdminController extends Controller
     public function dashboard()
     {
         $params = [
-            "regs"     => 0,
-            "renewals" => 0,
-            "poas"     => 0,
-            "awards"   => 0,
-            "prFees"   => 0,
+            "activeTasks"    => CustomerTasks::where("status", "in progress")->count(),
+            "queuedTasks"    => CustomerTasks::where("status", "queued")->count(),
+            "recurringTasks" => CustomerTasks::where("recurring", "yes")->count(),
+            "completedTasks" => CustomerTasks::where("status", "completed")->count(),
         ];
 
         $products = Product::all();
+        $tasks    = CustomerTasks::all();
 
-        return view("admin.dashboard", compact("params", "products"));
+        return view("admin.dashboard", compact("params", "products", "tasks"));
     }
 
     /**
