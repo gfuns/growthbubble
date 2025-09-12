@@ -1,0 +1,430 @@
+@extends('admin.layouts.app')
+
+@section('content')
+@section('title', env('APP_NAME') . ' | Customer Task Details')
+
+<!-- Container fluid -->
+<section class="container-fluid p-4">
+    <div class="row ">
+        <div class="col-lg-12 col-md-12 col-12">
+            <!-- Page header -->
+            <div class="border-bottom pb-4 d-lg-flex align-items-center justify-content-between">
+                <div class="mb-2 mb-lg-0">
+                    <h1 class="mb-0 h3 fw-bold">Customer Task Details </h1>
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="#">Customer Task Details</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="py-3">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-8 col-12 mb-5">
+                <div id="scrollContainer">
+                    <div id="assessmentInfo">
+                        <!-- card -->
+                        <div class="card">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- form -->
+                                <div class="row mb-2">
+                                    <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">Task Title:</label>
+                                        <span class="text-dark">{{ $task->title }}</span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label d-block">Task Category:</label>
+                                        <span class="text-dark">{{ $task->category->category }}</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="mb-1 col-md-12">
+                                        <label class="form-label d-block">Task Description:</label>
+                                        <span class="text-dark">@php echo $task->task_description; @endphp</span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">Recurring Task?</label>
+                                        <span class="text-dark">{{ ucwords($task->recurring) }}</span>
+                                    </div>
+
+                                    @if (isset($task->date_scheduled))
+                                        <div class="mb-3 col-md-5">
+                                            <label class="form-label d-block">Recurring Task Date:</label>
+                                            <span class="text-dark">Every {{ $task->recurringDate() }} Day of the
+                                                Month</span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">Implementation Timeline?</label>
+                                        <span class="text-dark">{{ ucwords($task->timeline) }}</span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label d-block">Scheduled Date:</label>
+                                        <span
+                                            class="text-dark">{{ isset($task->date_scheduled) ? date_format(new DateTime($task->date_scheduled), 'jS F, Y') : 'NIL' }}</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">All Necessary Access Provided?</label>
+                                        <span class="text-dark">{{ ucwords($task->provided_access) }}</span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label d-block">Task Created By:</label>
+                                        <span class="text-dark">{{ $task->creator() }}</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">Task Assigned To:</label>
+                                        <span
+                                            class="text-dark">{{ isset($task->assignee) ? $task->assignee->last_name . ' ' . $task->assignee->other_names : 'NIL' }}</span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label d-block">Task Assigned By:</label>
+                                        <span
+                                            class="text-dark">{{ isset($task->assignor) ? $task->assignor->last_name . ' ' . $task->assignor->other_names : 'NIL' }}</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">Date Assigned:</label>
+                                        <span
+                                            class="text-dark">{{ isset($task->date_assigned) ? date_format(new DateTime($task->date_assigned), 'jS F, Y') : 'NIL' }}</span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label d-block">Task Status:</label>
+                                        @if ($task->status == 'queued' || $task->status == 'on hold')
+                                            <span
+                                                class="badge text-primary bg-light-primary">{{ ucwords($task->status) }}</span>
+                                        @elseif ($task->status == 'in progress')
+                                            <span
+                                                class="badge text-warning bg-light-warning">{{ ucwords($task->status) }}</span>
+                                        @elseif ($task->status == 'completed')
+                                            <span
+                                                class="badge text-success bg-light-success">{{ ucwords($task->status) }}</span>
+                                        @elseif ($task->status == 'cancelled')
+                                            <span
+                                                class="badge text-danger bg-light-danger">{{ ucwords($task->status) }}</span>
+                                        @endif
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="mb-1 col-md-12">
+                                        <label class="form-label d-block">Uploaded Files:</label>
+                                        <span class="text-dark">
+                                            <ol style="padding-left:17px; margin-bottom:0px">
+                                                <li><a href="{{ $task->attached_file }}"
+                                                        target="_blank">{{ $task->attached_file }}</a></li>
+                                            </ol>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 mt-3 mb-5">&nbsp;</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-12">
+
+                <!-- card -->
+                <div id="assessmentSummary" class="card mb-4">
+                    <!-- card body -->
+                    <div class="card-body">
+
+                        @if (!isset($task->assigned_to))
+                            <div class="mb-2">
+                                This Task Is Yet To Be Assigned.
+                            </div>
+                            <div class="col-md-8 mb-2"></div>
+                            <div class="col-12 mb-4">
+                                <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#taskAssignment">Assign Task To Team Member</button>
+
+                            </div>
+                        @endif
+
+                        <div class="mb-2">
+                            Manage Task Progress.
+                        </div>
+                        <div class="col-md-8 mb-2"></div>
+                        <div class="col-12 mb-4">
+                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                data-bs-target="#updateTask"
+                                 data-priority="{{ $task->priority }}"
+                                 data-status="{{ $task->status }}">Manage Task Information</button>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="card" style="height: 555px;">
+                    <!-- Card header -->
+                    <div class="card-header card-header-height d-flex align-items-center">
+                        <h4 class="mb-0">Recent Task Activities</h4>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body scrollable-card-body">
+                        <!-- List group -->
+                        <ul class="list-group list-group-flush list-timeline-activity">
+                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-online">
+                                            <img alt="avatar"
+                                                src="{{ asset('assets/images/avatar/avatar-6.jpg') }}"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">Dianna Smiley</h4>
+                                                <p class="mb-0">Just Created a task ”Building A WordPress Site”</p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">2m ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- List group -->
+                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-offline">
+                                            <img alt="avatar"
+                                                src="{{ asset('assets/images/avatar/avatar-7.jpg') }}"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">Irene Hargrove</h4>
+                                                <p class="mb-0">Commented on the Task “Building A WordPress Site”
+                                                    Says “Hi, I neeed a payment gateway...
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">1 hour ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- List group -->
+                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-busy">
+                                            <img alt="avatar"
+                                                src="{{ asset('assets/images/avatar/avatar-4.jpg') }}"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">Trevor Bradle</h4>
+                                                <p class="mb-0">Just marked the task “Building A WordPress Site” as
+                                                    complete..</p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">2 hours ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item px-0 pt-0 border-0">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-md avatar-indicators avatar-away">
+                                            <img alt="avatar"
+                                                src="{{ asset('assets/images/avatar/avatar-1.jpg') }}"
+                                                class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="col ms-n2">
+                                        <div class="d-flex flex-column gap-1">
+                                            <div>
+                                                <h4 class="mb-0 h5">John Deo</h4>
+                                                <p class="mb-0">Just created a task “Building A WordPress Site”</p>
+                                            </div>
+                                            <div>
+                                                <span class="fs-6">3 hours ago</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    document.getElementById("tasks").classList.add('active');
+</script>
+
+@endsection
+
+<div class="modal fade" id="taskAssignment" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
+<div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                Assign Task To Team Member
+            </h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <form class="needs-validation" novalidate method="post" action="{{ route('admin.assignTask') }}">
+                @csrf
+                <div class="row">
+                    <!-- form group -->
+
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Select Team Member </label>
+                        <select id="teamMember" name="team_member" class="form-control" data-width="100%"
+                            required>
+                            <option value="">Select Team Member</option>
+                            @foreach ($staffList as $staff)
+                                <option value="{{ $staff->id }}">
+                                    {{ $staff->last_name . ' ' . $staff->other_names }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">Please select team member.</div>
+                    </div>
+
+                    <input type="hidden" name="task_id" value="{{ $task->id }}"
+                        class="form-control text-dark" required>
+
+                    <div class="col-md-12 border-bottom"></div>
+                    <!-- button -->
+                    <div class="col-12 mt-4">
+                        <button id="submitbutton2" class="btn btn-success" type="submit">Assign Task</button>
+                        <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
+                            aria-label="Close">Cancel</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="updateTask" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
+<div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                Manage Task Information
+            </h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <form class="needs-validation" novalidate method="post" action="{{ route('admin.updateTask') }}">
+                @csrf
+                <div class="row">
+                    <!-- form group -->
+
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Priority </label>
+                        <select id="taskPriority" name="task_priority" class="form-control" data-width="100%"
+                            required>
+                            <option value="">Select Task Priority</option>
+                            <option value="normal">Normal</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                        <div class="invalid-feedback">Please select task priority.</div>
+                    </div>
+
+                    <div class="mb-3 col-12">
+                        <label class="form-label">Task Status </label>
+                        <select id="taskStat" name="task_status" class="form-control" data-width="100%"
+                            required>
+                            <option value="">Select Task Priority</option>
+                            <option value="queued">Queued</option>
+                            <option value="in progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="on hold">On Hold</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <div class="invalid-feedback">Please select task status.</div>
+                    </div>
+
+                    <div id="taxPayablediv" class="mb-3 col-12">
+                        <label class="form-label">Comment </label>
+                        <textarea class="form-control" name="comment" style="resize: none" rows="5" placeholder="Comment"></textarea>
+                        <div class="invalid-feedback">Please select team member.</div>
+                    </div>
+
+                    <input type="hidden" name="task_id" value="{{ $task->id }}"
+                        class="form-control text-dark" required>
+
+                    <div class="col-md-12 border-bottom"></div>
+                    <!-- button -->
+                    <div class="col-12 mt-4">
+                        <button id="submitbutton2" class="btn btn-success" type="submit">Save Changes</button>
+                        <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
+                            aria-label="Close">Cancel</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+</div>

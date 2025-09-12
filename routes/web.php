@@ -110,6 +110,8 @@ Route::group([
 
     Route::post('/updateCustomer', [AdminController::class, 'updateCustomer'])->name('admin.updateCustomer');
 
+    Route::post('/changeCustomerPlan', [AdminController::class, 'changeCustomerPlan'])->name('admin.changeCustomerPlan');
+
     Route::get('/suspend-customer/{id}', [AdminController::class, 'suspendCustomer'])->name('admin.suspendCustomer');
 
     Route::get('/activate-customer/{id}', [AdminController::class, 'activateCustomer'])->name('admin.activateCustomer');
@@ -130,7 +132,19 @@ Route::group([
 
     Route::get('/tasks', [AdminController::class, 'customerTasks'])->name('admin.customerTasks');
 
+    Route::get('/task/create', [AdminController::class, 'newCustomerTask'])->name('admin.newCustomerTask');
+
+    Route::get('/task/details/{id}', [AdminController::class, 'taskDetails'])->name('admin.taskDetails');
+
     Route::post('/storeTask', [AdminController::class, 'storeTask'])->name('admin.storeTask');
 
+    Route::post('/assignTask', [AdminController::class, 'assignTask'])->name('admin.assignTask');
+
     Route::post('/updateTask', [AdminController::class, 'updateTask'])->name('admin.updateTask');
+
+    Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
 });
+
+Route::get('/ajax/get-projects/{customer}', [App\Http\Controllers\AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
+
+Route::get('/ajax/get-plans/{product}', [App\Http\Controllers\AjaxController::class, 'getProductPlans'])->name('ajax.getProductPlans');

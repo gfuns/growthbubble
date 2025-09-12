@@ -4,17 +4,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountCreationMail as AccountCreationMail;
 use App\Mail\CustomerCreationMail as CustomerCreationMail;
+use App\Models\CustomerSubscription;
+use App\Models\CustomerTasks;
 use App\Models\PlatformFeature;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\SubscriptionPlan;
+use App\Models\TaskActivities;
 use App\Models\TaskCategory;
 use App\Models\User;
 use App\Models\UserPermission;
 use App\Models\UserRole;
 use Auth;
+use Carbon\Carbon;
 use Cloudinary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -885,8 +890,9 @@ class AdminController extends Controller
      */
     public function registeredCustomers()
     {
-        $status = request()->status;
-        $search = request()->search;
+        $status  = request()->status;
+        $search  = request()->search;
+        $product = request()->product;
 
         $query = User::query();
 
@@ -894,6 +900,13 @@ class AdminController extends Controller
 
         if (isset(request()->search)) {
             $query->whereLike(["last_name", "other_names", "email", "phone_number"], $search);
+        }
+
+        if (isset(request()->product)) {
+            $query->whereHas('subscription', function ($query) use ($product) {
+                $query->where('product_id', $product);
+            });
+
         }
 
         if (isset(request()->status)) {
@@ -904,7 +917,9 @@ class AdminController extends Controller
         $marker     = $this->getMarkers($lastRecord, request()->page);
         $customers  = $query->paginate(50);
 
-        return view("admin.registered_customers", compact('customers', 'status', 'search'));
+        $products = Product::all();
+
+        return view("admin.registered_customers", compact('customers', 'status', 'search', 'products', 'product'));
     }
 
     /**
@@ -923,6 +938,9 @@ class AdminController extends Controller
             'phone_number'      => 'required|unique:users',
             'organization_name' => 'nullable',
             'contact_address'   => 'nullable',
+            'product'           => 'nullable',
+            'plan'              => 'nullable',
+            'effective_date'    => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -932,25 +950,53 @@ class AdminController extends Controller
             return back();
         }
 
-        $customer                  = new User;
-        $customer->last_name       = $request->last_name;
-        $customer->other_names     = $request->first_name;
-        $customer->email           = $request->email;
-        $customer->phone_number    = $request->phone_number;
-        $customer->password        = Hash::make($request->phone_number);
-        $customer->role_id         = 0;
-        $customer->organization    = ucwords(strtolower($request->organization_name));
-        $customer->contact_address = $request->contact_address;
-        $customer->token           = Str::random(60);
-        if ($customer->save()) {
+        try {
+            $plan = SubscriptionPlan::find($request->plan);
+
+            if ($plan->frequency == "yearly") {
+                $duration = 12;
+            } else if ($plan->frequency == "quarterly") {
+                $duration = 3;
+            } else {
+                $duration = 1;
+            }
+
+            DB::beginTransaction();
+
+            $customer                  = new User;
+            $customer->last_name       = $request->last_name;
+            $customer->other_names     = $request->first_name;
+            $customer->email           = $request->email;
+            $customer->phone_number    = $request->phone_number;
+            $customer->password        = Hash::make($request->phone_number);
+            $customer->role_id         = 0;
+            $customer->organization    = ucwords(strtolower($request->organization_name));
+            $customer->contact_address = $request->contact_address;
+            $customer->token           = Str::random(60);
+            $customer->save();
+
+            $subscription                 = new CustomerSubscription;
+            $subscription->user_id        = $customer->id;
+            $subscription->product_id     = $request->product;
+            $subscription->plan_id        = $request->plan;
+            $subscription->effective_date = $request->effective_date;
+            $subscription->expiry_date    = Carbon::now()->addMonths($duration);
+            $subscription->save();
+
+            DB::commit();
+
             try {
                 Mail::to($customer)->send(new CustomerCreationMail($customer, $customer->phone_number));
             } catch (\Exception $e) {
                 report($e);
+            } finally {
+                toast('Customer Account Created Successfully.', 'success');
+                return back();
             }
-            toast('Customer Account Created Successfully.', 'success');
-            return back();
-        } else {
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
@@ -1053,6 +1099,68 @@ class AdminController extends Controller
     }
 
     /**
+     * changeCustomerPlan
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function changeCustomerPlan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'customer'       => 'required',
+            'product'        => 'required',
+            'plan'           => 'required',
+            'effective_date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        try {
+            $plan = SubscriptionPlan::find($request->plan);
+
+            if ($plan->frequency == "yearly") {
+                $duration = 12;
+            } else if ($plan->frequency == "quarterly") {
+                $duration = 3;
+            } else {
+                $duration = 1;
+            }
+
+            DB::beginTransaction();
+
+            $subscription = CustomerSubscription::where("user_id", $request->customer)->update([
+                "status" => "terminated",
+            ]);
+
+            $subscription                 = new CustomerSubscription;
+            $subscription->user_id        = $request->customer;
+            $subscription->product_id     = $request->product;
+            $subscription->plan_id        = $request->plan;
+            $subscription->effective_date = $request->effective_date;
+            $subscription->expiry_date    = Carbon::now()->addMonths($duration);
+            $subscription->save();
+
+            DB::commit();
+
+            toast('Customer Subscription Activated Successfully.', 'success');
+            return back();
+
+        } catch (\Exception $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
      * taskCategories
      *
      * @return void
@@ -1141,11 +1249,11 @@ class AdminController extends Controller
 
         if (isset(request()->search)) {
             $query->where(function ($param) use ($search) {
-                $param->whereLike(["project_title"], $search);
-            })
-                ->orWhereHas('user', function ($param) use ($search) {
-                    $param->whereLike(["last_name", "other_names"], $search);
-                });
+                $param->whereLike(['project_title'], $search)
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->whereLike(['last_name', 'other_names'], $search);
+                    });
+            });
         }
 
         if (isset(request()->status)) {
@@ -1251,6 +1359,224 @@ class AdminController extends Controller
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
+    }
+
+    /**
+     * customerTasks
+     *
+     * @return void
+     */
+    public function customerTasks()
+    {
+        $status = request()->status;
+        $search = request()->search;
+
+        $query = CustomerTasks::query();
+
+        if (isset(request()->search)) {
+            $query->where(function ($param) use ($search) {
+                $param->whereLike(['title'], $search)
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->whereLike(['last_name', 'other_names'], $search);
+                    });
+            });
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        $lastRecord    = $query->count();
+        $marker        = $this->getMarkers($lastRecord, request()->page);
+        $customerTasks = $query->paginate(50);
+        $customers     = User::where("role_id", 0)->get();
+
+        return view("admin.customer_tasks", compact("customerTasks", "customers", "search", "status", "marker", "lastRecord"));
+    }
+
+    /**
+     * newCustomerTask
+     *
+     * @return void
+     */
+    public function newCustomerTask()
+    {
+        $taskCategories = TaskCategory::all();
+        $customers      = User::where("role_id", 0)->get();
+        return view("admin.new_customer_task", compact("taskCategories", "customers"));
+    }
+
+    /**
+     * storeTask
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeTask(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'project'        => 'required',
+            'customer'       => 'required',
+            'title'          => 'required',
+            'task_category'  => 'required',
+            'recurring'      => 'required',
+            'recurring_date' => 'required_if:recurring,yes',
+            'timeline'       => 'required',
+            'scheduled_date' => 'required_if:timeline,scheduled for later',
+            'shared_access'  => 'required',
+            'attached_files' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $task                  = new CustomerTasks;
+        $task->user_id         = $request->customer;
+        $task->project_id      = $request->project;
+        $task->title           = $request->title;
+        $task->task_category   = $request->task_category;
+        $task->recurring       = $request->recurring;
+        $task->recurring_date  = preg_replace("/Day /", "", $request->recurring_date);
+        $task->timeline        = $request->timeline;
+        $task->date_scheduled  = $request->scheduled_date;
+        $task->provided_access = $request->shared_access;
+        $task->creator         = Auth::user()->id;
+        if ($request->has('attached_files')) {
+            $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+            $task->attached_file = $uploadedFileUrl;
+        }
+        if ($task->save()) {
+            toast('Customer Task Created Successfully.', 'success');
+            return redirect()->route("admin.customerTasks");
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * taskDetails
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function taskDetails($id)
+    {
+        $task       = CustomerTasks::find($id);
+        $staffList  = User::where("role_id", ">", 1)->get();
+        $activities = TaskActivities::orderBy("id", "desc")->where("task_id", $id)->get();
+        return view("admin.task_details", compact("task", "staffList", "activities"));
+    }
+
+    /**
+     * assignTask
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function assignTask(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'task_id'     => 'required',
+            'team_member' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $task                = CustomerTasks::find($request->task_id);
+            $task->assigned_to   = $request->team_member;
+            $task->assigned_by   = Auth::user()->id;
+            $task->date_assigned = now();
+            $task->save();
+
+            $activity           = new TaskActivities;
+            $activity->task_id  = $task->id;
+            $activity->user_id  = Auth::user()->id;
+            $activity->activity = "Assigned this task to " . $task->assignee->last_name . " " . $task->assignee->other_names;
+            $activity->save();
+
+            DB::commit();
+            toast('Task Successfully Assigned To Team Member.', 'success');
+            return back();
+
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * updateTask
+     *
+     * @return void
+     */
+    public function updateTask()
+    {
+        $validator = Validator::make($request->all(), [
+            'task_id'     => 'required',
+            'team_member' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+    }
+
+    /**
+     * subscriptions
+     *
+     * @return void
+     */
+    public function subscriptions()
+    {
+        $status  = request()->status;
+        $search  = request()->search;
+        $product = request()->product;
+
+        $query = CustomerSubscription::query();
+
+        if (isset(request()->search)) {
+            $query->whereHas('customer', function ($query) use ($search) {
+                $query->whereLike(["last_name", "other_names"], $search);
+            });
+        }
+
+        if (isset(request()->product)) {
+            $query->where("product_id", $product);
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        $lastRecord    = $query->count();
+        $marker        = $this->getMarkers($lastRecord, request()->page);
+        $subscriptions = $query->paginate(50);
+
+        $products = Product::all();
+
+        return view("admin.customer_subscriptions", compact('subscriptions', 'status', 'search', 'products', 'product'));
     }
 
     /**

@@ -13,9 +13,9 @@
     <script src="{{ asset('assets/js/vendors/chart.js') }}"></script>
     <script src="{{ asset('assets/libs/flatpickr/dist/flatpickr.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/flatpickr.js') }}"></script>
-    <script src="{{ asset('assets/libs/quill/dist/quill.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/libs/quill/dist/quill.min.js') }}"></script> --}}
     <script src="{{ asset('assets/libs/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/editor.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/vendors/editor.js') }}"></script> --}}
     <script src="{{ asset('assets/libs/dropzone/dist/min/dropzone.min.js') }}"></script>
     <script src="{{ asset('assets/libs/popperjs/core/dist/umd/popper.min.js') }}"></script>
     <script src="{{ asset('assets/libs/tippy.js/dist/tippy-bundle.umd.min.js') }}"></script>
@@ -26,7 +26,7 @@
     <script src="{{ asset('assets/js/vendors/validation.js') }}"></script>
     <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     @include('sweetalert::alert')
 
     <script src="{{ asset('assets/js/vendors/sweetalert2.all.min.js') }}"></script>
@@ -81,11 +81,43 @@
 
 
         $(document).ready(function() {
+            $('#customer').select2();
+        });
+
+        $(document).ready(function() {
+            $('#project').select2();
+        });
+
+        $(document).ready(function() {
             $('#status').select2();
+        });
+
+        $(document).ready(function() {
+            $('#prod').select2();
+        });
+
+        $('#teamMember').select2({
+            dropdownParent: $('#taskAssignment')
         });
 
         $('#selProduct').select2({
             dropdownParent: $('#offcanvasRight')
+        });
+
+        $('#custSelProd').select2({
+            dropdownParent: $('#offcanvasRight')
+        });
+
+        $('#custSelPlan').select2({
+            dropdownParent: $('#offcanvasRight')
+        });
+
+        $('#custProduct').select2({
+            dropdownParent: $('#changeCustomerPlan')
+        });
+
+        $('#custPlan').select2({
+            dropdownParent: $('#changeCustomerPlan')
         });
 
         $('#frequency').select2({
@@ -211,6 +243,11 @@
             var organization = button.data('organization') // Extract info from data-* attributes
             var address = button.data('address') // Extract info from data-* attributes
             var photo = button.data('photo') // Extract info from data-* attributes
+            var product = button.data('product') // Extract info from data-* attributes
+            var plan = button.data('plan') // Extract info from data-* attributes
+            var subdate = button.data('effectivedate') // Extract info from data-* attributes
+            var renewaldate = button.data('expirydate') // Extract info from data-* attributes
+            var status = button.data('status') // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
@@ -222,6 +259,11 @@
             document.getElementById("vorganization").innerHTML = organization;
             document.getElementById("vaddress").innerHTML = address;
             document.getElementById("vphoto").src = photo;
+            document.getElementById("vproduct").innerHTML = product;
+            document.getElementById("vplan").innerHTML = plan;
+            document.getElementById("vsubdate").innerHTML = subdate;
+            document.getElementById("vrenewaldate").innerHTML = renewaldate;
+            document.getElementById("vstatus").innerHTML = status;
         })
 
         $('#editTaskCategory').on('show.bs.offcanvas', function(event) {
@@ -277,6 +319,34 @@
             }).val(customer).trigger('change');
         })
 
+        $('#updateTask').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var priority = button.data('priority') // Extract info from data-* attributes
+            var status = button.data('status') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            var modal = $(this)
+            // modal.find('.modal-body #myid').val(myid)
+            $('#taskPriority').select2({
+                dropdownParent: $('#updateTask'),
+            }).val(priority).trigger('change');
+            $('#taskStat').select2({
+                dropdownParent: $('#updateTask'),
+            }).val(status).trigger('change');
+        })
+
+        $('#changeCustomerPlan').on('show.bs.offcanvas', function(event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var myid = button.data('myid') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            var offcanvas = $(this)
+            // modal.find('.modal-body #myid').val(myid)
+            offcanvas.find('.offcanvas-body #myid').val(myid)
+        })
+
 
         function validateInput(event) {
             const input = event.target;
@@ -302,4 +372,36 @@
             // Assign the cleaned value back to the input field
             input.value = value;
         }
+
+        document.getElementById('recurringYes').addEventListener('change', function() {
+            if (this.checked) {
+                $("#autopt1").css("display", "block");
+                $("#recurringDate").attr("required", true);
+            }
+        });
+
+        document.getElementById('recurringNo').addEventListener('change', function() {
+            if (this.checked) {
+                $("#autopt1").css("display", "none");
+                $("#recurringDate").removeAttr("required");
+            }
+        });
+
+
+        document.getElementById('laterSchedule').addEventListener('change', function() {
+            if (this.checked) {
+                $("#autopt2").css("display", "block");
+                $("#scheduledDate").attr("required", true);
+            }
+        });
+
+        document.getElementById('regularTimeline').addEventListener('change', function() {
+            if (this.checked) {
+                $("#autopt2").css("display", "none");
+                $("#scheduledDate").removeAttr("required");
+            }
+        });
+
+
+
     </script>

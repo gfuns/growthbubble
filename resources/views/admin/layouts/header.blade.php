@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/theme.min.css') }}?version={{ date('his') }}">
     <link href="{{ asset('assets/libs/dropzone/dist/dropzone.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
-    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
     <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/libs/yaireo/tagify/dist/tagify.css') }}" rel="stylesheet">
 
@@ -30,6 +29,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
     <script src="{{ asset('assets/js/countries.js') }}"></script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 
     <title>@yield('title')</title>
     @yield('style')

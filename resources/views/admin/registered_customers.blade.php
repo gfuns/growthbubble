@@ -54,7 +54,7 @@
                         <form id="form" name="form" method="GET">
                             <div class="p-4 row gx-3">
                                 <!-- Form -->
-                                <div class="col-12 col-lg-9 mb-3 mb-lg-0">
+                                <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                                     <!-- search -->
 
                                     <div class="d-flex align-items-center">
@@ -67,6 +67,20 @@
                                             value="{{ $search }}">
                                     </div>
 
+                                </div>
+
+                                <div class="col-6 col-lg-3">
+                                    <!-- form select -->
+                                    <select id="prod" name="product" class="form-select"
+                                        onChange="this.form.submit()">
+                                        <option value="">All Products</option>
+                                        @foreach ($products as $prod)
+                                            <option value="{{ $prod->id }}"
+                                                @if ($product == $prod->id) selected @endif>
+                                                {{ $prod->product }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
                                 <div class="col-6 col-lg-3">
@@ -130,8 +144,7 @@
                                                                 class="dropdown-header">Action</span>
 
                                                             <a style="cursor:pointer" class="dropdown-item"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#viewCustomer"
+                                                                data-bs-toggle="modal" data-bs-target="#viewCustomer"
                                                                 data-myid="{{ $cust->id }}"
                                                                 data-othernames="{{ $cust->other_names }}"
                                                                 data-lastname="{{ $cust->last_name }}"
@@ -139,7 +152,12 @@
                                                                 data-phone="{{ $cust->phone_number }}"
                                                                 data-organization="{{ $cust->organization }}"
                                                                 data-photo="{{ $cust->profile_photo }}"
-                                                                data-address="{{ $cust->contact_address ?? "NIL" }}"><i
+                                                                data-product="{{ $cust->selectedProduct() }}"
+                                                                data-plan="{{ $cust->selectedPlan() }}"
+                                                                data-effectivedate="{{ $cust->effectiveDate() }}"
+                                                                data-expirydate="{{ $cust->expiryDate() }}"
+                                                                data-status="{{ $cust->subStatus() }}"
+                                                                data-address="{{ $cust->contact_address ?? 'NIL' }}"><i
                                                                     class="fe fe-eye dropdown-item-icon"></i>View
                                                                 Customer Information</a>
 
@@ -153,9 +171,15 @@
                                                                     data-email="{{ $cust->email }}"
                                                                     data-phone="{{ $cust->phone_number }}"
                                                                     data-organization="{{ $cust->organization }}"
-                                                                    data-address="{{ $cust->contact_address}}"><i
+                                                                    data-address="{{ $cust->contact_address }}"><i
                                                                         class="fe fe-edit dropdown-item-icon"></i>Edit
                                                                     Customer Information</a>
+                                                                <a style="cursor:pointer" class="dropdown-item"
+                                                                    data-bs-toggle="offcanvas"
+                                                                    data-bs-target="#changeCustomerPlan"
+                                                                    data-myid="{{ $cust->id }}"><i
+                                                                        class="fe fe-refresh-cw dropdown-item-icon"></i>Change
+                                                                    Customer Plan</a>
                                                                 @if ($cust->status == 'active')
                                                                     <a class="dropdown-item"
                                                                         href="{{ route('admin.suspendCustomer', [$cust->id]) }}"
@@ -220,7 +244,7 @@
                         <tr>
                             <td class="">Last Name</td>
                             <td class=""><span id="vlastname"></span></td>
-                            <td class="" rowspan="9" align="right" style="text-align: center"><img
+                            <td class="" rowspan="11" align="right" style="text-align: center"><img
                                     src="" id="vphoto" class="img-responsive" style="max-width: 150px" />
                             </td>
                         </tr>
@@ -249,6 +273,31 @@
                             <td class="">Contact Address</td>
                             <td class=""><span id="vaddress"></span></td>
                         </tr>
+
+                        <tr>
+                            <td class="">Selected Product</td>
+                            <td class=""><span id="vproduct"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Subscribed Plan</td>
+                            <td class=""><span id="vplan"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Subsciption Date</td>
+                            <td class=""><span id="vsubdate"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Next Renewal Date</td>
+                            <td class=""><span id="vrenewaldate"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Status</td>
+                            <td class=""><span id="vstatus"></span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -276,28 +325,28 @@
                     @csrf
                     <div class="row">
                         <!-- form group -->
-                        <div class="mb-3 col-12">
+                        <div class="mb-3 col-md-6 col-12">
                             <label class="form-label">Last Name <span class="text-danger">*</span></label>
                             <input type="text" name="last_name" class="form-control"
                                 placeholder="Enter Last Name" required>
                             <div class="invalid-feedback">Please provide last name.</div>
                         </div>
 
-                        <div class="mb-3 col-12">
+                        <div class="mb-3 col-md-6 col-12">
                             <label class="form-label">First Name <span class="text-danger">*</span></label>
                             <input type="text" name="first_name" class="form-control"
                                 placeholder="Enter First Name" required>
                             <div class="invalid-feedback">Please provide first name.</div>
                         </div>
 
-                        <div class="mb-3 col-12">
+                        <div class="mb-3 col-md-6 col-12">
                             <label class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="email" name="email" class="form-control"
                                 placeholder="Enter Email Address" required>
                             <div class="invalid-feedback">Please provide a valid email.</div>
                         </div>
 
-                        <div class="mb-3 col-12">
+                        <div class="mb-3 col-md-6 col-12">
                             <label class="form-label">Phone Number <span class="text-danger">*</span></label>
                             <input type="text" name="phone_number" class="form-control"
                                 placeholder="Enter Phone Number" required>
@@ -313,9 +362,35 @@
 
                         <div class="mb-3 col-12">
                             <label class="form-label">Contact Address</label>
-                            <textarea name="contact_address" class="form-control"
-                                placeholder="Enter Contact Address" rows="3" style="resize: none"></textarea>
+                            <textarea name="contact_address" class="form-control" placeholder="Enter Contact Address" rows="3"
+                                style="resize: none"></textarea>
                             <div class="invalid-feedback">Please provide a contact address organization.</div>
+                        </div>
+
+                        <div class="mb-3 col-md-6 col-12">
+                            <label class="form-label">Product <span class="text-danger">*</span></label>
+                            <select id="custSelProd" name="product" class="form-control" data-width="100%" required>
+                                <option value="">Select Product</option>
+                                @foreach ($products as $prod)
+                                    <option value="{{ $prod->id }}">{{ $prod->product }} Plan</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select product.</div>
+                        </div>
+
+                        <div class="mb-3 col-md-6 col-12">
+                            <label class="form-label">Plan <span class="text-danger">*</span></label>
+                            <select id="custSelPlan" name="plan" class="form-control" data-width="100%" required>
+                                <option value="">Select Plan</option>
+                            </select>
+                            <div class="invalid-feedback">Please select plan.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Effective Date <span class="text-danger">*</span></label>
+                            <input id="date" type="date" name="effective_date" class="form-control"
+                                placeholder="Enter Effective Date" required>
+                            <div class="invalid-feedback">Please select effective date.</div>
                         </div>
 
                         <div class="col-md-12 border-bottom"></div>
@@ -386,8 +461,8 @@
 
                         <div class="mb-3 col-12">
                             <label class="form-label">Contact Address</label>
-                            <textarea id="address" name="contact_address" class="form-control"
-                                placeholder="Enter Contact Address" rows="3" style="resize: none"></textarea>
+                            <textarea id="address" name="contact_address" class="form-control" placeholder="Enter Contact Address"
+                                rows="3" style="resize: none"></textarea>
                             <div class="invalid-feedback">Please provide a contact address organization.</div>
                         </div>
 
@@ -405,6 +480,62 @@
             </div>
         </div>
     </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="changeCustomerPlan" style="width: 600px;">
+        <div class="offcanvas-body" data-simplebar>
+            <div class="offcanvas-header px-2 pt-0">
+                <h3 class="offcanvas-title" id="offcanvasExampleLabel"> Change Customer Subscription Plan</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <!-- card body -->
+            <div class="container">
+                <!-- form -->
+                <form class="needs-validation" novalidate method="post"
+                    action="{{ route('admin.changeCustomerPlan') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <!-- form group -->
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Product <span class="text-danger">*</span></label>
+                            <select id="custProduct" name="product" class="form-control" data-width="100%" required>
+                                <option value="">Select Product</option>
+                                @foreach ($products as $prod)
+                                    <option value="{{ $prod->id }}">{{ $prod->product }} Plan</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select product.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Plan <span class="text-danger">*</span></label>
+                            <select id="custPlan" name="plan" class="form-control" data-width="100%" required>
+                                <option value="">Select Plan</option>
+                            </select>
+                            <div class="invalid-feedback">Please select plan.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Effective Date <span class="text-danger">*</span></label>
+                            <input id="date" type="date" name="effective_date" class="form-control"
+                                placeholder="Enter Effective Date" required>
+                            <div class="invalid-feedback">Please select effective date.</div>
+                        </div>
+
+                        <input id="myid" type="hidden" name="customer" class="form-control" required>
+
+                        <div class="col-md-12 border-bottom"></div>
+                        <!-- button -->
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary" type="submit">Change Customer Plan</button>
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
+                                aria-label="Close">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endif
 
 
@@ -412,4 +543,45 @@
     document.getElementById("customers").classList.add('active');
 </script>
 
+@endsection
+
+
+@section('customjs')
+<script type="text/javascript">
+    $('#custProduct').change(function() {
+        var productId = $(this).val();
+        $('#custPlan').html(
+            '<option value="">Fetching data, please wait...</option>'); // Show "Fetching data" message
+        $.ajax({
+            url: "/ajax/get-plans/" + productId,
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                var options = "<option value=''>Select Product Plans</option>";
+                $.each(data, function(key, value) {
+                    options += "<option value='" + key + "'>" + value + "</option>";
+                });
+                $('#custPlan').html(options);
+            }
+        });
+    });
+
+    $('#custSelProd').change(function() {
+        var productId = $(this).val();
+        $('#custSelPlan').html(
+            '<option value="">Fetching data, please wait...</option>'); // Show "Fetching data" message
+        $.ajax({
+            url: "/ajax/get-plans/" + productId,
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                var options = "<option value=''>Select Product Plans</option>";
+                $.each(data, function(key, value) {
+                    options += "<option value='" + key + "'>" + value + "</option>";
+                });
+                $('#custSelPlan').html(options);
+            }
+        });
+    });
+</script>
 @endsection

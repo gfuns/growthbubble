@@ -77,7 +77,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="subscriptions" href="#">
+                    <a class="nav-link " id="subscriptions" href="{{ route("admin.subscriptions") }}">
                         <i class="nav-icon fe fe-dollar-sign me-2"></i>
                         Customer Subscriptions
                     </a>
