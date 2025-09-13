@@ -31,7 +31,8 @@
                 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 5) == true)
                     <!-- button -->
                     <div>
-                        <a href="{{ route("admin.newCustomerTask") }}" class="btn btn-primary btn-sm me-2">Create New Task</a>
+                        <a href="{{ route('admin.newCustomerTask') }}" class="btn btn-primary btn-sm me-2">Create New
+                            Task</a>
                     </div>
                 @endif
 
@@ -75,13 +76,17 @@
                                         <option value="">All Statuses</option>
                                         <option value="queued" @if ($status == 'queued') selected @endif>Queued
                                         </option>
-                                        <option value="in progress" @if ($status == 'in progress') selected @endif>In Progress
+                                        <option value="in progress" @if ($status == 'in progress') selected @endif>In
+                                            Progress
                                         </option>
-                                        <option value="completed" @if ($status == 'completed') selected @endif>Completed
+                                        <option value="completed" @if ($status == 'completed') selected @endif>
+                                            Completed
                                         </option>
-                                        <option value="on hold" @if ($status == 'on hold') selected @endif>On Hold
+                                        <option value="on hold" @if ($status == 'on hold') selected @endif>On
+                                            Hold
                                         </option>
-                                        <option value="cancelled" @if ($status == 'cancelled') selected @endif>Cancelled
+                                        <option value="cancelled" @if ($status == 'cancelled') selected @endif>
+                                            Cancelled
                                         </option>
                                     </select>
                                 </div>
@@ -111,10 +116,18 @@
                                             <td class="align-middle">{{ $cTask->title }} </td>
                                             <td class="align-middle">{{ $cTask->creator() }}</td>
                                             <td>
-                                                @if ($cTask->status == 'open')
-                                                    <span class="badge text-success bg-light-success">Open</span>
-                                                @else
-                                                    <span class="badge text-primary bg-light-primary">Closed</span>
+                                                @if ($cTask->status == 'queued' || $cTask->status == 'on hold')
+                                                    <span
+                                                        class="badge text-primary bg-light-primary">{{ ucwords($cTask->status) }}</span>
+                                                @elseif ($cTask->status == 'in progress')
+                                                    <span
+                                                        class="badge text-warning bg-light-warning">{{ ucwords($cTask->status) }}</span>
+                                                @elseif ($cTask->status == 'completed')
+                                                    <span
+                                                        class="badge text-success bg-light-success">{{ ucwords($cTask->status) }}</span>
+                                                @elseif ($cTask->status == 'cancelled')
+                                                    <span
+                                                        class="badge text-danger bg-light-danger">{{ ucwords($cTask->status) }}</span>
                                                 @endif
                                             </td>
 
@@ -128,7 +141,8 @@
 
                                                         <span class="dropdown-menu"><span
                                                                 class="dropdown-header">Action</span>
-                                                            <a href="{{ route("admin.taskDetails", [$cTask->id]) }}" class="dropdown-item">
+                                                            <a href="{{ route('admin.taskDetails', [$cTask->id]) }}"
+                                                                class="dropdown-item">
                                                                 <i class="fe fe-eye dropdown-item-icon"></i>View
                                                                 Task Details</a>
 

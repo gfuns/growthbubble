@@ -224,44 +224,51 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($tasks as $tsk)
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td class="no-wrap">{{ $tsk->title }}</td>
-                                                <td class="no-wrap">{{ $tsk->user->last_name . ', ' . $tsk->user->other_names }}</td>
-                                                <td>{{ ucwords($tsk->priority) }}</td>
-                                                <td>{{ $tsk->due_date ?? "NIL" }}</td>
-                                                <td>
-                                                    @if ($tsk->status == 'queued' || $tsk->status == 'on hold')
-                                                        <span
-                                                            class="badge text-primary bg-light-primary">{{ ucwords($tsk->status) }}</span>
-                                                    @elseif ($tsk->status == 'in progress')
-                                                        <span
-                                                            class="badge text-warning bg-light-warning">{{ ucwords($tsk->status) }}</span>
-                                                    @elseif ($tsk->status == 'completed')
-                                                        <span
-                                                            class="badge text-success bg-light-success">{{ ucwords($tsk->status) }}</span>
-                                                    @elseif ($tsk->status == 'cancelled')
-                                                        <span
-                                                            class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
-                                                    @endif
-                                                </td>
-                                                 <td class="align-middle">
-                                                <div class="hstack gap-4">
-                                                    <span class="dropdown dropstart">
-                                                        <a class="btn btn-primary bg-light-primary text-primary btn-sm"
-                                                            href="#" role="button" data-bs-toggle="dropdown"
-                                                            data-bs-offset="-20,20" aria-expanded="false">
-                                                            Action</a>
+                                                <tr>
+                                                    <td>{{ $loop->index + 1 }}</td>
+                                                    <td class="no-wrap">{{ $tsk->title }}</td>
+                                                    <td class="no-wrap">
+                                                        {{ $tsk->user->last_name . ', ' . $tsk->user->other_names }}
+                                                    </td>
+                                                    <td>{{ ucwords($tsk->priority) }}</td>
+                                                    <td>{{ $tsk->due_date ?? 'NIL' }}</td>
+                                                    <td>
+                                                        @if ($tsk->status == 'queued' || $tsk->status == 'on hold')
+                                                            <span
+                                                                class="badge text-primary bg-light-primary">{{ ucwords($tsk->status) }}</span>
+                                                        @elseif ($tsk->status == 'in progress')
+                                                            <span
+                                                                class="badge text-warning bg-light-warning">{{ ucwords($tsk->status) }}</span>
+                                                        @elseif ($tsk->status == 'completed')
+                                                            <span
+                                                                class="badge text-success bg-light-success">{{ ucwords($tsk->status) }}</span>
+                                                        @elseif ($tsk->status == 'cancelled')
+                                                            <span
+                                                                class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="hstack gap-4">
+                                                            <span class="dropdown dropstart">
+                                                                <a class="btn btn-primary bg-light-primary text-primary btn-sm"
+                                                                    href="#" role="button"
+                                                                    data-bs-toggle="dropdown" data-bs-offset="-20,20"
+                                                                    aria-expanded="false">
+                                                                    Action</a>
 
-                                                        <span class="dropdown-menu"><span
-                                                                class="dropdown-header">Action</span>
-                                                            <a href="{{ route("admin.taskDetails", [$tsk->id]) }}" class="dropdown-item">
-                                                                <i class="fe fe-eye dropdown-item-icon"></i>View
-                                                                Task Details</a>
+                                                                <span class="dropdown-menu"><span
+                                                                        class="dropdown-header">Action</span>
+                                                                    <a href="{{ route('admin.taskDetails', [$tsk->id]) }}"
+                                                                        class="dropdown-item">
+                                                                        <i
+                                                                            class="fe fe-eye dropdown-item-icon"></i>View
+                                                                        Task Details</a>
 
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </td>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -296,108 +303,68 @@
                     <div class="card-body scrollable-card-body">
                         <!-- List group -->
                         <ul class="list-group list-group-flush list-timeline-activity">
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-online">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-6.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Dianna Smiley</h4>
-                                                <p class="mb-0">Just Created a task ”Building A WordPress Site”</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">2m ago</span>
+                            @foreach ($activities as $activity)
+                                <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-md avatar-indicators avatar-online">
+                                                <img alt="avatar" src="{{ $activity->user->profile_photo }}"
+                                                    class="rounded-circle">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- List group -->
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-offline">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-7.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Irene Hargrove</h4>
-                                                <p class="mb-0">Commented on the Task “Building A WordPress Site”
-                                                    Says “Hi, I neeed a payment gateway...
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">1 hour ago</span>
+                                        <div class="col ms-n2">
+                                            <div class="d-flex flex-column gap-1">
+                                                <div>
+                                                    <h4 class="mb-0 h5">
+                                                        {{ $activity->user->last_name . ' ' . $activity->user->other_names }}
+                                                    </h4>
+                                                    <p class="mb-0">
+                                                        @php
+                                                            $plainText = strip_tags($activity->activity);
+                                                            $comment = Str::limit(strip_tags($plainText), 80, '...');
+                                                        @endphp
+
+                                                        <a href="" data-bs-toggle="modal"
+                                                            data-bs-target="#viewActivity"
+                                                            data-activity="{{ $activity->user->last_name . ' ' . $activity->user->other_names . ' ' . $activity->activity }}"
+                                                            class="text-dark">
+                                                            @php
+                                                                echo $comment;
+                                                            @endphp
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span
+                                                        class="fs-6">{{ $activity->created_at->diffForHumans() }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            <!-- List group -->
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-busy">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-4.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Trevor Bradle</h4>
-                                                <p class="mb-0">Just marked the task “Building A WordPress Site” as
-                                                    complete..</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">2 hours ago</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item px-0 pt-0 border-0">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-away">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">John Deo</h4>
-                                                <p class="mb-0">Just created a task “Building A WordPress Site”</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">3 hours ago</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
     </div>
 
 
+    <div class="modal fade" id="viewActivity" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p id="activity"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success ms-2"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <script>

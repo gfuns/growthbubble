@@ -64,13 +64,16 @@
                                         <span class="text-dark">{{ ucwords($task->recurring) }}</span>
                                     </div>
 
-                                    @if (isset($task->date_scheduled))
-                                        <div class="mb-3 col-md-5">
-                                            <label class="form-label d-block">Recurring Task Date:</label>
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label d-block">Recurring Task Date:</label>
+                                        @if (isset($task->date_scheduled))
                                             <span class="text-dark">Every {{ $task->recurringDate() }} Day of the
                                                 Month</span>
-                                        </div>
-                                    @endif
+                                        @else
+                                            <span class="text-dark">NIL</span>
+                                        @endif
+                                    </div>
+
                                 </div>
 
                                 <div class="row mb-2">
@@ -152,17 +155,19 @@
                                 </div>
 
 
-                                <div class="row">
-                                    <div class="mb-1 col-md-12">
-                                        <label class="form-label d-block">Uploaded Files:</label>
-                                        <span class="text-dark">
-                                            <ol style="padding-left:17px; margin-bottom:0px">
-                                                <li><a href="{{ $task->attached_file }}"
-                                                        target="_blank">{{ $task->attached_file }}</a></li>
-                                            </ol>
-                                        </span>
+                                @if (isset($task->attached_file))
+                                    <div class="row">
+                                        <div class="mb-1 col-md-12">
+                                            <label class="form-label d-block">Uploaded Files:</label>
+                                            <span class="text-dark">
+                                                <ol style="padding-left:17px; margin-bottom:0px">
+                                                    <li><a href="{{ $task->attached_file }}"
+                                                            target="_blank">{{ $task->attached_file }}</a></li>
+                                                </ol>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                                 <div class="col-md-8 mt-3 mb-5">&nbsp;</div>
 
                             </div>
@@ -215,20 +220,27 @@
                     <!-- card body -->
                     <div class="card-header card-header-height d-flex align-items-center">
                         <h4 class="mb-0">Conversations</h4>
-                        <span class="badge bg-danger text-white ms-auto">{{ number_format(count($conversations), 0) }}</span>
+                        <span
+                            class="badge bg-danger text-white ms-auto">{{ number_format(count($conversations), 0) }}</span>
                     </div>
 
                     <div class="card-body">
 
-                        <div class="mb-2">
-                            This task has {{ number_format(count($conversations), 0) }} conversations.
-                        </div>
-                        <div class="col-md-8 mb-2"></div>
-                        <div class="col-12 mb-4">
-                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                data-bs-target="#viewConversations">View Conversations</button>
+                        @if (count($conversations) > 0)
+                            <div class="mb-2">
+                                This task has {{ number_format(count($conversations), 0) }} conversations.
+                            </div>
+                            <div class="col-md-8 mb-2"></div>
+                            <div class="col-12 mb-4">
+                                <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#viewConversations">View Conversations</button>
 
-                        </div>
+                            </div>
+                        @else
+                            <div class="mb-2">
+                                This task is yet to have any conversation.
+                            </div>
+                        @endif
 
 
                     </div>
@@ -236,13 +248,19 @@
                 </div>
 
 
-                <div class="card" style="height: 425px;">
+                <div class="card" style="max-height: 425px;">
                     <!-- Card header -->
                     <div class="card-header card-header-height d-flex align-items-center">
                         <h4 class="mb-0">Recent Task Activities</h4>
                     </div>
                     <!-- Card body -->
                     <div class="card-body scrollable-card-body">
+                        @if (count($activities) < 1)
+                            <div class="mb-2">
+                                This task is yet to have any activity.
+                            </div>
+                        @endif
+
                         <!-- List group -->
                         <ul class="list-group list-group-flush list-timeline-activity">
                             @foreach ($activities as $activity)

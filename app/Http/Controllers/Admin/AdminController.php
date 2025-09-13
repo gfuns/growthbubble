@@ -6,6 +6,7 @@ use App\Mail\AccountCreationMail as AccountCreationMail;
 use App\Mail\CustomerCreationMail as CustomerCreationMail;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
+use App\Models\PlatformActivities;
 use App\Models\PlatformFeature;
 use App\Models\Product;
 use App\Models\Project;
@@ -44,10 +45,10 @@ class AdminController extends Controller
             "completedTasks" => CustomerTasks::where("status", "completed")->count(),
         ];
 
-        $products = Product::all();
-        $tasks    = CustomerTasks::all();
-
-        return view("admin.dashboard", compact("params", "products", "tasks"));
+        $products   = Product::all();
+        $tasks      = CustomerTasks::all();
+        $activities = PlatformActivities::orderBy("id", "desc")->get();
+        return view("admin.dashboard", compact("params", "products", "tasks", "activities"));
     }
 
     /**
@@ -1290,17 +1291,30 @@ class AdminController extends Controller
             toast($errors, 'error');
             return back();
         }
+        try {
 
-        $project                      = new Project;
-        $project->user_id             = $request->customer;
-        $project->project_title       = $request->project_title;
-        $project->project_description = $request->project_description;
-        $project->creator             = Auth::user()->id;
-        if ($project->save()) {
-            toast('Customer Project Created Successfully.', 'success');
+            DB::beginTransaction();
+
+            $project                      = new Project;
+            $project->user_id             = $request->customer;
+            $project->project_title       = $request->project_title;
+            $project->project_description = $request->project_description;
+            $project->creator             = Auth::user()->id;
+            $project->save();
+
+            $activity           = new PlatformActivities;
+            $activity->user_id  = Auth::user()->id;
+            $activity->activity = 'Created a new project "' . $project->project_title . '"';
+            $activity->save();
+
+            DB::commit();
+
+            toast('Customer ProjectCreatedSuccessfully . ', 'success');
             return back();
-        } else {
-            toast('Something went wrong. Please try again', 'error');
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+            toast('Something wentwrong . Pleasetry again', 'error');
             return back();
         }
     }
@@ -1334,10 +1348,10 @@ class AdminController extends Controller
         $project->project_description = $request->project_description;
         $project->creator             = Auth::user()->id;
         if ($project->save()) {
-            toast('Customer Project Updated Successfully.', 'success');
+            toast('Customer ProjectUpdatedSuccessfully . ', 'success');
             return back();
         } else {
-            toast('Something went wrong. Please try again', 'error');
+            toast('Something wentwrong . Pleasetry again', 'error');
             return back();
         }
     }
@@ -1351,13 +1365,27 @@ class AdminController extends Controller
      */
     public function closeProject($id)
     {
-        $project         = Project::find($id);
-        $project->status = "closed";
-        if ($project->save()) {
-            toast('Customer Project Closed Successfully.', 'success');
+        try {
+            DB::beginTransaction();
+
+            $project         = Project::find($id);
+            $project->status = "closed";
+            $project->save();
+
+            $activity           = new PlatformActivities;
+            $activity->user_id  = Auth::user()->id;
+            $activity->activity = 'Closed the project "' . $project->project_title . '"';
+            $activity->save();
+
+            DB::commit();
+
+            toast('Customer ProjectClosedSuccessfully . ', 'success');
             return back();
-        } else {
-            toast('Something went wrong. Please try again', 'error');
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something wentwrong . Pleasetry again', 'error');
             return back();
         }
     }
@@ -1417,16 +1445,17 @@ class AdminController extends Controller
     public function storeTask(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'project'        => 'required',
-            'customer'       => 'required',
-            'title'          => 'required',
-            'task_category'  => 'required',
-            'recurring'      => 'required',
-            'recurring_date' => 'required_if:recurring,yes',
-            'timeline'       => 'required',
-            'scheduled_date' => 'required_if:timeline,scheduled for later',
-            'shared_access'  => 'required',
-            'attached_files' => 'nullable',
+            'project'          => 'nullable',
+            'customer'         => 'required',
+            'title'            => 'required',
+            'task_description' => 'required',
+            'task_category'    => 'required',
+            'recurring'        => 'required',
+            'recurring_date'   => 'required_if: recurring, yes',
+            'timeline'         => 'required',
+            'scheduled_date'   => 'required_if: timeline, scheduledfor later',
+            'shared_access'    => 'required',
+            'attached_files'   => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -1436,26 +1465,40 @@ class AdminController extends Controller
             return back();
         }
 
-        $task                  = new CustomerTasks;
-        $task->user_id         = $request->customer;
-        $task->project_id      = $request->project;
-        $task->title           = $request->title;
-        $task->task_category   = $request->task_category;
-        $task->recurring       = $request->recurring;
-        $task->recurring_date  = preg_replace("/Day /", "", $request->recurring_date);
-        $task->timeline        = $request->timeline;
-        $task->date_scheduled  = $request->scheduled_date;
-        $task->provided_access = $request->shared_access;
-        $task->creator         = Auth::user()->id;
-        if ($request->has('attached_files')) {
-            $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
-            $task->attached_file = $uploadedFileUrl;
-        }
-        if ($task->save()) {
-            toast('Customer Task Created Successfully.', 'success');
+        try {
+            DB::beginTransaction();
+
+            $task                   = new CustomerTasks;
+            $task->user_id          = $request->customer;
+            $task->project_id       = $request->project;
+            $task->title            = $request->title;
+            $task->task_description = $request->task_description;
+            $task->task_category    = $request->task_category;
+            $task->recurring        = $request->recurring;
+            $task->recurring_date   = preg_replace("/Day /", "", $request->recurring_date);
+            $task->timeline         = $request->timeline;
+            $task->date_scheduled   = $request->scheduled_date;
+            $task->provided_access  = $request->shared_access;
+            $task->creator          = Auth::user()->id;
+            if ($request->has('attached_files')) {
+                $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                $task->attached_file = $uploadedFileUrl;
+            }
+            $task->save();
+
+            $activity           = new PlatformActivities;
+            $activity->user_id  = Auth::user()->id;
+            $activity->activity = 'Created a new task "' . $task->title . '"';
+            $activity->save();
+
+            DB::commit();
+
+            toast('Customer TaskCreatedSuccessfully . ', 'success');
             return redirect()->route("admin.customerTasks");
-        } else {
-            toast('Something went wrong. Please try again', 'error');
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+            toast('Something wentwrong . Pleasetry again', 'error');
             return back();
         }
     }
@@ -1506,6 +1549,11 @@ class AdminController extends Controller
             $task->date_assigned = now();
             $task->save();
 
+            $platformActivity           = new PlatformActivities;
+            $platformActivity->user_id  = Auth::user()->id;
+            $platformActivity->activity = 'Assigned the task "' . $task->title . '" to ' . $task->assignee->last_name . ' ' . $task->assignee->other_names;
+            $platformActivity->save();
+
             $activity           = new TaskActivities;
             $activity->task_id  = $task->id;
             $activity->user_id  = Auth::user()->id;
@@ -1513,14 +1561,14 @@ class AdminController extends Controller
             $activity->save();
 
             DB::commit();
-            toast('Task Successfully Assigned To Team Member.', 'success');
+            toast('Task SuccessfullyAssignedToTeamMember . ', 'success');
             return back();
 
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
 
-            toast('Something went wrong. Please try again', 'error');
+            toast('Something wentwrong . Pleasetry again', 'error');
             return back();
         }
     }
@@ -1554,12 +1602,22 @@ class AdminController extends Controller
             $task->status   = $request->task_status;
             $task->save();
 
+            $platformActivity           = new PlatformActivities;
+            $platformActivity->user_id  = Auth::user()->id;
+            $platformActivity->activity = 'Updated the status of the task "' . $task->title . '" to ' . $task->status;
+            $platformActivity->save();
+
             if (isset($request->comment)) {
                 $activity           = new TaskActivities;
                 $activity->task_id  = $task->id;
                 $activity->user_id  = Auth::user()->id;
                 $activity->activity = "Added comment " . $request->comment;
                 $activity->save();
+
+                $platformActivity           = new PlatformActivities;
+                $platformActivity->user_id  = Auth::user()->id;
+                $platformActivity->activity = 'Commented on the task "' . $task->title . '" saying: ' . $request->comment;
+                $platformActivity->save();
             }
 
             if (isset($request->comment) || isset($request->uploaded_file)) {
@@ -1575,13 +1633,13 @@ class AdminController extends Controller
             }
 
             DB::commit();
-            toast('Task Successfully Updated.', 'success');
+            toast('Task SuccessfullyUpdated . ', 'success');
             return back();
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
 
-            toast('Something went wrong. Please try again', 'error');
+            toast('Something wentwrong . Pleasetry again', 'error');
             return back();
         }
 
@@ -1654,5 +1712,8 @@ class AdminController extends Controller
 
         return $marker;
     }
+
+}
+{
 
 }

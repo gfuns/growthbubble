@@ -108,7 +108,7 @@
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
                             <label class="form-label">Task Title <span class="text-danger">*</span></label>
-                            <input type="text" name="title" id="bsppcNumber" class="form-control text-dark"
+                            <input type="text" name="title" id="title" class="form-control text-dark"
                                 placeholder="Task Title" required>
                             <div class="invalid-feedback">Please provide a title.</div>
                         </div>
