@@ -1,7 +1,7 @@
-@extends('admin.layouts.app')
+@extends('customer.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Business Dashboard')
+@section('title', env('APP_NAME') . ' | Customer Dashboard')
 <style type="text/css">
     .candidate-education-content .circle {
         border-radius: 40px;
@@ -34,7 +34,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <div class="border-bottom pb-3 mb-3 d-lg-flex justify-content-between align-items-center">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="mb-0 h3 fw-bold">Administrative Dashboard</h1>
+                    <h1 class="mb-0 h3 fw-bold">Client Dashboard</h1>
                 </div>
             </div>
         </div>

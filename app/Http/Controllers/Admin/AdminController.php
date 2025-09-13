@@ -1311,12 +1311,12 @@ class AdminController extends Controller
 
             DB::commit();
 
-            toast('Customer ProjectCreatedSuccessfully . ', 'success');
+            toast('Customer Project Created Successfully. ', 'success');
             return back();
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
-            toast('Something wentwrong . Pleasetry again', 'error');
+            toast('Something went wrong. Please try again', 'error');
             return back();
         }
     }
@@ -1350,10 +1350,10 @@ class AdminController extends Controller
         $project->project_description = $request->project_description;
         $project->creator             = Auth::user()->id;
         if ($project->save()) {
-            toast('Customer ProjectUpdatedSuccessfully . ', 'success');
+            toast('Customer Project Updated Successfully.', 'success');
             return back();
         } else {
-            toast('Something wentwrong . Pleasetry again', 'error');
+            toast('Something went wrong. Please try again', 'error');
             return back();
         }
     }
@@ -1381,13 +1381,13 @@ class AdminController extends Controller
 
             DB::commit();
 
-            toast('Customer ProjectClosedSuccessfully . ', 'success');
+            toast('Customer Project Closed Successfully.', 'success');
             return back();
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
 
-            toast('Something wentwrong . Pleasetry again', 'error');
+            toast('Something went wrong. Please try again', 'error');
             return back();
         }
     }
@@ -1495,12 +1495,12 @@ class AdminController extends Controller
 
             DB::commit();
 
-            toast('Customer TaskCreatedSuccessfully . ', 'success');
+            toast('Customer Task Created Successfully.', 'success');
             return redirect()->route("admin.customerTasks");
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
-            toast('Something wentwrong . Pleasetry again', 'error');
+            toast('Something went wrong. Please try again', 'error');
             return back();
         }
     }
@@ -1563,14 +1563,14 @@ class AdminController extends Controller
             $activity->save();
 
             DB::commit();
-            toast('Task SuccessfullyAssignedToTeamMember . ', 'success');
+            toast('Task Successfully Assigned To Team Member.', 'success');
             return back();
 
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
 
-            toast('Something wentwrong . Pleasetry again', 'error');
+            toast('Something went wrong. Please try again', 'error');
             return back();
         }
     }
@@ -1635,13 +1635,13 @@ class AdminController extends Controller
             }
 
             DB::commit();
-            toast('Task SuccessfullyUpdated . ', 'success');
+            toast('Task Successfully Updated.', 'success');
             return back();
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
 
-            toast('Something wentwrong . Pleasetry again', 'error');
+            toast('Something went wrong. Please try again', 'error');
             return back();
         }
 
@@ -1714,8 +1714,5 @@ class AdminController extends Controller
 
         return $marker;
     }
-
-}
-{
 
 }

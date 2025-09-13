@@ -148,3 +148,5 @@ Route::group([
 Route::get('/ajax/get-projects/{customer}', [App\Http\Controllers\AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
 
 Route::get('/ajax/get-plans/{product}', [App\Http\Controllers\AjaxController::class, 'getProductPlans'])->name('ajax.getProductPlans');
+
+require __DIR__ . '/customer.php';

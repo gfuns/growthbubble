@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Business Dashboard')
+@section('title', env('APP_NAME') . ' | Administrative Dashboard')
 <style type="text/css">
     .candidate-education-content .circle {
         border-radius: 40px;

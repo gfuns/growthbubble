@@ -13,6 +13,11 @@ class Project extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
+    public function tasks()
+    {
+        return $this->hasMany('App\Models\CustomerTasks', 'project_id');
+    }
+
     public function creator()
     {
         if ($this->user_id == $this->creator) {
