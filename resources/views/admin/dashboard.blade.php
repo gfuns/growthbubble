@@ -289,8 +289,7 @@
                     </div>
                     <div id="" class="card-body">
                         <!-- Earning chart -->
-                        <div id="traffic" class="apex-charts d-flex justify-content-center"></div>
-                        {{-- <canvas id="myLineChart" height="445"></canvas> --}}
+                        <div id="chart" class="apex-charts d-flex justify-content-center"></div>
                     </div>
                 </div>
 
@@ -371,6 +370,6 @@
     document.getElementById("dashboard").classList.add('active');
 </script>
 
-{{-- @include('admin.layouts.chart') --}}
+@include('admin.layouts.chart')
 
 @endsection

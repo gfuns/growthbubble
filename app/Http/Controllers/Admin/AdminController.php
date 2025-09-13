@@ -43,6 +43,8 @@ class AdminController extends Controller
             "queuedTasks"    => CustomerTasks::where("status", "queued")->count(),
             "recurringTasks" => CustomerTasks::where("recurring", "yes")->count(),
             "completedTasks" => CustomerTasks::where("status", "completed")->count(),
+            "cancelledTasks" => CustomerTasks::where("status", "cancelled")->count(),
+            "onHoldTasks"    => CustomerTasks::where("status", "on hold")->count(),
         ];
 
         $products   = Product::all();
