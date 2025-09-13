@@ -45,4 +45,6 @@ Route::group([
 
     Route::get('/subscriptions', [CustomerController::class, 'subscriptions'])->name('customer.subscriptions');
 
+    Route::post('/initiateCardAddition', [CustomerController::class, 'initiateCardAddition'])->name('customer.initiateCardAddition');
+
 });

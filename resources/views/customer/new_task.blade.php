@@ -74,7 +74,8 @@
             </div>
         </div>
     </div>
-    <form id="taskForm" method="POST" action="{{ route('admin.storeTask') }}" class="needs-validation" novalidate enctype="multipart/form-data">
+    <form id="taskForm" method="POST" action="{{ route('admin.storeTask') }}" class="needs-validation" novalidate
+        enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="offset-xl-1 col-xl-10 col-lg-10 col-md-12 col-12">
@@ -85,22 +86,12 @@
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label">Customer <span class="text-danger">*</span></label>
-                            <select id="customer" name="customer" class="form-control" data-width="100%" required>
-                                <option value="">Select Customer</option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">
-                                        {{ $customer->last_name . ' ' . $customer->other_names }}</option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback">Please select a customer.</div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
                             <label class="form-label">Project</label>
                             <select id="project" name="project" class="form-control" data-width="100%">
                                 <option value="">Select Project</option>
+                                @foreach ($projects as $proj)
+                                    <option value="{{ $proj->id }}">{{ $proj->project_title }}</option>
+                                @endforeach
                             </select>
                             <div class="invalid-feedback">Please select a project.</div>
                         </div>
@@ -307,22 +298,5 @@
         }
     });
 
-    $('#customer').change(function() {
-        var customerId = $(this).val();
-        $('#project').html(
-            '<option value="">Fetching data, please wait...</option>'); // Show "Fetching data" message
-        $.ajax({
-            url: "/ajax/get-projects/" + customerId,
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                var options = "<option value=''>Select Customer Projects</option>";
-                $.each(data, function(key, value) {
-                    options += "<option value='" + key + "'>" + value + "</option>";
-                });
-                $('#project').html(options);
-            }
-        });
-    });
 </script>
 @endsection

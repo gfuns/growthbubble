@@ -65,7 +65,7 @@
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
                                             <td class="align-middle"> {{ $sub->product->product }} </td>
                                             <td class="align-middle"> {{ $sub->plan->plan }} </td>
-                                            <td class="align-middle"> &#8358;{{ number_format($sub->pricing, 2) }} </td>
+                                            <td class="align-middle"> &pound;{{ number_format($sub->pricing, 2) }} </td>
                                             <td class="align-middle">
                                                 {{ date_format(new DateTime($sub->effective_date), 'jS F, Y') }} </td>
                                             <td class="align-middle">

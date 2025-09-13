@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
 use App\Models\PlatformActivities;
@@ -473,8 +474,8 @@ class CustomerController extends Controller
     public function newCustomerTask()
     {
         $taskCategories = TaskCategory::all();
-        $customers      = User::where("role_id", 0)->get();
-        return view("customer.new_task", compact("taskCategories", "customers"));
+        $projects       = Project::where("user_id", Auth::user()->id)->get();
+        return view("customer.new_task", compact("taskCategories", "projects"));
     }
 
     /**
@@ -597,6 +598,29 @@ class CustomerController extends Controller
         $products = Product::all();
 
         return view("customer.subscriptions", compact('subscriptions', 'status', 'search', 'products', 'product'));
+    }
+
+    /**
+     * billing
+     *
+     * @return void
+     */
+    public function billing()
+    {
+        $plan          = CustomerSubscription::where("user_id", Auth::user()->id)->where("status", "active")->first();
+        $customerCards = CustomerCards::where("user_id", Auth::user()->id)->get();
+        return view("customer.billing", compact('plan', 'customerCards'));
+    }
+
+    /**
+     * initiateCardAddition
+     *
+     * @return void
+     */
+    public function initiateCardAddition()
+    {
+        toast('Failed To Initialize Transaction.', 'error');
+        return back();
     }
 
     /**
