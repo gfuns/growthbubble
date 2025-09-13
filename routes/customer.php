@@ -11,6 +11,8 @@ Route::group([
 
     Route::get('dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
 
+    Route::get('dashboard2', [CustomerController::class, 'dashboardAlt'])->name('customer.dashboardAlt');
+
     Route::get('/view-profile', [CustomerController::class, 'viewProfile'])->name("customer.viewProfile");
 
     Route::get('/billing', [CustomerController::class, 'billing'])->name("customer.billing");

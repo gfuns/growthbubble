@@ -79,20 +79,6 @@
             scrollCollapse: true,
         });
 
-        $('#myTasks').DataTable({
-            search: true, // disable pagination
-            paging: true, // disable pagination
-            info: false,
-            language: {
-                lengthMenu: "_MENU_" // only show the dropdown
-            },
-            drawCallback: function(settings) {
-                $('.dataTables_paginate').hide(); // hide pagination controls
-            },
-            scrollY: '230px', // inside your 400px card; adjust for header/padding
-            scrollCollapse: true,
-        });
-
 
         $(document).ready(function() {
             $('#customer').select2();

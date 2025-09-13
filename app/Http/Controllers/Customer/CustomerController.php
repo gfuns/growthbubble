@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\CustomerCards;
+use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
 use App\Models\PlatformActivities;
 use App\Models\Product;
@@ -29,18 +31,37 @@ class CustomerController extends Controller
     public function dashboard()
     {
         $params = [
-            "activeTasks"    => CustomerTasks::where("status", "in progress")->count(),
-            "queuedTasks"    => CustomerTasks::where("status", "queued")->count(),
-            "recurringTasks" => CustomerTasks::where("recurring", "yes")->count(),
-            "completedTasks" => CustomerTasks::where("status", "completed")->count(),
-            "cancelledTasks" => CustomerTasks::where("status", "cancelled")->count(),
-            "onHoldTasks"    => CustomerTasks::where("status", "on hold")->count(),
+            "activeTasks"    => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "in progress")->count(),
+            "queuedTasks"    => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "queued")->count(),
+            "recurringTasks" => CustomerTasks::where("user_id", Auth::user()->id)->where("recurring", "yes")->count(),
+            "completedTasks" => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "completed")->count(),
         ];
 
-        $products   = Product::all();
-        $tasks      = CustomerTasks::all();
+        $tasks      = CustomerTasks::where("user_id", Auth::user()->id)->get();
+        $projects   = Project::where("user_id", Auth::user()->id)->get();
         $activities = PlatformActivities::orderBy("id", "desc")->get();
-        return view("customer.dashboard", compact("params", "products", "tasks", "activities"));
+        return view("customer.dashboard", compact("params", "projects", "tasks", "activities"));
+    }
+
+    /**
+     * dashboardAlt
+     *
+     * @return void
+     */
+    public function dashboardAlt()
+    {
+        $params = [
+            "activeTasks"        => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "in progress")->count(),
+            "queuedTasks"        => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "queued")->count(),
+            "recurringTasks"     => CustomerTasks::where("user_id", Auth::user()->id)->where("recurring", "yes")->count(),
+            "completedTasks"     => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "completed")->count(),
+            "activeSubscription" => CustomerSubscription::where("user_id", Auth::user()->id)->where("status", "active")->first(),
+        ];
+
+        $tasks      = CustomerTasks::where("user_id", Auth::user()->id)->get();
+        $projects   = Project::where("user_id", Auth::user()->id)->get();
+        $activities = PlatformActivities::orderBy("id", "desc")->get();
+        return view("customer.dashboard_alt", compact("params", "projects", "tasks", "activities"));
     }
 
     /**
@@ -666,7 +687,7 @@ class CustomerController extends Controller
     {
         $plan          = CustomerSubscription::where("user_id", Auth::user()->id)->where("status", "active")->first();
         $customerCards = CustomerCards::where("user_id", Auth::user()->id)->get();
-        return view("customer . billing", compact('plan', 'customerCards'));
+        return view("customer.billing", compact('plan', 'customerCards'));
     }
 
     /**

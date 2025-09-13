@@ -207,6 +207,9 @@
                                                 <div>
                                                     <h4 class="mb-0 h5">
                                                         {{ $activity->user->last_name . ' ' . $activity->user->other_names }}
+                                                        @if ($activity->user->id == Auth::user()->id)
+                                                            (You)
+                                                        @endif
                                                     </h4>
                                                     <p class="mb-0">
                                                         @php
