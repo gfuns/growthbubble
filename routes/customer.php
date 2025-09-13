@@ -43,6 +43,8 @@ Route::group([
 
     Route::post('/storeTask', [CustomerController::class, 'storeTask'])->name('customer.storeTask');
 
+    Route::post('/updateTask', [CustomerController::class, 'updateTask'])->name('customer.updateTask');
+
     Route::get('/subscriptions', [CustomerController::class, 'subscriptions'])->name('customer.subscriptions');
 
     Route::post('/initiateCardAddition', [CustomerController::class, 'initiateCardAddition'])->name('customer.initiateCardAddition');

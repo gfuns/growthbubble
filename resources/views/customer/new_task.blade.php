@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <form id="taskForm" method="POST" action="{{ route('admin.storeTask') }}" class="needs-validation" novalidate
+    <form id="taskForm" method="POST" action="{{ route('customer.storeTask') }}" class="needs-validation" novalidate
         enctype="multipart/form-data">
         @csrf
         <div class="row">

@@ -2,8 +2,6 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Models\CustomerCards;
-use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
 use App\Models\PlatformActivities;
 use App\Models\Product;
@@ -18,7 +16,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Session;
 
 class CustomerController extends Controller
@@ -489,7 +486,6 @@ class CustomerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'project'          => 'nullable',
-            'customer'         => 'required',
             'title'            => 'required',
             'task_description' => 'required',
             'task_category'    => 'required',
@@ -512,7 +508,7 @@ class CustomerController extends Controller
             DB::beginTransaction();
 
             $task                   = new CustomerTasks;
-            $task->user_id          = $request->customer;
+            $task->user_id          = Auth::user()->id;
             $task->project_id       = $request->project;
             $task->title            = $request->title;
             $task->task_description = $request->task_description;
@@ -537,13 +533,74 @@ class CustomerController extends Controller
             DB::commit();
 
             toast('Task Created Successfully.', 'success');
-            return redirect()->route("admin.customerTasks");
+            return redirect()->route("customer.tasks");
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
             toast('Something went wrong. Pleasetry again', 'error');
             return back();
         }
+    }
+
+    /**
+     * updateTask
+     *
+     * @return void
+     */
+    public function updateTask(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'comment'        => 'required',
+            'attached_files' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+        try {
+            DB::beginTransaction();
+
+            $task = CustomerTasks::find($request->task_id);
+
+            if (isset($request->comment)) {
+                $activity           = new TaskActivities;
+                $activity->task_id  = $task->id;
+                $activity->user_id  = Auth::user()->id;
+                $activity->activity = "Added a comment: <p>" . $request->comment . "</p>";
+                $activity->save();
+
+                $platformActivity           = new PlatformActivities;
+                $platformActivity->user_id  = Auth::user()->id;
+                $platformActivity->activity = 'Commented on the task "' . $task->title . '" saying: <p>' . $request->comment . '</p>';
+                $platformActivity->save();
+            }
+
+            if (isset($request->comment) || isset($request->uploaded_file)) {
+                $conversation          = new TaskConversation;
+                $conversation->task_id = $task->id;
+                $conversation->user_id = Auth::user()->id;
+                $conversation->comment = $request->comment;
+                if ($request->has('attached_files')) {
+                    $uploadedFileUrl             = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                    $conversation->uploaded_file = $uploadedFileUrl;
+                }
+                $conversation->save();
+            }
+
+            DB::commit();
+            toast('Task Successfully Updated.', 'success');
+            return back();
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+
     }
 
     /**
@@ -556,7 +613,7 @@ class CustomerController extends Controller
     public function taskDetails($id)
     {
         $task          = CustomerTasks::find($id);
-        $staffList     = User::where("role_id", ">", 1)->get();
+        $staffList     = User::where("role_id", " > ", 1)->get();
         $activities    = TaskActivities::orderBy("id", "desc")->where("task_id", $id)->get();
         $conversations = TaskConversation::where("task_id", $id)->get();
         return view("customer.task_details", compact("task", "staffList", "activities", "conversations"));
@@ -597,7 +654,7 @@ class CustomerController extends Controller
 
         $products = Product::all();
 
-        return view("customer.subscriptions", compact('subscriptions', 'status', 'search', 'products', 'product'));
+        return view("customer . subscriptions", compact('subscriptions', 'status', 'search', 'products', 'product'));
     }
 
     /**
@@ -609,7 +666,7 @@ class CustomerController extends Controller
     {
         $plan          = CustomerSubscription::where("user_id", Auth::user()->id)->where("status", "active")->first();
         $customerCards = CustomerCards::where("user_id", Auth::user()->id)->get();
-        return view("customer.billing", compact('plan', 'customerCards'));
+        return view("customer . billing", compact('plan', 'customerCards'));
     }
 
     /**

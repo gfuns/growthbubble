@@ -1,7 +1,7 @@
 @extends('customer.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Customer Task Details')
+@section('title', env('APP_NAME') . ' | Task Details')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -10,7 +10,7 @@
             <!-- Page header -->
             <div class="border-bottom pb-4 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
-                    <h1 class="mb-0 h3 fw-bold">Customer Task Details </h1>
+                    <h1 class="mb-0 h3 fw-bold">Task Details </h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -18,7 +18,7 @@
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Customer Task Details</a>
+                                <a href="#">Task Details</a>
                             </li>
                         </ol>
                     </nav>
@@ -104,36 +104,6 @@
 
                                 </div>
 
-                                <div class="row mb-2">
-                                    <div class="mb-3 col-md-7">
-                                        <label class="form-label d-block">Task Created By:</label>
-                                        <span class="text-dark">{{ $task->creator() }}</span>
-                                    </div>
-
-                                    <div class="mb-3 col-md-5">
-                                        <label class="form-label d-block">Task Assigned To:</label>
-                                        <span
-                                            class="text-dark">{{ isset($task->assignee) ? $task->assignee->last_name . ' ' . $task->assignee->other_names : 'NIL' }}</span>
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="mb-3 col-md-7">
-                                        <label class="form-label d-block">Task Assigned By:</label>
-                                        <span
-                                            class="text-dark">{{ isset($task->assignor) ? $task->assignor->last_name . ' ' . $task->assignor->other_names : 'NIL' }}</span>
-                                    </div>
-
-                                    <div class="mb-3 col-md-5">
-                                        <label class="form-label d-block">Date Assigned:</label>
-                                        <span
-                                            class="text-dark">{{ isset($task->date_assigned) ? date_format(new DateTime($task->date_assigned), 'jS F, Y') : 'NIL' }}</span>
-                                    </div>
-
-                                </div>
-
                                 <div class="row">
 
                                     <div class="mb-3 col-md-5">
@@ -182,43 +152,6 @@
                 <div id="assessmentSummary" class="card mb-4">
                     <!-- card body -->
                     <div class="card-header card-header-height d-flex align-items-center">
-                        <h4 class="mb-0">Update Task Progress</h4>
-                    </div>
-
-                    <div class="card-body">
-
-                        @if (!isset($task->assigned_to))
-                            <div class="mb-2">
-                                This Task Is Yet To Be Assigned.
-                            </div>
-                            <div class="col-md-8 mb-2"></div>
-                            <div class="col-12 mb-4">
-                                <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#taskAssignment">Assign Task To Team Member</button>
-
-                            </div>
-                        @endif
-
-                        <div class="mb-2">
-                            Update task progress and activities.
-                        </div>
-                        <div class="col-md-8 mb-2"></div>
-                        <div class="col-12 mb-4">
-                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                data-bs-target="#updateTask" data-priority="{{ $task->priority }}"
-                                data-status="{{ $task->status }}">Manage Task Information</button>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-                <!-- card -->
-                <div id="assessmentSummary" class="card mb-4">
-                    <!-- card body -->
-                    <div class="card-header card-header-height d-flex align-items-center">
                         <h4 class="mb-0">Conversations</h4>
                         <span
                             class="badge bg-danger text-white ms-auto">{{ number_format(count($conversations), 0) }}</span>
@@ -241,13 +174,10 @@
                                 This task is yet to have any conversation.
                             </div>
                         @endif
-
-
                     </div>
-
                 </div>
 
-
+                <!-- card -->
                 <div class="card" style="max-height: 425px;">
                     <!-- Card header -->
                     <div class="card-header card-header-height d-flex align-items-center">
@@ -334,95 +264,22 @@ aria-hidden="true">
 </div>
 </div>
 
-<div class="modal fade" id="taskAssignment" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
-<div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                Assign Task To Team Member
-            </h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-
-            <form class="needs-validation" novalidate method="post" action="{{ route('admin.assignTask') }}">
-                @csrf
-                <div class="row">
-                    <!-- form group -->
-
-                    <div class="mb-3 col-12">
-                        <label class="form-label">Select Team Member </label>
-                        <select id="teamMember" name="team_member" class="form-control" data-width="100%"
-                            required>
-                            <option value="">Select Team Member</option>
-                            @foreach ($staffList as $staff)
-                                <option value="{{ $staff->id }}">
-                                    {{ $staff->last_name . ' ' . $staff->other_names }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">Please select team member.</div>
-                    </div>
-
-                    <input type="hidden" name="task_id" value="{{ $task->id }}"
-                        class="form-control text-dark" required>
-
-                    <div class="col-md-12 border-bottom"></div>
-                    <!-- button -->
-                    <div class="col-12 mt-4">
-                        <button id="submitbutton2" class="btn btn-success" type="submit">Assign Task</button>
-                        <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
-                            aria-label="Close">Cancel</button>
-                    </div>
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>
-</div>
-
 <div class="modal fade" id="updateTask" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
 <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                Manage Task Information
+                Add Comment and Provide Insight On Your Task.
             </h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
 
-            <form class="needs-validation" novalidate method="post" action="{{ route('admin.updateTask') }}"
+            <form class="needs-validation" novalidate method="post" action="{{ route('customer.updateTask') }}"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <!-- form group -->
-
-                    <div class="mb-3 col-md-6 col-12">
-                        <label class="form-label">Priority </label>
-                        <select id="taskPriority" name="task_priority" class="form-control" data-width="100%"
-                            required>
-                            <option value="">Select Task Priority</option>
-                            <option value="normal">Normal</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
-                        <div class="invalid-feedback">Please select task priority.</div>
-                    </div>
-
-                    <div class="mb-3 col-md-6 col-12">
-                        <label class="form-label">Task Status </label>
-                        <select id="taskStat" name="task_status" class="form-control" data-width="100%"
-                            required>
-                            <option value="">Select Task Priority</option>
-                            <option value="queued">Queued</option>
-                            <option value="in progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                            <option value="on hold">On Hold</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                        <div class="invalid-feedback">Please select task status.</div>
-                    </div>
 
                     <div class="mb-3 col-12">
                         <label class="form-label">Comment </label>
@@ -516,18 +373,16 @@ aria-hidden="true">
                     @endif
                 @endforeach
 
-                {{-- <div class="card-footer bg-white">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Type a message...">
-                    <button class="btn btn-primary">Send</button>
-                </div>
-                </div> --}}
-
             </div>
 
-            {{-- <div class="modal-footer">
-            <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
-            </div> --}}
+            <div class="modal-footer">
+                <div class="col-12 mb-4">
+                    <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                        data-bs-target="#updateTask" data-priority="{{ $task->priority }}"
+                        data-status="{{ $task->status }}">Add Comment</button>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

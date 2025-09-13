@@ -1613,12 +1613,12 @@ class AdminController extends Controller
                 $activity           = new TaskActivities;
                 $activity->task_id  = $task->id;
                 $activity->user_id  = Auth::user()->id;
-                $activity->activity = "Added comment " . $request->comment;
+                $activity->activity = "Added comment: <p>" . $request->comment . "</p>";
                 $activity->save();
 
                 $platformActivity           = new PlatformActivities;
                 $platformActivity->user_id  = Auth::user()->id;
-                $platformActivity->activity = 'Commented on the task "' . $task->title . '" saying: ' . $request->comment;
+                $platformActivity->activity = 'Commented on the task "' . $task->title . '" saying: <p>' . $request->comment . '</p>';
                 $platformActivity->save();
             }
 
