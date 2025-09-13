@@ -187,7 +187,7 @@
 
                     <div class="card-body">
 
-                        @if (!isset($task->assigned_to))
+                        @if (!isset($task->assigned_to) && Auth::user()->role_id == 1)
                             <div class="mb-2">
                                 This Task Is Yet To Be Assigned.
                             </div>
@@ -334,52 +334,56 @@ aria-hidden="true">
 </div>
 </div>
 
+@if (Auth::user()->role_id == 1)
 <div class="modal fade" id="taskAssignment" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
-<div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                Assign Task To Team Member
-            </h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                    Assign Task To Team Member
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
-            <form class="needs-validation" novalidate method="post" action="{{ route('admin.assignTask') }}">
-                @csrf
-                <div class="row">
-                    <!-- form group -->
+                <form class="needs-validation" novalidate method="post"
+                    action="{{ route('admin.assignTask') }}">
+                    @csrf
+                    <div class="row">
+                        <!-- form group -->
 
-                    <div class="mb-3 col-12">
-                        <label class="form-label">Select Team Member </label>
-                        <select id="teamMember" name="team_member" class="form-control" data-width="100%"
-                            required>
-                            <option value="">Select Team Member</option>
-                            @foreach ($staffList as $staff)
-                                <option value="{{ $staff->id }}">
-                                    {{ $staff->last_name . ' ' . $staff->other_names }}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">Please select team member.</div>
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Select Team Member </label>
+                            <select id="teamMember" name="team_member" class="form-control" data-width="100%"
+                                required>
+                                <option value="">Select Team Member</option>
+                                @foreach ($staffList as $staff)
+                                    <option value="{{ $staff->id }}">
+                                        {{ $staff->last_name . ' ' . $staff->other_names }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select team member.</div>
+                        </div>
+
+                        <input type="hidden" name="task_id" value="{{ $task->id }}"
+                            class="form-control text-dark" required>
+
+                        <div class="col-md-12 border-bottom"></div>
+                        <!-- button -->
+                        <div class="col-12 mt-4">
+                            <button id="submitbutton2" class="btn btn-success" type="submit">Assign
+                                Task</button>
+                            <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
+                                aria-label="Close">Cancel</button>
+                        </div>
                     </div>
+                </form>
 
-                    <input type="hidden" name="task_id" value="{{ $task->id }}"
-                        class="form-control text-dark" required>
-
-                    <div class="col-md-12 border-bottom"></div>
-                    <!-- button -->
-                    <div class="col-12 mt-4">
-                        <button id="submitbutton2" class="btn btn-success" type="submit">Assign Task</button>
-                        <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
-                            aria-label="Close">Cancel</button>
-                    </div>
-                </div>
-            </form>
-
+            </div>
         </div>
     </div>
 </div>
-</div>
+@endif
 
 <div class="modal fade" id="updateTask" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
 <div class="modal-dialog modal-dialog-centered modal-lg">

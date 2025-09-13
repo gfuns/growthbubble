@@ -39,7 +39,7 @@ class CustomerController extends Controller
 
         $tasks      = CustomerTasks::where("user_id", Auth::user()->id)->get();
         $projects   = Project::where("user_id", Auth::user()->id)->get();
-        $activities = PlatformActivities::orderBy("id", "desc")->get();
+        $activities = PlatformActivities::orderBy("id", "desc")->where("owner_id", Auth::user()->id)->get();
         return view("customer.dashboard", compact("params", "projects", "tasks", "activities"));
     }
 
@@ -365,6 +365,7 @@ class CustomerController extends Controller
 
             $activity           = new PlatformActivities;
             $activity->user_id  = Auth::user()->id;
+            $activity->owner_id = Auth::user()->id;
             $activity->activity = 'Created a new project "' . $project->project_title . '"';
             $activity->save();
 
@@ -433,6 +434,7 @@ class CustomerController extends Controller
 
             $activity           = new PlatformActivities;
             $activity->user_id  = Auth::user()->id;
+            $activity->owner_id = Auth::user()->id;
             $activity->activity = 'Closed the project "' . $project->project_title . '"';
             $activity->save();
 
@@ -548,6 +550,7 @@ class CustomerController extends Controller
 
             $activity           = new PlatformActivities;
             $activity->user_id  = Auth::user()->id;
+            $activity->owner_id = Auth::user()->id;
             $activity->activity = 'Created a new task "' . $task->title . '"';
             $activity->save();
 
@@ -595,6 +598,7 @@ class CustomerController extends Controller
 
                 $platformActivity           = new PlatformActivities;
                 $platformActivity->user_id  = Auth::user()->id;
+                $platformActivity->owner_id = Auth::user()->id;
                 $platformActivity->activity = 'Commented on the task "' . $task->title . '" saying: <p>' . $request->comment . '</p>';
                 $platformActivity->save();
             }

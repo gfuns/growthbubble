@@ -38,19 +38,34 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        $params = [
-            "activeTasks"    => CustomerTasks::where("status", "in progress")->count(),
-            "queuedTasks"    => CustomerTasks::where("status", "queued")->count(),
-            "recurringTasks" => CustomerTasks::where("recurring", "yes")->count(),
-            "completedTasks" => CustomerTasks::where("status", "completed")->count(),
-            "cancelledTasks" => CustomerTasks::where("status", "cancelled")->count(),
-            "onHoldTasks"    => CustomerTasks::where("status", "on hold")->count(),
-        ];
+        if (Auth::user()->role_id == 1) {
+            $params = [
+                "activeTasks"    => CustomerTasks::where("status", "in progress")->count(),
+                "queuedTasks"    => CustomerTasks::where("status", "queued")->count(),
+                "recurringTasks" => CustomerTasks::where("recurring", "yes")->count(),
+                "completedTasks" => CustomerTasks::where("status", "completed")->count(),
+                "cancelledTasks" => CustomerTasks::where("status", "cancelled")->count(),
+                "onHoldTasks"    => CustomerTasks::where("status", "on hold")->count(),
+            ];
 
-        $products   = Product::all();
-        $tasks      = CustomerTasks::all();
-        $activities = PlatformActivities::orderBy("id", "desc")->get();
-        return view("admin.dashboard", compact("params", "products", "tasks", "activities"));
+            $products   = Product::all();
+            $tasks      = CustomerTasks::all();
+            $activities = PlatformActivities::orderBy("id", "desc")->get();
+            return view("admin.dashboard", compact("params", "products", "tasks", "activities"));
+        } else {
+            $params = [
+                "assignedTasks"  => CustomerTasks::where("assigned_to", Auth::user()->id)->count(),
+                "activeTasks"    => CustomerTasks::where("assigned_to", Auth::user()->id)->where("status", "in progress")->count(),
+                "recurringTasks" => CustomerTasks::where("assigned_to", Auth::user()->id)->where("recurring", "yes")->count(),
+                "completedTasks" => CustomerTasks::where("assigned_to", Auth::user()->id)->where("status", "completed")->count(),
+                "cancelledTasks" => CustomerTasks::where("assigned_to", Auth::user()->id)->where("status", "cancelled")->count(),
+                "onHoldTasks"    => CustomerTasks::where("assigned_to", Auth::user()->id)->where("status", "on hold")->count(),
+            ];
+
+            $tasks = CustomerTasks::where("assigned_to", Auth::user()->id)->get();
+            return view("admin.dashboard_staff", compact("params", "tasks"));
+        }
+
     }
 
     /**
@@ -1306,6 +1321,7 @@ class AdminController extends Controller
 
             $activity           = new PlatformActivities;
             $activity->user_id  = Auth::user()->id;
+            $activity->owner_id = $project->user_id;
             $activity->activity = 'Created a new project "' . $project->project_title . '"';
             $activity->save();
 
@@ -1376,6 +1392,7 @@ class AdminController extends Controller
 
             $activity           = new PlatformActivities;
             $activity->user_id  = Auth::user()->id;
+            $activity->owner_id = $project->user_id;
             $activity->activity = 'Closed the project "' . $project->project_title . '"';
             $activity->save();
 
@@ -1490,6 +1507,7 @@ class AdminController extends Controller
 
             $activity           = new PlatformActivities;
             $activity->user_id  = Auth::user()->id;
+            $activity->owner_id = $task->user_id;
             $activity->activity = 'Created a new task "' . $task->title . '"';
             $activity->save();
 
@@ -1553,6 +1571,7 @@ class AdminController extends Controller
 
             $platformActivity           = new PlatformActivities;
             $platformActivity->user_id  = Auth::user()->id;
+            $platformActivity->owner_id = $task->user_id;
             $platformActivity->activity = 'Assigned the task "' . $task->title . '" to ' . $task->assignee->last_name . ' ' . $task->assignee->other_names;
             $platformActivity->save();
 
@@ -1606,6 +1625,7 @@ class AdminController extends Controller
 
             $platformActivity           = new PlatformActivities;
             $platformActivity->user_id  = Auth::user()->id;
+            $platformActivity->owner_id = $task->user_id;
             $platformActivity->activity = 'Updated the status of the task "' . $task->title . '" to ' . $task->status;
             $platformActivity->save();
 
@@ -1618,6 +1638,7 @@ class AdminController extends Controller
 
                 $platformActivity           = new PlatformActivities;
                 $platformActivity->user_id  = Auth::user()->id;
+                $platformActivity->owner_id = $task->user_id;
                 $platformActivity->activity = 'Commented on the task "' . $task->title . '" saying: <p>' . $request->comment . '</p>';
                 $platformActivity->save();
             }

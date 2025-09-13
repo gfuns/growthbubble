@@ -259,114 +259,74 @@
                     <div class="card-body scrollable-card-body">
                         <!-- List group -->
                         <ul class="list-group list-group-flush list-timeline-activity">
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-online">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-6.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Dianna Smiley</h4>
-                                                <p class="mb-0">Just Created a task ”Building A WordPress Site”</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">2m ago</span>
+                            @foreach ($activities as $activity)
+                                <li class="list-group-item px-0 pt-0 border-0 mb-2">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="avatar avatar-md avatar-indicators avatar-online">
+                                                <img alt="avatar" src="{{ $activity->user->profile_photo }}"
+                                                    class="rounded-circle">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- List group -->
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-offline">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-7.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Irene Hargrove</h4>
-                                                <p class="mb-0">Commented on the Task “Building A WordPress Site”
-                                                    Says “Hi, I neeed a payment gateway...
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">1 hour ago</span>
+                                        <div class="col ms-n2">
+                                            <div class="d-flex flex-column gap-1">
+                                                <div>
+                                                    <h4 class="mb-0 h5">
+                                                        {{ $activity->user->last_name . ' ' . $activity->user->other_names }}
+                                                        @if ($activity->user->id == Auth::user()->id)
+                                                            (You)
+                                                        @endif
+                                                    </h4>
+                                                    <p class="mb-0">
+                                                        @php
+                                                            $plainText = strip_tags($activity->activity);
+                                                            $comment = Str::limit(strip_tags($plainText), 80, '...');
+                                                        @endphp
+
+                                                        <a href="" data-bs-toggle="modal"
+                                                            data-bs-target="#viewActivity"
+                                                            data-activity="{{ $activity->user->last_name . ' ' . $activity->user->other_names . ' ' . $activity->activity }}"
+                                                            class="text-dark">
+                                                            @php
+                                                                echo $comment;
+                                                            @endphp
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <span
+                                                        class="fs-6">{{ $activity->created_at->diffForHumans() }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            <!-- List group -->
-                            <li class="list-group-item px-0 pt-0 border-0 mb-2">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-busy">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-4.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">Trevor Bradle</h4>
-                                                <p class="mb-0">Just marked the task “Building A WordPress Site” as
-                                                    complete..</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">2 hours ago</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item px-0 pt-0 border-0">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-md avatar-indicators avatar-away">
-                                            <img alt="avatar" src="../../assets/images/avatar/avatar-1.jpg"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="col ms-n2">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div>
-                                                <h4 class="mb-0 h5">John Deo</h4>
-                                                <p class="mb-0">Just created a task “Building A WordPress Site”</p>
-                                            </div>
-                                            <div>
-                                                <span class="fs-6">3 hours ago</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
     </div>
 
-
+    <div class="modal fade" id="viewActivity" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p id="activity"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success ms-2"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <script>
     document.getElementById("dashboard").classList.add('active');
 </script>
-
-{{-- @include('admin.layouts.chart') --}}
 
 @endsection
