@@ -18,6 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'stripe_payment_method',
         'last_name',
         'other_names',
         'email',
@@ -105,6 +106,16 @@ class User extends Authenticatable
             return ucwords($subscription->status);
         } else {
             return "NIL";
+        }
+    }
+
+    public function activeSub()
+    {
+        $subscription = CustomerSubscription::where("user_id", $this->id)->where("status", "active")->first();
+        if (isset($subscription)) {
+            return true;
+        } else {
+            return false;
         }
     }
 

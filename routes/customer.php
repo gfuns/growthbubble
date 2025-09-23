@@ -50,10 +50,14 @@ Route::group([
 
     Route::get('/subscriptions', [CustomerController::class, 'subscriptions'])->name('customer.subscriptions');
 
+    Route::get('/card/make-default/{id}', [CustomerController::class, 'makeDefaultCard'])->name('customer.card.default');
+
     Route::get('/initiateCardAddition', [StripeController::class, 'initiateCardAddition'])->name('customer.initiateCardAddition');
 
     Route::post('/savePaymentMethod', [StripeController::class, 'savePaymentMethod'])->name('customer.savePaymentMethod');
 
     Route::get('/pmSuccess', [StripeController::class, 'pmSuccess'])->name('customer.pmSuccess');
+
+    Route::get('/renew-subscription/{plan}/{card}', [StripeController::class, 'renewSubscription'])->name('customer.renewSubscription');
 
 });

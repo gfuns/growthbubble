@@ -2,13 +2,23 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\CustomerCards;
+use App\Models\CustomerSubscription;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Stripe\Customer;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\CardException;
+use Stripe\Exception\InvalidRequestException;
 use Stripe\PaymentIntent;
+use Stripe\PaymentMethod;
 use Stripe\SetupIntent;
 use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class StripeController extends Controller
 {
@@ -59,13 +69,39 @@ class StripeController extends Controller
      */
     public function savePaymentMethod(Request $request)
     {
-        $paymentMethodId = $request->payment_method;
+        try {
+            $user = Auth::user();
 
-        $user                        = Auth::user();
-        $user->stripe_payment_method = $paymentMethodId;
-        if ($user->save()) {
+            $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
+
+            $paymentMethodId = $request->payment_method;
+            $paymentMethod   = $stripe->paymentMethods->retrieve($paymentMethodId);
+
+            $stripe->paymentMethods->attach(
+                $paymentMethodId,
+                ['customer' => $user->stripe_customer_id]
+            );
+
+            DB::beginTransaction();
+            $card                     = new CustomerCards;
+            $card->user_id            = Auth::user()->id;
+            $card->authorization_code = $paymentMethodId;
+            $card->last_four_digits   = $paymentMethod->card->last4;
+            $card->expiry_month       = $paymentMethod->card->exp_month;
+            $card->expiry_year        = $paymentMethod->card->exp_year;
+            $card->card_brand         = $paymentMethod->card->brand;
+            $card->save();
+
+            $user->stripe_payment_method = $paymentMethodId;
+            $user->save();
+
+            DB::commit();
+
             return response()->json(['success' => true]);
-        } else {
+
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
             return response()->json(['success' => false]);
         }
     }
@@ -86,20 +122,68 @@ class StripeController extends Controller
      *
      * @return void
      */
-    public function renewSubscription()
+    public function renewSubscription($planId, $cardId)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $user = Auth::user();
+        $card = CustomerCards::find($cardId);
+        $plan = SubscriptionPlan::find($planId);
 
-        $paymentIntent = PaymentIntent::create([
-            'customer'       => $user->stripe_customer_id,
-            'amount'         => 5000, // in kobo/cent (₦50.00)
-            'currency'       => 'usd',
-            'payment_method' => $user->stripe_payment_method,
-            'off_session'    => true,
-            'confirm'        => true,
-        ]);
+        if ($plan->frequency == "yearly") {
+            $duration = 12;
+        } else if ($plan->frequency == "quarterly") {
+            $duration = 3;
+        } else {
+            $duration = 1;
+        }
 
-        return $paymentIntent;
+        try {
+
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            $paymentIntent = PaymentIntent::create([
+                'customer'       => $user->stripe_customer_id,
+                'amount'         => ($plan->pricing * 100),
+                'currency'       => 'gbp',
+                'payment_method' => $card->authorization_code,
+                'off_session'    => true,
+                'confirm'        => true,
+            ]);
+
+            if (isset($paymentIntent->status) && $paymentIntent->status == "succeeded") {
+                $subscription                 = new CustomerSubscription;
+                $subscription->user_id        = $user->id;
+                $subscription->product_id     = $plan->product_id;
+                $subscription->plan_id        = $plan->id;
+                $subscription->pricing        = $plan->pricing;
+                $subscription->effective_date = now();
+                $subscription->expiry_date    = Carbon::now()->addMonths($duration);
+                $subscription->save();
+
+                toast('Your Plan has been successfully renewed.', 'success');
+                return back();
+            } else {
+                toast('We are unable to charge this payment method at this time. Please try again later.', 'error');
+                return back();
+            }
+        } catch (CardException $e) {
+            // Card was declined
+            toast($e->getMessage(), 'error');
+            return back();
+
+        } catch (InvalidRequestException $e) {
+            // Wrong params (e.g., wrong payment method ID)
+            toast("There appears to be an issue with the selected payment method.", 'error');
+            return back();
+
+        } catch (ApiErrorException $e) {
+            // Any other Stripe API error
+            toast($e->getMessage(), 'error');
+            return back();
+        } catch (\Throwable $e) {
+            // Any Code Related Error That is not Stripe Generated
+            toast($e->getMessage(), 'error');
+            return back();
+        }
     }
 
 }

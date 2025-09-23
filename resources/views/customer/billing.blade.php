@@ -63,6 +63,14 @@
                             <span
                                 class="text-dark fw-medium">{{ date_format(new DateTime($plan->expiry_date), 'jS F, Y') }}</span>
                         </li>
+                        <li class="d-flex justify-content-between mt-4 mb-2">
+                            <span class="text-dark">Status</span>
+                            @if ($plan->status == 'active')
+                                <span class="badge text-success bg-light-success">{{ ucwords($plan->status) }}</span>
+                            @else
+                                <span class="badge text-danger bg-light-danger">{{ ucwords($plan->status) }}</span>
+                            @endif
+                        </li>
 
                         <hr class="mt-4 my-3">
                         <p class="text-dark"><b>Note:</b> On Expiration of your Subscription, all services and features
@@ -98,11 +106,21 @@
                                 <p class="mb-0 text-dark">Ending with {{ $card->last_four_digits }}</p>
                                 <p class="mb-0">Expires {{ $card->expiry_month }}/{{ $card->expiry_year }}</p>
                             </div>
-                            <div class="col-md-3 col-4">
-                                <a href="{{ route('business.processSubscription', [$plan->id, $card->id]) }}"
-                                    onClick="this.disabled=true; this.innerHTML='Processing...';"><button
-                                        class="btn btn-primary btn-xs">Pay Now</button></a>
-                            </div>
+                            @if (Auth::user()->activeSub() == false)
+                                <div class="col-md-3 col-4">
+                                    <a href="{{ route('customer.renewSubscription', [$plan->plan_id, $card->id]) }}"
+                                        onClick="this.disabled=true; this.innerHTML='Processing...';"><button
+                                            class="btn btn-primary btn-xs">Renew Plan</button></a>
+                                </div>
+                            @else
+                                <div class="col-md-3 col-4">
+                                    @if ($card->default_card == 1)
+                                        <span class="badge text-success bg-light-success">Default Card</span>
+                                    @else
+                                        <a href="{{ route("customer.card.default", [$card->id]) }}"><span class="badge text-primary bg-light-primary">Make Default</span></a>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                     @endforeach
 
@@ -134,32 +152,33 @@
                 <div class="modal-body">
                     <div>
                         <!-- Form -->
-                         <div class="mb-3 col-12 col-md-12 mb-4">
-                                <h4 class="mb-3">Instructions</h4>
-                                <!-- Radio button -->
-                                <div class="" style="text-align: justify">
-                                    <p>As part of our platform security policy, we do not directly store customer cards
-                                        on our infrastructure. We partner with <a href="https://stripe.com"
-                                            target="_blank"><strong>Stripe</strong></a> our payment solution provider
-                                        to handle and manage customer card information.</p>
+                        <div class="mb-3 col-12 col-md-12 mb-4">
+                            <h4 class="mb-3">Instructions</h4>
+                            <!-- Radio button -->
+                            <div class="" style="text-align: justify">
+                                <p>As part of our platform security policy, we do not directly store customer cards
+                                    on our infrastructure. We partner with <a href="https://stripe.com"
+                                        target="_blank"><strong>Stripe</strong></a> our payment solution provider
+                                    to handle and manage customer card information.</p>
 
-                                    <p>We will be redirecting you to stripe payment page where you would be providing
-                                        and validating your card by performing a small transaction of &pound;1.</p>
+                                <p>We will be redirecting you to stripe payment page where you would be providing
+                                    and validating your card by performing a small transaction of &pound;1.</p>
 
-                                    <p>Upon the validation transaction is successful and confirmed for your card, your
-                                        card will be successfully added as a payment method to your account for future
-                                        transactions. </p>
-                                </div>
+                                <p>Upon the validation transaction is successful and confirmed for your card, your
+                                    card will be successfully added as a payment method to your account for future
+                                    transactions. </p>
                             </div>
+                        </div>
 
-                            <span class="mb-4">
-                                <strong>Note:</strong>
-                                You can later remove your card from being used for billing and payments.
-                            </span>
-                            <!-- Button -->
-                            <div class="col-12">
-                                <a href="{{ route("customer.initiateCardAddition") }}"><button class="btn btn-primary w-100" type="submit">Add New Card</button></a>
-                            </div>
+                        <span class="mb-4">
+                            <strong>Note:</strong>
+                            You can later remove your card from being used for billing and payments.
+                        </span>
+                        <!-- Button -->
+                        <div class="col-12 mt-4">
+                            <a href="{{ route('customer.initiateCardAddition') }}"><button
+                                    class="btn btn-primary w-100" type="submit">Add New Card</button></a>
+                        </div>
 
                     </div>
                 </div>

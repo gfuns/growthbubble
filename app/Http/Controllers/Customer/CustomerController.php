@@ -689,9 +689,29 @@ class CustomerController extends Controller
      */
     public function billing()
     {
-        $plan          = CustomerSubscription::where("user_id", Auth::user()->id)->where("status", "active")->first();
+        $plan          = CustomerSubscription::where("user_id", Auth::user()->id)->latest()->first();
         $customerCards = CustomerCards::where("user_id", Auth::user()->id)->get();
         return view("customer.billing", compact('plan', 'customerCards'));
+    }
+
+    /**
+     * makeDefaultCard
+     *
+     * @param mixed cardId
+     *
+     * @return void
+     */
+    public function makeDefaultCard($cardId)
+    {
+        $regularCards              = CustomerCards::where("user_id", Auth::user()->id)->update(["default_card" => 0]);
+        $defaultCard               = CustomerCards::find($cardId);
+        $defaultCard->default_card = 1;
+        if ($defaultCard->save()) {
+            $user = User::where("id", Auth::user()->id)->update(["stripe_payment_method" => $defaultCard->authorization_code]);
+        }
+
+        toast('Operation Successful.', 'success');
+        return back();
     }
 
     /**

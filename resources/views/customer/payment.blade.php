@@ -171,7 +171,7 @@
                 document.getElementById('card-errors').textContent = error.message;
                 document.getElementById('submit-btn').disabled = false;
             } else {
-                console.log("Payment Method:", paymentMethod);
+                // console.log("Payment Method:", paymentMethod);
 
                 // Send to backend for storage/charging later
                 fetch("/portal/customer/savePaymentMethod", {

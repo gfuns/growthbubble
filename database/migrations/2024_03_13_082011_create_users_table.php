@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('google2fa_secret')->nullable();
             $table->integer('profile_updated')->default(0);
             $table->string('stripe_customer_id')->nullable();
+            $table->string('stripe_payment_method')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('role_id')->references('id')->on('user_roles')->onDelete('cascade');
