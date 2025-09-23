@@ -42,6 +42,8 @@ Route::post('/login/2fa', [TwofactorController::class, 'verify2FA'])->name('logi
 
 Route::get('/account/email/verify/{token}', [OnboardingController::class, 'verifyWithLink']);
 
+Route::get('/checkout', [OnboardingController::class, 'customerCheckout'])->name("checkout");
+
 Route::group([
     'prefix'     => 'portal/admin',
     'middleware' => ['webauthenticated', 'g2fa'],
