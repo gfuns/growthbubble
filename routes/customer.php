@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Customer\CustomerController;
+use App\Http\Controllers\Customer\StripeController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -49,6 +50,10 @@ Route::group([
 
     Route::get('/subscriptions', [CustomerController::class, 'subscriptions'])->name('customer.subscriptions');
 
-    Route::post('/initiateCardAddition', [CustomerController::class, 'initiateCardAddition'])->name('customer.initiateCardAddition');
+    Route::get('/initiateCardAddition', [StripeController::class, 'initiateCardAddition'])->name('customer.initiateCardAddition');
+
+    Route::post('/savePaymentMethod', [StripeController::class, 'savePaymentMethod'])->name('customer.savePaymentMethod');
+
+    Route::get('/pmSuccess', [StripeController::class, 'pmSuccess'])->name('customer.pmSuccess');
 
 });

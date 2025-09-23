@@ -24,6 +24,7 @@
         "realrashid/sweet-alert": "^7.1",
         "rollbar/rollbar-laravel": "^8.0",
         "spatie/array-to-xml": "^3.3",
+        "stripe/stripe-php": "^17.6",
         "symfony/http-client": "^7.3",
         "symfony/mailgun-mailer": "^7.0"
     },

@@ -134,10 +134,7 @@
                 <div class="modal-body">
                     <div>
                         <!-- Form -->
-                        <form method="POST" action="{{ route('customer.initiateCardAddition') }}"
-                            class="row mb-4 needs-validation" novalidate>
-                            @csrf
-                            <div class="mb-3 col-12 col-md-12 mb-4">
+                         <div class="mb-3 col-12 col-md-12 mb-4">
                                 <h4 class="mb-3">Instructions</h4>
                                 <!-- Radio button -->
                                 <div class="" style="text-align: justify">
@@ -161,9 +158,8 @@
                             </span>
                             <!-- Button -->
                             <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Add New Card</button>
+                                <a href="{{ route("customer.initiateCardAddition") }}"><button class="btn btn-primary w-100" type="submit">Add New Card</button></a>
                             </div>
-                        </form>
 
                     </div>
                 </div>

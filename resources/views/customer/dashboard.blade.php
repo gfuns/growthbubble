@@ -45,15 +45,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Ongoing Tasks</h4>
-                            <div>
-                                <span class="bi bi-lightbulb fs-3 text-primary"></span>
+                    <a href="{{ route('customer.tasks') }}?status=in progress">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Ongoing Tasks</h4>
+                                <div>
+                                    <span class="bi bi-lightbulb fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -61,15 +63,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Queued Tasks</h4>
-                            <div>
-                                <span class="bi bi-list-ol fs-3 text-primary"></span>
+                    <a href="{{ route('customer.tasks') }}?status=queued">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Queued Tasks</h4>
+                                <div>
+                                    <span class="bi bi-list-ol fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['queuedTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['queuedTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -77,15 +81,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Recurring Tasks</h4>
-                            <div>
-                                <span class="bi bi-arrow-clockwise fs-3 text-primary"></span>
+                    <a href="{{ route('customer.tasks') }}?recurring=yes">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Recurring Tasks</h4>
+                                <div>
+                                    <span class="bi bi-arrow-clockwise fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['recurringTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['recurringTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -93,15 +99,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Completed Tasks</h4>
-                            <div>
-                                <span class="bi bi-check2-circle fs-3 text-primary"></span>
+                    <a href="{{ route('customer.tasks') }}?status=completed">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Completed Tasks</h4>
+                                <div>
+                                    <span class="bi bi-check2-circle fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['completedTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['completedTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -149,14 +157,18 @@
                                                         <th>Title</th>
                                                         <th>Priority</th>
                                                         <th>Status</th>
-                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($tasks as $tsk)
-                                                        <tr>
+                                                        <tr class="text-dark">
                                                             <td>{{ $loop->index + 1 }}</td>
-                                                            <td class="no-wrap">{{ $tsk->title }}</td>
+                                                            <td class="no-wrap">
+                                                                <a href="{{ route('customer.taskDetails', [$tsk->id]) }}"
+                                                                    class="text-dark">
+                                                                    {{ $tsk->title }}
+                                                                </a>
+                                                            </td>
                                                             <td>{{ ucwords($tsk->priority) }}</td>
                                                             <td>
                                                                 @if ($tsk->status == 'queued' || $tsk->status == 'on hold')
@@ -172,28 +184,6 @@
                                                                     <span
                                                                         class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
                                                                 @endif
-                                                            </td>
-                                                            <td class="align-middle">
-                                                                <div class="hstack gap-4">
-                                                                    <span class="dropdown dropstart">
-                                                                        <a class="btn btn-primary bg-light-primary text-primary btn-sm"
-                                                                            href="#" role="button"
-                                                                            data-bs-toggle="dropdown"
-                                                                            data-bs-offset="-20,20"
-                                                                            aria-expanded="false">
-                                                                            Action</a>
-
-                                                                        <span class="dropdown-menu"><span
-                                                                                class="dropdown-header">Action</span>
-                                                                            <a href="{{ route('customer.taskDetails', [$tsk->id]) }}"
-                                                                                class="dropdown-item">
-                                                                                <i
-                                                                                    class="fe fe-eye dropdown-item-icon"></i>View
-                                                                                Task Details</a>
-
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
                                                             </td>
                                                         </tr>
                                                     @endforeach

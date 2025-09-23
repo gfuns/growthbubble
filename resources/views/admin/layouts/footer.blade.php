@@ -26,7 +26,7 @@
     <script src="{{ asset('assets/js/vendors/validation.js') }}"></script>
     <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     @include('sweetalert::alert')
 
     <script src="{{ asset('assets/js/vendors/sweetalert2.all.min.js') }}"></script>
@@ -91,6 +91,8 @@
             },
             scrollY: '230px', // inside your 400px card; adjust for header/padding
             scrollCollapse: true,
+            scrollX: true, // ✅ enables horizontal scroll syncing
+            autoWidth: false // helps prevent misalignment issues
         });
 
 
@@ -362,7 +364,7 @@
         })
 
 
-         $('#viewActivity').on('show.bs.modal', function(event) {
+        $('#viewActivity').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var model = button.data('model') // Extract info from data-* attributes
             var activity = button.data('activity') // Extract info from data-* attributes
@@ -427,7 +429,4 @@
                 $("#scheduledDate").removeAttr("required");
             }
         });
-
-
-
     </script>

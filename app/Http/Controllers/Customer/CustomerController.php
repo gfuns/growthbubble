@@ -695,17 +695,6 @@ class CustomerController extends Controller
     }
 
     /**
-     * initiateCardAddition
-     *
-     * @return void
-     */
-    public function initiateCardAddition()
-    {
-        toast('Failed To Initialize Transaction.', 'error');
-        return back();
-    }
-
-    /**
      * getMarkers Helper Function
      *
      * @param mixed lastRecord

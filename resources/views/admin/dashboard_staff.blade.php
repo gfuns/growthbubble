@@ -155,7 +155,6 @@
                                                 <th>Priority</th>
                                                 <th class="no-wrap">Due Date</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -186,26 +185,6 @@
                                                             <span
                                                                 class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
                                                         @endif
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <div class="hstack gap-4">
-                                                            <span class="dropdown dropstart">
-                                                                <a class="btn btn-primary bg-light-primary text-primary btn-sm"
-                                                                    href="#" role="button"
-                                                                    data-bs-toggle="dropdown" data-bs-offset="-20,20"
-                                                                    aria-expanded="false">
-                                                                    Action</a>
-
-                                                                <span class="dropdown-menu"><span
-                                                                        class="dropdown-header">Action</span>
-                                                                    <a href="{{ route('admin.taskDetails', [$tsk->id]) }}"
-                                                                        class="dropdown-item">
-                                                                        <i class="fe fe-eye dropdown-item-icon"></i>View
-                                                                        Task Details</a>
-
-                                                                </span>
-                                                            </span>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
