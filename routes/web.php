@@ -22,7 +22,15 @@ Route::get('/', function () {
     return view('auth.login');
 })->name("welcome");
 
-Auth::routes();
+Route::get('/onboarding', function () {
+    return view('welcome');
+})->name("onboarding");
+
+Route::get('/register', function () {
+    return redirect()->away('https://growthbubbles.com');
+});
+
+Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
