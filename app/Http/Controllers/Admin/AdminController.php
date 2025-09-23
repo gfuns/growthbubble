@@ -1416,8 +1416,9 @@ class AdminController extends Controller
      */
     public function customerTasks()
     {
-        $status = request()->status;
-        $search = request()->search;
+        $status    = request()->status;
+        $search    = request()->search;
+        $recurring = request()->recurring;
 
         $query = CustomerTasks::query();
 
@@ -1432,6 +1433,14 @@ class AdminController extends Controller
 
         if (isset(request()->status)) {
             $query->where("status", $status);
+        }
+
+        if (isset(request()->recurring)) {
+            $query->where("recurring", $recurring);
+        }
+
+        if (Auth::user()->role_id > 1) {
+            $query->where("assigned_to", Auth::user()->id);
         }
 
         $lastRecord    = $query->count();

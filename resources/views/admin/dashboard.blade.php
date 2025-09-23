@@ -45,15 +45,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Ongoing Tasks</h4>
-                            <div>
-                                <span class="bi bi-lightbulb fs-3 text-primary"></span>
+                    <a href="{{ route("admin.customerTasks") }}?status=in progress">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Ongoing Tasks</h4>
+                                <div>
+                                    <span class="bi bi-lightbulb fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -61,15 +63,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Queued Tasks</h4>
-                            <div>
-                                <span class="bi bi-list-ol fs-3 text-primary"></span>
+                    <a href="{{ route("admin.customerTasks") }}?status=queued">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Queued Tasks</h4>
+                                <div>
+                                    <span class="bi bi-list-ol fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['queuedTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['queuedTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -77,15 +81,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Recurring Tasks</h4>
-                            <div>
-                                <span class="bi bi-arrow-clockwise fs-3 text-primary"></span>
+                    <a href="{{ route("admin.customerTasks") }}?recurring=yes">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Recurring Tasks</h4>
+                                <div>
+                                    <span class="bi bi-arrow-clockwise fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['recurringTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['recurringTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -93,15 +99,17 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <div class="card-body">
-                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 text-uppercase fw-bold ls-md">Completed Tasks</h4>
-                            <div>
-                                <span class="bi bi-check2-circle fs-3 text-primary"></span>
+                    <a href="{{ route("admin.customerTasks") }}?status=completed">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Completed Tasks</h4>
+                                <div>
+                                    <span class="bi bi-check2-circle fs-3 text-primary"></span>
+                                </div>
                             </div>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['completedTasks'], 0) }}</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">{{ number_format($params['completedTasks'], 0) }}</h4>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -158,9 +166,26 @@
                                                             $sno = 1;
                                                         @endphp
                                                         @foreach ($prod->customers as $cust)
-                                                            <tr>
-                                                                <td>{{ $sno++ }}</td>
-                                                                <td>{{ $cust->customer->last_name . ', ' . $cust->customer->other_names }}
+                                                            <tr class="text-dark">
+                                                                <td>{{ $sno++ }}.</td>
+                                                                <td><a href="#" class="text-dark"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#viewCustomer"
+                                                                        data-myid="{{ $cust->customer->id }}"
+                                                                        data-othernames="{{ $cust->customer->other_names }}"
+                                                                        data-lastname="{{ $cust->customer->last_name }}"
+                                                                        data-email="{{ $cust->customer->email }}"
+                                                                        data-phone="{{ $cust->customer->phone_number }}"
+                                                                        data-organization="{{ $cust->customer->organization }}"
+                                                                        data-photo="{{ $cust->customer->profile_photo }}"
+                                                                        data-product="{{ $cust->customer->selectedProduct() }}"
+                                                                        data-plan="{{ $cust->customer->selectedPlan() }}"
+                                                                        data-effectivedate="{{ $cust->customer->effectiveDate() }}"
+                                                                        data-expirydate="{{ $cust->customer->expiryDate() }}"
+                                                                        data-status="{{ $cust->customer->subStatus() }}"
+                                                                        data-address="{{ $cust->customer->contact_address ?? 'NIL' }}">
+                                                                        {{ $cust->customer->last_name . ', ' . $cust->customer->other_names }}
+                                                                    </a>
                                                                 </td>
                                                                 <td>{{ $cust->customer->email }}</td>
                                                                 <td>{{ $cust->customer->phone_number }}</td>
@@ -219,14 +244,18 @@
                                                 <th>Priority</th>
                                                 <th class="no-wrap">Due Date</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($tasks as $tsk)
-                                                <tr>
-                                                    <td>{{ $loop->index + 1 }}</td>
-                                                    <td class="no-wrap">{{ $tsk->title }}</td>
+                                                <tr class="text-dark">
+                                                    <td>{{ $loop->index + 1 }}.</td>
+                                                    <td class="no-wrap">
+                                                        <a href="{{ route('admin.taskDetails', [$tsk->id]) }}"
+                                                            class="text-dark">
+                                                            {{ $tsk->title }}
+                                                        </a>
+                                                    </td>
                                                     <td class="no-wrap">
                                                         {{ $tsk->user->last_name . ', ' . $tsk->user->other_names }}
                                                     </td>
@@ -246,27 +275,6 @@
                                                             <span
                                                                 class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
                                                         @endif
-                                                    </td>
-                                                    <td class="align-middle">
-                                                        <div class="hstack gap-4">
-                                                            <span class="dropdown dropstart">
-                                                                <a class="btn btn-primary bg-light-primary text-primary btn-sm"
-                                                                    href="#" role="button"
-                                                                    data-bs-toggle="dropdown" data-bs-offset="-20,20"
-                                                                    aria-expanded="false">
-                                                                    Action</a>
-
-                                                                <span class="dropdown-menu"><span
-                                                                        class="dropdown-header">Action</span>
-                                                                    <a href="{{ route('admin.taskDetails', [$tsk->id]) }}"
-                                                                        class="dropdown-item">
-                                                                        <i
-                                                                            class="fe fe-eye dropdown-item-icon"></i>View
-                                                                        Task Details</a>
-
-                                                                </span>
-                                                            </span>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -356,6 +364,93 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <p id="activity"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success ms-2"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="viewCustomer" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                        View Customer Information
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="">Last Name</td>
+                                <td class=""><span id="vlastname"></span></td>
+                                <td class="" rowspan="11" align="right" style="text-align: center"><img
+                                        src="" id="vphoto" class="img-responsive"
+                                        style="max-width: 150px" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="">First Name</td>
+                                <td class=""><span id="vothernames"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Email</td>
+                                <td class=""><span id="vemail"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Phone Number</td>
+                                <td class=""><span id="vphone"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Organization</td>
+                                <td class=""><span id="vorganization"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Contact Address</td>
+                                <td class=""><span id="vaddress"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Selected Product</td>
+                                <td class=""><span id="vproduct"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Subscribed Plan</td>
+                                <td class=""><span id="vplan"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Subsciption Date</td>
+                                <td class=""><span id="vsubdate"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Next Renewal Date</td>
+                                <td class=""><span id="vrenewaldate"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Status</td>
+                                <td class=""><span id="vstatus"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-success ms-2"

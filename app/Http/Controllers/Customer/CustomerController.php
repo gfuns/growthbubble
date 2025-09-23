@@ -679,7 +679,7 @@ class CustomerController extends Controller
 
         $products = Product::all();
 
-        return view("customer . subscriptions", compact('subscriptions', 'status', 'search', 'products', 'product'));
+        return view("customer.subscriptions", compact('subscriptions', 'status', 'search', 'products', 'product'));
     }
 
     /**
