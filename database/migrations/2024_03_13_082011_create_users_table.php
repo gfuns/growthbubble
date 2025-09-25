@@ -23,11 +23,13 @@ return new class extends Migration
             $table->enum("status", ["active", "suspended", "banned"])->default("active");
             $table->string('token')->nullable();
             $table->text('organization')->nullable();
+            $table->string('country')->nullable();
             $table->text('contact_address')->nullable();
             $table->string('profile_photo')->nullable();
             $table->string('auth_2fa')->nullable();
             $table->string('google2fa_secret')->nullable();
             $table->integer('profile_updated')->default(0);
+            $table->enum('onboarding_status', ['onboarded', 'pending', 'awaiting payment'])->default('awaiting payment');
             $table->string('stripe_customer_id')->nullable();
             $table->string('stripe_payment_method')->nullable();
             $table->rememberToken();

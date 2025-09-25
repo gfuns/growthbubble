@@ -24,7 +24,19 @@ Route::get('/', function () {
 
 Route::get('/onboarding', function () {
     return view('welcome');
-})->name("onboarding");
+})->name("onboarding.instructions");
+
+Route::get('/onboarding/website_one', function () {
+    return view('website_one');
+})->name("onboarding.websiteOne");
+
+Route::get('/onboarding/website_two', function () {
+    return view('website_two');
+})->name("onboarding.websiteTwo");
+
+Route::get('/onboarding/website_three', function () {
+    return view('website_three');
+})->name("onboarding.websiteThree");
 
 Route::get('/register', function () {
     return redirect()->away('https://growthbubbles.com');
@@ -43,6 +55,14 @@ Route::post('/login/2fa', [TwofactorController::class, 'verify2FA'])->name('logi
 Route::get('/account/email/verify/{token}', [OnboardingController::class, 'verifyWithLink']);
 
 Route::get('/checkout', [OnboardingController::class, 'customerCheckout'])->name("checkout");
+
+Route::post('/customerOnboarding', [OnboardingController::class, 'customerOnboarding'])->name("customerOnboarding");
+
+Route::get('/onboarding/payment', [OnboardingController::class, 'subscriptionPayment'])->name("onboarding.payment");
+
+Route::post('/onboarding/savePaymentMethod', [OnboardingController::class, 'savePaymentMethod'])->name("onboarding.savePaymentMethod");
+
+Route::get('/onboarding/pmSuccess', [OnboardingController::class, 'pmSuccess'])->name("onboarding.pmSuccess");
 
 Route::group([
     'prefix'     => 'portal/admin',

@@ -7,13 +7,15 @@
     <meta name="author" content="Growth Bubble">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
-    <title>Sign Up | GrowthBubble</title>
-    <link rel="stylesheet" href="assets/css/vendor.bundle.css?ver=20241116180">
-    <link rel="stylesheet" href="assets/css/register.css?ver=20241116180">
-
+    <title>Payment Details | GrowthBubble</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/vendor.bundle.css') }}?ver=20241116180">
+    <link rel="stylesheet" href="{{ asset('assets/css/register.css') }}?ver=20241116180">
+    <script type="text/javascript" src="{{ asset('assets/js/countries.js') }}"></script>
+    <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" />
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
         body {
-            background-image: url('images/authPattern.png');
+            background-image: url('/images/authPattern.png');
             /* Replace with your image path */
             background-size: cover;
             /* Ensures the image covers the entire page */
@@ -31,6 +33,10 @@
             font-size: 20px;
             line-height: 1em
                 /* #0040ff */
+        }
+
+        #card-errors {
+            display: none;
         }
 
         .customPageContent {
@@ -77,90 +83,59 @@
 <body class="page-ath theme-modern page-ath-modern">
 
     <div class="page-ath-wrap flex-row-reverse">
-        <div class="page-ath-contentss customPageContent">
+        <div class="page-ath-content customPageContent">
             <div class="page-ath-header mb-3">
                 {{-- <a href="/" class="page-ath-logo"> --}}
                 {{-- <img class="page-ath-logo-img" src="images/logo.png" alt="Growth Bubble Logo" style="height:40px"> --}}
-                <div class="logo-name text-center mb-3">Your Online Marketing Team Starts Here...</div>
+                <div class="logo-name text-center mb-3">Add Payment Details</div>
                 {{-- </a> --}}
 
-                <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>Now you can finally
-                            make that dream happen by offloading your marketing tasks to our team of
-                            heroes.</strong></small></div>
+                <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>By providing your
+                            card information, you allow Growth Bubbles to charge your card for future payments in
+                            accordance with our terms.</strong></small></div>
             </div>
 
-            @if ($errors->has('regError'))
-                <div class="alert alert-dismissible fade show alert-danger"><a href="javascript:void(0)" class="close"
-                        data-dismiss="alert" aria-label="close" style="color:white">&nbsp;</a>
-                    {{ $errors->first('regError') }}
-                </div>
-            @endif
+            <div class="alert alert-danger" id="card-errors" role="alert"></div>
+
 
             <div class="page-ath-form">
-                <form class="register-form validate validate-modern" method="POST" action="{{ route("customerOnboarding") }}" id="register">
-                    @csrf
-                    <div style="display: flex; gap: 20px; ">
-                        <div class="input-item" style="width:100%">
-                            {{-- <label style="font-size:12px; font-weight:bold">First Name <span style="color:red">*</span></label> --}}
-                            <input type="text" placeholder="Your First Name" class="input-bordered" name="first_name"
-                                value="" data-msg-required="Required." required>
-                        </div>
-                        <div class="input-item" style="width:100%">
-                            {{-- <label style="font-size:12px; font-weight:bold">Last Name <span style="color:red">*</span></label> --}}
-                            <input type="text" placeholder="Your Last Name" class="input-bordered" name="last_name"
-                                value="" data-msg-required="Required." required>
-                        </div>
-                    </div>
+                <form class=" validate-modern" id="payment-form">
                     <div class="input-item">
-                        {{-- <label style="font-size:12px; font-weight:bold">Email Address <span style="color:red">*</span></label> --}}
-                        <input type="email" placeholder="Your Email Address" class="input-bordered" name="email"
-                            value=""data-msg-required="Required." data-msg-email="Enter valid email." required>
+                        <label style="font-size:13px; font-weight:bold">Organization Name </label>
+                        <input type="text" class="input-bordered" name="organization"
+                            value="{{ Auth::user()->organization }}" data-msg-required="Required." readonly>
                     </div>
 
                     <div class="input-item">
-                        {{-- <label style="font-size:12px; font-weight:bold">Phone Number <span style="color:red">*</span></label> --}}
-                        <input type="text" placeholder="Your Phone Number" class="input-bordered" name="phone_number"
-                            value=""data-msg-required="Required." data-msg-email="Enter valid phone number."
-                            required>
-                    </div>
-
-                    <div class="input-item">
-                        {{-- <label style="font-size:12px; font-weight:bold">Business Name <span style="color:red">*</span></label> --}}
-                        <input type="text" placeholder="Your Company / Business Name" class="input-bordered" name="organization_name"
-                            value=""data-msg-required="Required." data-msg-email="Enter company / business name." required>
-                    </div>
-                    <div class="input-item">
-                        {{-- <label style="font-size:12px; font-weight:bold">Password <span style="color:red">*</span></label> --}}
-                        <input type="password" placeholder="Password" class="input-bordered" name="password"
-                            id="password" minlength="6" data-msg-required="Required."
-                            data-msg-minlength="At least 6 chars." required>
-                    </div>
-
-                    <div class="input-item">
-                        {{-- <label style="font-size:12px; font-weight:bold">How did you hear about us?</label> --}}
-                        <select name="referral_channel" class="select select-block select-bordered" required>
-                            <option value="">How did you hear about us?</option>
-                            <option value="Twitter">Twitter</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="Instagram">Instagram</option>
-                            <option value="Newspaper">Newspaper</option>
-                            <option value="TV">TV</option>
-                            <option value="Bill Board">Bill Board</option>
-                            <option value="Referral">Referral</option>
-                            <option value="Others">Others</option>
+                        <label style="font-size:13px; font-weight:bold">Country or Region</label>
+                        <select id="country" name="country" class="select select-block select-bordered" required>
+                            <option value="">Select Country or Region</option>
                         </select>
+                        <script language="javascript">
+                            print_country("country");
+                        </script>
                     </div>
 
-                    <input type="hidden" name="product" value="{{ $product->id }}">
-                    <input type="hidden" name="plan" value="{{ $plan->id }}">
+                    <div class="input-item">
+                        <label style="font-size:13px; font-weight:bold">Contact Address</label>
+                        <input id="address" type="text" placeholder="Your Contact Address" class="input-bordered"
+                            name="contact_address" value=""data-msg-required="Required."
+                            data-msg-email="Enter contact address." required>
+                    </div>
+
+                    <div class="input-item">
+                        <div class="input-bordered" id="card-element"></div>
+                    </div>
+
                     <div class="input-item text-left">
                         <input name="terms" class="input-checkbox input-checkbox-md" id="agree" type="checkbox"
                             required="required" data-msg-required="You should accept our terms and policy.">
-                        <label for="agree">I agree to the <a target="_blank" href="#">Terms</a>
+                        <label for="agree">I have read and agreed to the <a target="_blank" href="#">Terms</a>
                             and <a target="_blank" href="#">Privacy
-                                Policy</a>.</label>
+                                Policies</a>.</label>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-3">Create Account</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-3" id="submit-btn">Complete Sign Up
+                        &nbsp;<i class="fas fa-chevron-circle-right"></i></button>
                 </form>
 
                 <div class="mb-2">&nbsp;</div>
@@ -172,12 +147,13 @@
             <div class="w-100 d-flex justify-content-center">
                 <div class="col-9">
                     <div class="mb-5">
-                        <img class="page-ath-logo-img" src="images/gblogo.png" alt="Growth Bubble Logo" style="filter: brightness(0) saturate(100%); height: 40px">
+                        <img class="page-ath-logo-img" src="{{ asset('images/gblogo.png') }}" alt="Growth Bubble Logo"
+                            style="filter: brightness(0) saturate(100%); height: 40px">
                     </div>
                     <div class="mb-3" style="display: flex; gap: 10px; ">
                         <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                                fill="none">
                                 <path
                                     d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
                                     fill="#0765FF"></path>
@@ -191,8 +167,8 @@
 
                     <div class="mb-3" style="display: flex; gap: 10px; ">
                         <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                                fill="none">
                                 <path
                                     d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
                                     fill="#0765FF"></path>
@@ -244,8 +220,14 @@
         </div>
     </div>
 
-    <script src="assets/js/jquery.bundle.js?ver=20241116180"></script>
-    <script src="assets/js/script.js?ver=20241116180"></script>
+    <script src="{{ asset('assets/js/jquery.bundle.js') }}?ver=20241116180"></script>
+    <script src="{{ asset('assets/js/script.js') }}?ver=20241116180"></script>
+    <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
+
+    @include('sweetalert::alert')
+
+    <script src="{{ asset('assets/js/vendors/sweetalert2.all.min.js') }}"></script>
+
     <script type="text/javascript">
         jQuery(function() {
             var $frv = jQuery('.validate');
@@ -253,6 +235,113 @@
                 $frv.validate({
                     errorClass: "input-bordered-error error"
                 });
+            }
+        });
+
+        $(document).ready(function() {
+            $('#country').select2();
+        });
+    </script>
+
+
+    <script>
+        // 1. Initialize Stripe
+        const stripe = Stripe("{{ env('STRIPE_PUBLIC_KEY') }}"); // publishable key
+        const elements = stripe.elements();
+
+        // 2. Style the card element
+        const style = {
+            base: {
+                fontSize: '16px',
+                color: '#32325d',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a'
+            }
+        };
+
+        // 3. Create card element
+        const card = elements.create('card', {
+            style
+        });
+        card.mount('#card-element');
+
+        // 4. Handle errors
+        card.on('change', ({
+            error
+        }) => {
+            const displayError = document.getElementById('card-errors');
+            if (error) {
+                displayError.style.display = 'block';
+                displayError.textContent = error.message;
+            } else {
+                displayError.style.display = 'none';
+                displayError.textContent = '';
+            }
+
+            // displayError.style.display = 'block';
+            // displayError.textContent = error ? error.message : '';
+        });
+
+        // 5. Handle form submission
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            document.getElementById('submit-btn').disabled = true;
+
+            let country = document.getElementById("country").value;
+            let address = document.getElementById("address").value;
+
+            console.log("Country:", country);
+            console.log("Address:", address);
+
+
+
+            const {
+                error,
+                paymentMethod
+            } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: card,
+            });
+
+            if (error) {
+                document.getElementById('card-errors').textContent = error.message;
+                document.getElementById('submit-btn').disabled = false;
+            } else {
+                // console.log("Payment Method:", paymentMethod);
+
+                // Send to backend for storage/charging later
+                fetch("/onboarding/savePaymentMethod", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            payment_method: paymentMethod.id,
+                            country: country,
+                            address: address
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = "{{ route('onboarding.pmSuccess') }}";
+                        } else {
+                            document.getElementById('submit-btn').disabled = false;
+                            Swal.fire({
+                                icon: "error",
+                                title: "Payment Method Failed",
+                                text: "We could not process your card. Please try again.",
+                                confirmButtonColor: "#001f8e"
+                            });
+                        }
+
+                    });
             }
         });
     </script>
