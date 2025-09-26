@@ -1,4 +1,4 @@
-@extends('customer.layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 @section('title', env('APP_NAME') . ' | Submitted Websites')
@@ -18,7 +18,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('customer.dashboard') }}">Dashboard</a>
+                                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 Submitted Websites
@@ -43,7 +43,9 @@
                     <!-- card -->
                     <div class="card mb-4">
                         <!-- Card header -->
-
+                        <div class="card-header card-header-height d-flex align-items-center">
+                            <h4 class="mb-0 text-dark">Customer: {{ $customer->last_name." ".$customer->other_names }}</h4>
+                        </div>
                         <!-- table -->
                         <div class="table-responsive overflow-y-hidden mb-5">
                             <table id="" class="table mb-0 text-nowrap table-hover table-centered "
@@ -61,7 +63,7 @@
                                     @foreach ($websites as $web)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}.</td>
-                                            <td class="align-middle"> Website  {{ $loop->index + 1 }}</td>
+                                            <td class="align-middle"> Website {{ $loop->index + 1 }}</td>
                                             <td class="align-middle"> {{ $web->website_url }} </td>
                                             <td class="align-middle"> {{ $web->admin_url }} </td>
                                             <td class="align-middle"> {{ $web->username }} </td>
@@ -77,7 +79,7 @@
                                     <div class="text-center mt-4"><i class="bi bi-emoji-frown"
                                             style="font-size: 48px"></i>
                                         <h3 class="mt-2">No Record Found</h3>
-                                        <div class="mt-2 text-muted"> There are no websites found.
+                                        <div class="mt-2 text-muted"> There are no customer websites found.
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +96,7 @@
 
 
 <script type="text/javascript">
-    document.getElementById("websites").classList.add('active');
+    document.getElementById("customers").classList.add('active');
 </script>
 
 @endsection

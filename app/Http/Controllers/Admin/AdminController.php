@@ -7,6 +7,7 @@ use App\Mail\CustomerCreationMail as CustomerCreationMail;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
 use App\Models\CustomerTickets;
+use App\Models\OnboardingDetails;
 use App\Models\PlatformActivities;
 use App\Models\PlatformFeature;
 use App\Models\Product;
@@ -1805,6 +1806,20 @@ class AdminController extends Controller
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
+    }
+
+    /**
+     * customerWebsites
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function customerWebsites($id)
+    {
+        $customer = User::find($id);
+        $websites = OnboardingDetails::where("user_id", $id)->whereIn("operation", ["website 1", "website 2", "website 3"])->get();
+        return view("admin.customer_websites", compact("websites", "customer"));
     }
 
     /**

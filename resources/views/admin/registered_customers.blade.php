@@ -143,6 +143,9 @@
                                                         <span class="dropdown-menu"><span
                                                                 class="dropdown-header">Action</span>
 
+                                                            <a href="{{ route("admin.customerWebsites", [$cust->id]) }}" class="dropdown-item"><i
+                                                                    class="fe fe-globe dropdown-item-icon"></i>View
+                                                                Customer Websites</a>
                                                             <a style="cursor:pointer" class="dropdown-item"
                                                                 data-bs-toggle="modal" data-bs-target="#viewCustomer"
                                                                 data-myid="{{ $cust->id }}"
