@@ -100,9 +100,10 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">S/No</th>
+                                        <th scope="col">Customer</th>
                                         <th scope="col">Subject</th>
                                         <th scope="col">Last Replier</th>
-                                        <th scope="col">Date Created</th>
+                                        {{-- <th scope="col">Date Created</th> --}}
                                         <th scope="col">Last Activity</th>
                                         <th scope="col">Status</th>
                                     </tr>
@@ -111,12 +112,13 @@
                                     @foreach ($tickets as $ticket)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}.</td>
+                                            <td class="align-middle"> {{ $ticket->user->last_name." ".$ticket->user->other_names }}</td>
                                             <td class="align-middle"><a
                                                     href="{{ route('admin.ticketDetails', [$ticket->id]) }}" class="">{{ $ticket->subject }}</a>
                                             </td>
                                             <td class="align-middle">{{ $ticket->lastReplier() }}</td>
-                                            <td class="align-middle">
-                                                {{ date_format($ticket->created_at, 'jS M, Y g:ia') }}</td>
+                                            {{-- <td class="align-middle">
+                                                {{ date_format($ticket->created_at, 'jS M, Y g:ia') }}</td> --}}
                                             <td class="align-middle">{{ $ticket->lastActivity() }}</td>
                                             <td>
                                                 @if ($ticket->status == 'open')
