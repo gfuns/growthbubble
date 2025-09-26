@@ -19,6 +19,16 @@ class CustomerTickets extends Model
         return $ticket->user->last_name . " " . $ticket->user->other_names;
     }
 
+    public function repliedLast()
+    {
+        $ticket = TicketResponses::where("ticket_id", $this->id)->latest()->first();
+        if ($this->user_id == $ticket->user_id) {
+            return "Customer";
+        } else {
+            return $ticket->user->last_name . " " . $ticket->user->other_names;
+        }
+    }
+
     public function lastActivity()
     {
         $ticket = TicketResponses::where("ticket_id", $this->id)->latest()->first();

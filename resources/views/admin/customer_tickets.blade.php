@@ -116,7 +116,7 @@
                                             <td class="align-middle"><a
                                                     href="{{ route('admin.ticketDetails', [$ticket->id]) }}" class="">{{ $ticket->subject }}</a>
                                             </td>
-                                            <td class="align-middle">{{ $ticket->lastReplier() }}</td>
+                                            <td class="align-middle">{{ $ticket->repliedLast() }}</td>
                                             {{-- <td class="align-middle">
                                                 {{ date_format($ticket->created_at, 'jS M, Y g:ia') }}</td> --}}
                                             <td class="align-middle">{{ $ticket->lastActivity() }}</td>
