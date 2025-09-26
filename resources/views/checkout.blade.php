@@ -56,6 +56,20 @@
             display: none;
         }
 
+
+        .my-gradient-bg {
+            height: 100vh;
+            /* demo full screen */
+            background: #18206b;
+            /* fallback */
+
+            background: radial-gradient(at 20% 30%, #272055 0%, transparent 60%),
+                radial-gradient(at 80% 20%, #1f2060 0%, transparent 70%),
+                radial-gradient(at 60% 80%, #0b1e7e 0%, transparent 70%),
+                #18206b;
+            /* base color */
+        }
+
         @media (max-width: 575px) {
             .customPageContent {
                 background: #fff;
@@ -176,84 +190,26 @@
                             and <a target="_blank" href="#">Privacy
                                 Policy</a>.</label>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-3">Create Account</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Create Account</button>
                 </form>
 
                 <div class="mb-2">&nbsp;</div>
+                {{-- <div class="mb-4">&nbsp;</div> --}}
             </div>
 
         </div>
 
-        <div class="page-ath-gfx">
+        <div class="page-ath-gfx my-gradient-bg">
             <div class="w-100 d-flex justify-content-center">
                 <div class="col-9">
                     <div class="mb-5">
                         <img class="page-ath-logo-img" src="images/gblogo.png" alt="Growth Bubble Logo"
-                            style="filter: brightness(0) saturate(100%); height: 40px">
+                            style="height: 40px">
                     </div>
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <strong><span style="font-size:18px">Get Your Business Online Quickly</span></strong><br />
-                            Build a new website or revamp an old one, all within 5 weeks.
-                        </div>
+                    <div class="mt-5">
+                        <img class="mt-5" src="{{ asset('images/checkout_banner.webp') }}" />
                     </div>
 
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <strong><span style="font-size:18px">Escape Marketing Overwhelm</span></strong><br />
-                            Get unlimited maketing tasks completed for you monthly.
-                        </div>
-                    </div>
-
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <strong><span style="font-size:18px">Grow Your Business</span></strong><br />
-                            Focus on growth while we manage all of your wordpress websites.
-                        </div>
-                    </div>
-
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <strong><span style="font-size:18px">Grow Your Business</span></strong><br />
-                            Shop Templates and guides to grow your business.
-                        </div>
-                    </div>
-
-                    <div class="mb-5">&nbsp;</div>
-                    <div class="mb-5">&nbsp;</div>
-                    <div class="mb-5">&nbsp;</div>
                     <div class="mb-5">&nbsp;</div>
 
                 </div>

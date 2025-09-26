@@ -22,31 +22,11 @@ Route::get('/', function () {
     return view('auth.login');
 })->name("welcome");
 
-Route::get('/onboarding', function () {
-    return view('welcome');
-})->name("onboarding.instructions");
-
-Route::get('/onboarding/website_one', function () {
-    return view('website_one');
-})->name("onboarding.websiteOne");
-
-Route::get('/onboarding/website_two', function () {
-    return view('website_two');
-})->name("onboarding.websiteTwo");
-
-Route::get('/onboarding/website_three', function () {
-    return view('website_three');
-})->name("onboarding.websiteThree");
-
-Route::get('/onboarding/lastpass', function () {
-    return view('lastpass');
-})->name("onboarding.lastpass");
+Auth::routes(['register' => false]);
 
 Route::get('/register', function () {
     return redirect()->away('https://growthbubbles.com');
 });
-
-Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -57,16 +37,6 @@ Route::post('/login/validate2fa', [TwofactorController::class, 'validate2fa'])->
 Route::post('/login/2fa', [TwofactorController::class, 'verify2FA'])->name('login.2fa');
 
 Route::get('/account/email/verify/{token}', [OnboardingController::class, 'verifyWithLink']);
-
-Route::get('/checkout', [OnboardingController::class, 'customerCheckout'])->name("checkout");
-
-Route::post('/customerOnboarding', [OnboardingController::class, 'customerOnboarding'])->name("customerOnboarding");
-
-Route::get('/onboarding/payment', [OnboardingController::class, 'subscriptionPayment'])->name("onboarding.payment");
-
-Route::post('/onboarding/savePaymentMethod', [OnboardingController::class, 'savePaymentMethod'])->name("onboarding.savePaymentMethod");
-
-Route::get('/onboarding/pmSuccess', [OnboardingController::class, 'pmSuccess'])->name("onboarding.pmSuccess");
 
 Route::group([
     'prefix'     => 'portal/admin',

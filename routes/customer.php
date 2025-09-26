@@ -2,11 +2,60 @@
 
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\StripeController;
+use App\Http\Controllers\OnboardingController;
 use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+ */
+
+Route::get('/checkout', [OnboardingController::class, 'customerCheckout'])->name("checkout");
+
+Route::post('/customerOnboarding', [OnboardingController::class, 'customerOnboarding'])->name("customerOnboarding");
+
+Route::group([
+    'prefix'     => 'onboarding',
+    'middleware' => ['webauthenticated'],
+
+], function ($router) {
+
+    Route::get('/', function () {
+        return view('welcome');
+    })->name("onboarding.instructions");
+
+    Route::get('/website_one', function () {
+        return view('website_one');
+    })->name("onboarding.websiteOne");
+
+    Route::get('/website_two', function () {
+        return view('website_two');
+    })->name("onboarding.websiteTwo");
+
+    Route::get('/website_three', function () {
+        return view('website_three');
+    })->name("onboarding.websiteThree");
+
+    Route::get('/lastpass', function () {
+        return view('lastpass');
+    })->name("onboarding.lastpass");
+
+    Route::get('/payment', [OnboardingController::class, 'subscriptionPayment'])->name("onboarding.payment");
+
+    Route::post('/savePaymentMethod', [OnboardingController::class, 'savePaymentMethod'])->name("onboarding.savePaymentMethod");
+
+    Route::get('/pmSuccess', [OnboardingController::class, 'pmSuccess'])->name("onboarding.pmSuccess");
+});
 
 Route::group([
     'prefix'     => 'portal/customer',
-    'middleware' => ['webauthenticated', 'g2fa'],
+    'middleware' => ['webauthenticated', 'onboarded', 'g2fa'],
 
 ], function ($router) {
 

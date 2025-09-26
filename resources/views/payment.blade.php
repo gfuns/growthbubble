@@ -58,6 +58,10 @@
             padding: 0 10px
         }
 
+        .mobileDoLater {
+            display: none;
+        }
+
         @media (max-width: 575px) {
             .customPageContent {
                 background: #fff;
@@ -75,6 +79,10 @@
                 margin-right: auto;
                 padding: 0 30px
             }
+
+             .mobileDoLater {
+                display: block;
+            }
         }
     </style>
 
@@ -84,11 +92,15 @@
 
     <div class="page-ath-wrap flex-row-reverse">
         <div class="page-ath-content customPageContent">
+            <div class="mb-5 mobileDoLater text-center">
+                <a href="#" class="page-ath-logo center-div">
+                    <img class="page-ath-logo-img" src="{{ asset('images/gblogo.png') }}" alt="Growth Bubble Logo"
+                        style="filter: brightness(0) saturate(100%); height: 40px">
+                </a>
+            </div>
+
             <div class="page-ath-header mb-3">
-                {{-- <a href="/" class="page-ath-logo"> --}}
-                {{-- <img class="page-ath-logo-img" src="images/logo.png" alt="Growth Bubble Logo" style="height:40px"> --}}
                 <div class="logo-name text-center mb-3">Add Payment Details</div>
-                {{-- </a> --}}
 
                 <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>By providing your
                             card information, you allow Growth Bubbles to charge your card for future payments in
@@ -99,7 +111,7 @@
 
 
             <div class="page-ath-form">
-                <form class=" validate-modern" id="payment-form">
+                <form class="validate validate-modern" id="payment-form">
                     <div class="input-item">
                         <label style="font-size:13px; font-weight:bold">Organization Name </label>
                         <input type="text" class="input-bordered" name="organization"

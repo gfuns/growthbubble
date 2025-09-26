@@ -47,6 +47,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\WebAuthenticated::class,
         ],
 
+        'onboarded'        => [
+            \App\Http\Middleware\CustomerOnboarding::class,
+        ],
+
         'isActive'         => [
             \App\Http\Middleware\EnsureActiveness::class,
         ],
