@@ -6,6 +6,7 @@ use App\Mail\AccountCreationMail as AccountCreationMail;
 use App\Mail\CustomerCreationMail as CustomerCreationMail;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
+use App\Models\CustomerTickets;
 use App\Models\PlatformActivities;
 use App\Models\PlatformFeature;
 use App\Models\Product;
@@ -14,6 +15,7 @@ use App\Models\SubscriptionPlan;
 use App\Models\TaskActivities;
 use App\Models\TaskCategory;
 use App\Models\TaskConversation;
+use App\Models\TicketResponses;
 use App\Models\User;
 use App\Models\UserPermission;
 use App\Models\UserRole;
@@ -1711,6 +1713,98 @@ class AdminController extends Controller
         $products = Product::all();
 
         return view("admin.customer_subscriptions", compact('subscriptions', 'status', 'search', 'products', 'product'));
+    }
+
+    /**
+     * customerTickets
+     *
+     * @return void
+     */
+    public function customerTickets()
+    {
+        $status = request()->status;
+        $search = request()->search;
+        $period = request()->period;
+
+        $query = CustomerTickets::query();
+
+        $query->orderBy("id", "desc");
+
+        if (isset(request()->search)) {
+            $query->where("subject", "like", "%{$search}%");
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        if (isset(request()->period)) {
+            $query->where("created_at", ">=", now()->subDays($period));
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $tickets    = $query->paginate(50);
+
+        return view("admin.customer_tickets", compact("tickets", "status", "search", "period", "lastRecord", "marker"));
+    }
+
+    /**
+     * ticketDetails
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function ticketDetails($id)
+    {
+        $ticket   = CustomerTickets::find($id);
+        $comments = TicketResponses::orderBy("id", "desc")->where("ticket_id", $id)->get();
+        return view("admin.ticket_details", compact("ticket", "comments"));
+    }
+
+    /**
+     * replyTicket
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function replyTicket(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ticket_id'      => 'required',
+            'description'    => 'required',
+            'attached_files' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+        try {
+
+            $comment            = new TicketResponses;
+            $comment->user_id   = Auth::user()->id;
+            $comment->role      = "staff";
+            $comment->ticket_id = $request->ticket_id;
+            $comment->comment   = $request->description;
+            if ($request->has('attached_files')) {
+                $uploadedFileUrl            = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                $comment->uploaded_document = $uploadedFileUrl;
+            }
+            $comment->save();
+
+            toast('Reply Posted Successfully.', 'success');
+            return back();
+
+        } catch (\Throwable $e) {
+            report($e);
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
     }
 
     /**

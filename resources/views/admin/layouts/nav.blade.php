@@ -77,9 +77,23 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="subscriptions" href="{{ route("admin.subscriptions") }}">
+                    <a class="nav-link " id="subscriptions" href="{{ route('admin.subscriptions') }}">
                         <i class="nav-icon fe fe-dollar-sign me-2"></i>
                         Customer Subscriptions
+                    </a>
+                </li>
+            @endif
+
+
+            @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 7) == true)
+                <li class="nav-item">
+                    <div class="nav-divider"></div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link " id="tickets" href="{{ route('admin.customerTickets') }}">
+                        <i class="nav-icon fe fe-file-text me-2"></i>
+                        Customer Tickets
                     </a>
                 </li>
             @endif

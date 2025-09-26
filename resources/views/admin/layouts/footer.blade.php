@@ -109,6 +109,10 @@
         });
 
         $(document).ready(function() {
+            $('#period').select2();
+        });
+
+        $(document).ready(function() {
             $('#prod').select2();
         });
 

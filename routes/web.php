@@ -147,6 +147,12 @@ Route::group([
     Route::post('/updateTask', [AdminController::class, 'updateTask'])->name('admin.updateTask');
 
     Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
+
+    Route::get('/tickets', [AdminController::class, 'customerTickets'])->name('admin.customerTickets');
+
+    Route::get('/ticket/details/{id}', [AdminController::class, 'ticketDetails'])->name('admin.ticketDetails');
+
+    Route::post('/replyTicket', [AdminController::class, 'replyTicket'])->name('admin.replyTicket');
 });
 
 Route::get('/ajax/get-projects/{customer}', [App\Http\Controllers\AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
