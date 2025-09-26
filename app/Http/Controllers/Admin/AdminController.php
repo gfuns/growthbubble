@@ -1810,6 +1810,26 @@ class AdminController extends Controller
     }
 
     /**
+     * closeTicket
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function closeTicket($id)
+    {
+        $ticket         = CustomerTickets::find($id);
+        $ticket->status = "closed";
+        if ($ticket->save()) {
+            toast('Customer Ticket Closed Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
      * customerWebsites
      *
      * @param mixed id

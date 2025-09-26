@@ -875,6 +875,26 @@ class CustomerController extends Controller
     }
 
     /**
+     * closeTicket
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function closeTicket($id)
+    {
+        $ticket         = CustomerTickets::find($id);
+        $ticket->status = "closed";
+        if ($ticket->save()) {
+            toast('Ticket Closed Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
      * getMarkers Helper Function
      *
      * @param mixed lastRecord

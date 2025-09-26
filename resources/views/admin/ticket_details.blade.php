@@ -23,8 +23,16 @@
                         </ol>
                     </nav>
                 </div>
-            </div>
 
+                @if ($ticket->status != 'closed')
+                    <div>
+                        <a href="{{ route('admin.closeTicket', [$ticket->id]) }}" class="btn btn-primary btn-sm me-2"
+                            onclick="return confirm('Are you sure you want to close this customer ticket?');"><i
+                                class="fe fe-x"></i>
+                            Close Ticket</a>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
     <div class="py-3">

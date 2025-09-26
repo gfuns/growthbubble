@@ -117,4 +117,6 @@ Route::group([
 
     Route::post('/replyTicket', [CustomerController::class, 'replyTicket'])->name('customer.replyTicket');
 
+    Route::get('/close-ticket/{id}', [CustomerController::class, 'closeTicket'])->name('customer.closeTicket');
+
 });

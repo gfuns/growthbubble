@@ -157,6 +157,8 @@ Route::group([
     Route::get('/ticket/details/{id}', [AdminController::class, 'ticketDetails'])->name('admin.ticketDetails');
 
     Route::post('/replyTicket', [AdminController::class, 'replyTicket'])->name('admin.replyTicket');
+
+    Route::get('/close-ticket/{id}', [AdminController::class, 'closeTicket'])->name('admin.closeTicket');
 });
 
 Route::get('/ajax/get-projects/{customer}', [App\Http\Controllers\AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
