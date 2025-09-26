@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text("website_url")->nullable();
             $table->text("admin_url")->nullable();
             $table->text("username")->nullable();
-            $table->string("lastpass")->nullable();
+            $table->boolean("completed")->default(1);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
