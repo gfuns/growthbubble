@@ -367,6 +367,23 @@
             offcanvas.find('.offcanvas-body #myid').val(myid)
         })
 
+        $('#editWebsiteInfo').on('show.bs.offcanvas', function(event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var myid = button.data('myid') // Extract info from data-* attributes
+            var websiteurl = button.data('websiteurl') // Extract info from data-* attributes
+            var adminurl = button.data('adminurl') // Extract info from data-* attributes
+            var username = button.data('username') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            var offcanvas = $(this)
+            // modal.find('.modal-body #myid').val(myid)
+            offcanvas.find('.offcanvas-body #myid').val(myid)
+            offcanvas.find('.offcanvas-body #websiteurl').val(websiteurl)
+            offcanvas.find('.offcanvas-body #adminurl').val(adminurl)
+            offcanvas.find('.offcanvas-body #username').val(username)
+        })
+
 
         $('#viewActivity').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal

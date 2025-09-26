@@ -1785,6 +1785,7 @@ class AdminController extends Controller
             toast($errors, 'error');
             return back();
         }
+
         try {
 
             $comment            = new TicketResponses;
@@ -1820,6 +1821,42 @@ class AdminController extends Controller
         $customer = User::find($id);
         $websites = OnboardingDetails::where("user_id", $id)->whereIn("operation", ["website 1", "website 2", "website 3"])->get();
         return view("admin.customer_websites", compact("websites", "customer"));
+    }
+
+    /**
+     * updateWebsite
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function updateWebsite(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'website_id'     => 'required',
+            'website_url'    => 'required',
+            'admin_url'      => 'required',
+            'admin_username' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $website              = OnboardingDetails::find($request->website_id);
+        $website->website_url = $request->website_url;
+        $website->admin_url   = $request->admin_url;
+        $website->username    = $request->admin_username;
+        if ($website->save()) {
+            toast('Website Information Updated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
     }
 
     /**
