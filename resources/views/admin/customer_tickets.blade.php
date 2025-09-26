@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | My Tickets')
+@section('title', env('APP_NAME') . ' | Customer Tickets')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -12,7 +12,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        My Tickets
+                        Customer Tickets
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">
@@ -21,7 +21,7 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                My Tickets
+                                Customer Tickets
                             </li>
                         </ol>
                     </nav>
