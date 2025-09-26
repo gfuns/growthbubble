@@ -57,7 +57,7 @@
             <li class="nav-item">
                 <a class="nav-link " id="websites" href="{{ route('customer.submittedWebsites') }}">
                     <i class="nav-icon fe fe-globe me-2"></i>
-                    Submitted Webistes
+                    Submitted Websites
                 </a>
             </li>
 
