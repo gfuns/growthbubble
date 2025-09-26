@@ -58,33 +58,32 @@
                                             <th>Plan</th>
                                             <th>Payment Frequency</th>
                                             <th>Pricing</th>
-                                            @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 1) == true)
-                                                <th><i class="nav-icon bi bi-three-dots me-2"></i></th>
-                                            @endif
+                                            <th><i class="nav-icon bi bi-three-dots me-2"></i></th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-dark">
                                         <!-- Table body -->
                                         @foreach ($productPlans as $plan)
                                             <tr>
-                                                <td style="vertical-align: top !important">{{ $loop->index + 1 }}</td>
+                                                <td style="vertical-align: top !important">{{ $loop->index + 1 }}.</td>
                                                 <td style="vertical-align: top !important">{{ $plan->product->product }}
                                                 </td>
                                                 <td style="vertical-align: top !important">{{ $plan->plan }} Plan</td>
                                                 <td style="vertical-align: top !important">
                                                     {{ ucwords($plan->frequency) }}</td>
-                                                <td class="wrap-text"> &pound;{{ number_format($plan->pricing, 2) }}</td>
-                                                @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 1) == true)
-                                                    <td class="align-middle">
-                                                        <div class="hstack gap-4">
-                                                            <span class="dropdown dropstart">
-                                                                <a class="btn btn-primary bg-light-primary text-primary btn-sm"
-                                                                    href="#" role="button"
-                                                                    data-bs-toggle="dropdown" data-bs-offset="-20,20"
-                                                                    aria-expanded="false">Action</a>
-                                                                <span class="dropdown-menu"><span
-                                                                        class="dropdown-header">Action</span>
+                                                <td class="wrap-text"> &pound;{{ number_format($plan->pricing, 2) }}
+                                                </td>
 
+                                                <td class="align-middle">
+                                                    <div class="hstack gap-4">
+                                                        <span class="dropdown dropstart">
+                                                            <a class="btn btn-primary bg-light-primary text-primary btn-sm"
+                                                                href="#" role="button" data-bs-toggle="dropdown"
+                                                                data-bs-offset="-20,20" aria-expanded="false">Action</a>
+                                                            <span class="dropdown-menu"><span
+                                                                    class="dropdown-header">Action</span>
+
+                                                                @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 1) == true)
                                                                     <a class="dropdown-item" href="#"
                                                                         data-bs-toggle="offcanvas"
                                                                         data-bs-target="#editProductPlan"
@@ -95,13 +94,19 @@
                                                                         data-pricing="{{ $plan->pricing }}"><i
                                                                             class="fe fe-edit dropdown-item-icon"></i>Update
                                                                         Details</a>
+                                                                @endif
 
-                                                                </span>
+                                                                <a class="dropdown-item" href="#"
+                                                                    data-bs-toggle="modal" data-bs-target="#copyPlanURL"
+                                                                    data-url="{{ env('APP_URL') }}/checkout?product={{ $plan->product->product }}&plan={{ $plan->plan }}&duration={{ $plan->frequency }}"><i
+                                                                        class="fe fe-copy dropdown-item-icon"></i>Copy
+                                                                    Plan URL</a>
                                                             </span>
+                                                        </span>
 
-                                                        </div>
-                                                    </td>
-                                                @endif
+                                                    </div>
+                                                </td>
+
                                             </tr>
                                         @endforeach
 
@@ -130,6 +135,35 @@
     </div>
 </section>
 
+
+<div class="modal fade" id="copyPlanURL" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                    Copy Plan URL
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 mt-2 input-group">
+                    <input type="text" class="form-control readonly" value="" id="link" readonly>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" onclick="copyToClipboard()" type="button"
+                            id="button-addon2"><i class="fe fe-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 1) == true)
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
         <div class="offcanvas-body" data-simplebar>
@@ -141,8 +175,8 @@
             <!-- card body -->
             <div class="container">
                 <!-- form -->
-                <form class="needs-validation" novalidate method="post" action="{{ route('admin.storeProductPlan') }}"
-                    enctype="multipart/form-data">
+                <form class="needs-validation" novalidate method="post"
+                    action="{{ route('admin.storeProductPlan') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <!-- form group -->
@@ -269,4 +303,37 @@
     document.getElementById("plans").classList.add('active');
 </script>
 
+@endsection
+
+@section('customjs')
+<script type="text/javascript">
+    function copyToClipboard() {
+        var textToCopy = document.getElementById("link").value;
+
+        // Modern Clipboard API
+        if (navigator.clipboard && window.isSecureContext) {
+            // Use navigator.clipboard
+            navigator.clipboard.writeText(textToCopy).then(function () {
+                alert("Plan URL copied successfully to clipboard");
+            }).catch(function (err) {
+                alert("Failed to copy text: " + err);
+            });
+        } else {
+            // Fallback for older browsers
+            var textarea = document.createElement("textarea");
+            textarea.value = textToCopy;
+            textarea.style.position = "fixed"; // avoid scrolling to bottom
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                alert("Plan URL copied successfully to clipboard");
+            } catch (err) {
+                alert("Failed to copy text: " + err);
+            }
+            document.body.removeChild(textarea);
+        }
+    }
+</script>
 @endsection

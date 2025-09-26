@@ -384,7 +384,6 @@
             offcanvas.find('.offcanvas-body #username').val(username)
         })
 
-
         $('#viewActivity').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var model = button.data('model') // Extract info from data-* attributes
@@ -394,6 +393,17 @@
 
             var modal = $(this)
             document.getElementById("activity").innerHTML = activity;
+        })
+
+        $('#copyPlanURL').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var model = button.data('model') // Extract info from data-* attributes
+            var url = button.data('url') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            var modal = $(this)
+            modal.find('.modal-body #link').val(url)
         })
 
 
