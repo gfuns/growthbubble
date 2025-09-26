@@ -38,6 +38,10 @@ Route::get('/onboarding/website_three', function () {
     return view('website_three');
 })->name("onboarding.websiteThree");
 
+Route::get('/onboarding/lastpass', function () {
+    return view('lastpass');
+})->name("onboarding.lastpass");
+
 Route::get('/register', function () {
     return redirect()->away('https://growthbubbles.com');
 });

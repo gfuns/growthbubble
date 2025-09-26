@@ -52,6 +52,10 @@
             padding: 0 10px
         }
 
+        .mobileDoLater {
+            display: none;
+        }
+
         @media (max-width: 575px) {
             .customPageContent {
                 background: #fff;
@@ -69,6 +73,10 @@
                 margin-right: auto;
                 padding: 0 30px
             }
+
+            .mobileDoLater {
+                display: block;
+            }
         }
     </style>
 
@@ -78,13 +86,18 @@
 
     <div class="page-ath-wrap flex-row-reverse">
         <div class="page-ath-contentss customPageContent">
-            <div class="page-ath-header mb-3">
-                {{-- <a href="/" class="page-ath-logo"> --}}
-                {{-- <img class="page-ath-logo-img" src="images/logo.png" alt="Growth Bubble Logo" style="height:40px"> --}}
-                <div class="logo-name text-center mb-3">Your Online Marketing Team Starts Here...</div>
-                {{-- </a> --}}
+            <div class="mb-5 mobileDoLater text-center">
+                <a href="#" class="page-ath-logo center-div">
+                    <img class="page-ath-logo-img" src="{{ asset('images/gblogo.png') }}" alt="Growth Bubble Logo"
+                        style="filter: brightness(0) saturate(100%); height: 40px">
+                </a>
+            </div>
 
-                <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>Now you can finally
+            <div class="page-ath-header mb-3">
+                <div class="logo-name text-center mb-3">Your Online Marketing Team Starts Here...</div>
+
+                <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>Now you can
+                            finally
                             make that dream happen by offloading your marketing tasks to our team of
                             heroes.</strong></small></div>
             </div>
@@ -97,7 +110,8 @@
             @endif
 
             <div class="page-ath-form">
-                <form class="register-form validate validate-modern" method="POST" action="{{ route("customerOnboarding") }}" id="register">
+                <form class="register-form validate validate-modern" method="POST"
+                    action="{{ route('customerOnboarding') }}" id="register">
                     @csrf
                     <div style="display: flex; gap: 20px; ">
                         <div class="input-item" style="width:100%">
@@ -126,8 +140,9 @@
 
                     <div class="input-item">
                         {{-- <label style="font-size:12px; font-weight:bold">Business Name <span style="color:red">*</span></label> --}}
-                        <input type="text" placeholder="Your Company / Business Name" class="input-bordered" name="organization_name"
-                            value=""data-msg-required="Required." data-msg-email="Enter company / business name." required>
+                        <input type="text" placeholder="Your Company / Business Name" class="input-bordered"
+                            name="organization_name" value=""data-msg-required="Required."
+                            data-msg-email="Enter company / business name." required>
                     </div>
                     <div class="input-item">
                         {{-- <label style="font-size:12px; font-weight:bold">Password <span style="color:red">*</span></label> --}}
@@ -154,8 +169,9 @@
                     <input type="hidden" name="product" value="{{ $product->id }}">
                     <input type="hidden" name="plan" value="{{ $plan->id }}">
                     <div class="input-item text-left">
-                        <input name="terms" class="input-checkbox input-checkbox-md" id="agree" type="checkbox"
-                            required="required" data-msg-required="You should accept our terms and policy.">
+                        <input name="terms" class="input-checkbox input-checkbox-md" id="agree"
+                            type="checkbox" required="required"
+                            data-msg-required="You should accept our terms and policy.">
                         <label for="agree">I agree to the <a target="_blank" href="#">Terms</a>
                             and <a target="_blank" href="#">Privacy
                                 Policy</a>.</label>
@@ -172,7 +188,8 @@
             <div class="w-100 d-flex justify-content-center">
                 <div class="col-9">
                     <div class="mb-5">
-                        <img class="page-ath-logo-img" src="images/gblogo.png" alt="Growth Bubble Logo" style="filter: brightness(0) saturate(100%); height: 40px">
+                        <img class="page-ath-logo-img" src="images/gblogo.png" alt="Growth Bubble Logo"
+                            style="filter: brightness(0) saturate(100%); height: 40px">
                     </div>
                     <div class="mb-3" style="display: flex; gap: 10px; ">
                         <div>

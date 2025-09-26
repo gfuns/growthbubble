@@ -31,32 +31,51 @@
 
             <div class="progress-container">
 
-                <div class="processHeading">Let's Get You Set Up!</div>
-                <p class="processDescription mt-3">To effectively manage your websites, we need secure access to
-                    your WordPress website backend. This process is crucial to enable us perform SiteCare.</p>
-                <p class="processDescription mt-3">By completing this process promptly, you'll help us:</p>
-                <div class="mt-3">
+                <div class="processHeading">Secure Password Sharing</div>
+                <p class="processDescription mt-3">To ensure the highest level of security for your information we
+                    use LastPass, a trusted password management system. This keeps your passwords safe and
+                    encrypted, while still allowing us to access them quickly to complete our tasks.</p>
+                <p class="processSubHeading mt-3">Sharing Your password with LastPass</p>
+                <p class="processDescription mt-3">Here's how to easily share your password with us securely through
+                    LastPass:</p>
+                <div>
+                    <ol>
+                        <li>Click here to to visit <a href="www.LastPass.com" target="_blank">www.LastPass.com</a>.
+                        </li>
+                        <li>Follow the on-screen instructions to create a secure LastPass account (if you don't have
+                            one already).</li>
+                        <li>One logged in, use LastPass to securely share the relevant password with <a
+                                href="#">concierge@growthbubbles.com</a>.</li>
+                    </ol>
+                </div>
+                <p class="processSubHeading mt-3">For New LastPass Users</p>
+                <p class="processDescription mt-3">We have prepared a helpful guide on sharing passwords through
+                    LastPass <a href="www.LastPass.com" target="_blank">here</a>.</p>
+                <p class="processSubHeading mt-3">Once Completed</p>
+                <p class="processDescription mt-3">After successfully sharing your password through LastPass, please
+                    click the "Complete Onboarding" button below so we can get started on your tasks.</p>
+                <p class="processSubHeading mt-3">Benefits of using LastPass</p>
+                <div>
                     <ul>
-                        <li>Begin work without unneccessary delays</li>
-                        <li>Ensure our team can access all required systems and data</li>
-                        <li>Maintain the security of your digital assets through our collaboration</li>
-                        <li>Establish clear communication channels for technical implementation</li>
+                        <li><b>Enhanced Security:</b> Your passwords are encrypted and stored securely with
+                            LastPass.
+                        </li>
+                        <li><b>Convenience:</b> We can access your password quickly and efficiently. Also when you
+                            change your password, you can let us know by simply updating the password on LastPass.
+                        </li>
+                        <li><b>Peace of Mind:</b> You can relax knowing that your password is safe and protected.
+                        </li>
                     </ul>
                 </div>
-                <p class="processDescription mt-3">The onboarding step comprise of two short steps:</p>
-                <p class="processDescription mt-3">(1) You let us know the website(s) we will be managing</p>
-                <p class="processDescription mt-3">(2) Instructions on how to share your password securely using
-                    LastPass</p>
-                <p class="processDescription mt-3">Please note that incomplete access may hamper our ability to
-                    manage your website(s)</p>
                 <div class="mt-5">
                     <a href="{{ route('onboarding.websiteOne') }}">
-                        <button type="button" class="btn btn-primary btn-block">Save and Continue &nbsp;<i
+                        <button type="button" class="btn btn-primary btn-block">Complete Onboarding &nbsp;<i
                                 class="fas fa-chevron-circle-right"></i></button>
                     </a>
                 </div>
 
             </div>
+
 
         </div>
         <div class="page-ath-gfx">
@@ -70,11 +89,11 @@
 
                     <div class="kycinstruction">
                         <ul class="onboardingSteps">
-                            <li class="active">Important Information</li>
+                            <li>Important Information</li>
                             <li>Step 1 - Website Submission</li>
                             <li>Step 2 - Submit Website 2</li>
                             <li>Step 3 - Submit Website 3</li>
-                            <li>Step 4 - Share Password Securely</li>
+                            <li class="active">Step 4 - Share Password Securely</li>
                         </ul>
 
                     </div>
