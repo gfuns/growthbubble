@@ -55,6 +55,28 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link " id="websites" href="{{ route('customer.submittedWebsites') }}">
+                    <i class="nav-icon fe fe-globe me-2"></i>
+                    Submitted Webistes
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <div class="nav-divider"></div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link " id="tickets" href="{{ route('customer.tickets') }}">
+                    <i class="nav-icon fe fe-file-text me-2"></i>
+                    Tickets
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <div class="nav-divider"></div>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navSettings"
                     aria-expanded="false" aria-controls="navSettings">
                     <i class="nav-icon bi bi-gear-wide-connected me-2"></i> Account Settings

@@ -107,4 +107,14 @@ Route::group([
 
     Route::get('/renew-subscription/{plan}/{card}', [StripeController::class, 'renewSubscription'])->name('customer.renewSubscription');
 
+    Route::get('/submitted-websites', [CustomerController::class, 'submittedWebsites'])->name('customer.submittedWebsites');
+
+    Route::get('/tickets', [CustomerController::class, 'tickets'])->name('customer.tickets');
+
+    Route::get('/ticket/details/{id}', [CustomerController::class, 'ticketDetails'])->name('customer.ticketDetails');
+
+    Route::post('/submitTicket', [CustomerController::class, 'submitTicket'])->name('customer.submitTicket');
+
+    Route::post('/replyTicket', [CustomerController::class, 'replyTicket'])->name('customer.replyTicket');
+
 });

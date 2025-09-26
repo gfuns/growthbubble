@@ -5,12 +5,15 @@ use App\Http\Controllers\Controller;
 use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
+use App\Models\CustomerTickets;
+use App\Models\OnboardingDetails;
 use App\Models\PlatformActivities;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\TaskActivities;
 use App\Models\TaskCategory;
 use App\Models\TaskConversation;
+use App\Models\TicketResponses;
 use App\Models\User;
 use Auth;
 use Cloudinary;
@@ -712,6 +715,163 @@ class CustomerController extends Controller
 
         toast('Operation Successful.', 'success');
         return back();
+    }
+
+    /**
+     * submittedWebsites
+     *
+     * @return void
+     */
+    public function submittedWebsites()
+    {
+        $websites = OnboardingDetails::where("user_id", Auth::user()->id)->whereIn("operation", ["website 1", "website 2", "website 3"])->get();
+        return view("customer.websites", compact("websites"));
+    }
+
+    /**
+     * tickets
+     *
+     * @return void
+     */
+    public function tickets()
+    {
+        $status = request()->status;
+        $search = request()->search;
+        $period = request()->period;
+
+        $query = CustomerTickets::query();
+
+        $query->orderBy("id", "desc")->where("user_id", Auth::user()->id);
+
+        if (isset(request()->search)) {
+            $query->where("subject", "like", "%{$search}%");
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        if (isset(request()->period)) {
+            $query->where("created_at", ">=", now()->subDays($period));
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $tickets    = $query->paginate(50);
+
+        return view("customer.tickets", compact("tickets", "status", "search", "period", "lastRecord", "marker"));
+    }
+
+    /**
+     * submitTicket
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function submitTicket(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'subject'        => 'required',
+            'description'    => 'required',
+            'attached_files' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+        try {
+            DB::beginTransaction();
+
+            $ticket          = new CustomerTickets;
+            $ticket->user_id = Auth::user()->id;
+            $ticket->subject = $request->subject;
+            $ticket->save();
+
+            $comment            = new TicketResponses;
+            $comment->user_id   = Auth::user()->id;
+            $comment->role      = "user";
+            $comment->ticket_id = $ticket->id;
+            $comment->comment   = $request->description;
+            if ($request->has('attached_files')) {
+                $uploadedFileUrl            = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                $comment->uploaded_document = $uploadedFileUrl;
+            }
+            $comment->save();
+
+            DB::commit();
+
+            toast('Ticket Submitted Successfully.', 'success');
+            return back();
+
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * ticketDetails
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function ticketDetails($id)
+    {
+        $ticket   = CustomerTickets::find($id);
+        $comments = TicketResponses::orderBy("id", "desc")->where("ticket_id", $id)->get();
+        return view("customer.ticket_details", compact("ticket", "comments"));
+    }
+
+    /**
+     * replyTicket
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function replyTicket(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ticket_id'      => 'required',
+            'description'    => 'required',
+            'attached_files' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+        try {
+
+            $comment            = new TicketResponses;
+            $comment->user_id   = Auth::user()->id;
+            $comment->role      = "user";
+            $comment->ticket_id = $request->ticket_id;
+            $comment->comment   = $request->description;
+            if ($request->has('attached_files')) {
+                $uploadedFileUrl            = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                $comment->uploaded_document = $uploadedFileUrl;
+            }
+            $comment->save();
+
+            toast('Reply Posted Successfully.', 'success');
+            return back();
+
+        } catch (\Throwable $e) {
+            report($e);
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
     }
 
     /**
