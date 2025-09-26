@@ -18,7 +18,6 @@ class CustomerOnboarding
         if (Auth::user()->onboarding_status == "awaiting payment") {
             return redirect()->route("onboarding.payment");
         } else if (Auth::user()->onboarding_status == "pending") {
-            // Auth::logout();
             return redirect()->route("onboarding.instructions");
         } else {
             return $next($request);

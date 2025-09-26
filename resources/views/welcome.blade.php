@@ -55,9 +55,7 @@
                                 class="fas fa-chevron-circle-right"></i></button>
                     </a>
                 </div>
-
             </div>
-
         </div>
         <div class="page-ath-gfx">
             <div class="w-100 d-flex ">
@@ -70,11 +68,16 @@
 
                     <div class="kycinstruction">
                         <ul class="onboardingSteps">
-                            <li class="active">Important Information</li>
-                            <li>Step 1 - Website Submission</li>
-                            <li>Step 2 - Submit Website 2</li>
-                            <li>Step 3 - Submit Website 3</li>
-                            <li>Step 4 - Share Password Securely</li>
+                            <li class="active @if (Auth::user()->onbInst() == true) completed @endif"><a
+                                    href="{{ route('onboarding.instructions') }}">Important Information</a></li>
+                            <li class="@if (Auth::user()->website(1) == true) completed @endif"><a
+                                    href="{{ route('onboarding.websiteOne') }}">Step 1 - Website Submission</a></li>
+                            <li class="@if (Auth::user()->website(2) == true) completed @endif"><a
+                                    href="{{ route('onboarding.additionalWebsites', [2]) }}">Step 2 - Submit Website 2</a></li>
+                            <li class="@if (Auth::user()->website(3) == true) completed @endif"><a
+                                    href="{{ route('onboarding.additionalWebsites', [3]) }}">Step 3 - Submit Website 3</a></li>
+                            <li class="@if (Auth::user()->lastpass() == true) completed @endif"><a
+                                    href="{{ route('onboarding.lastpass') }}">Step 4 - Share Password Securely</a></li>
                         </ul>
 
                     </div>

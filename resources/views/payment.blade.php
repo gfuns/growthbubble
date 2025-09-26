@@ -62,6 +62,13 @@
             display: none;
         }
 
+        .display-price{
+            padding: 15px 20px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
         @media (max-width: 575px) {
             .customPageContent {
                 background: #fff;
@@ -80,7 +87,7 @@
                 padding: 0 30px
             }
 
-             .mobileDoLater {
+            .mobileDoLater {
                 display: block;
             }
         }
@@ -162,70 +169,141 @@
                         <img class="page-ath-logo-img" src="{{ asset('images/gblogo.png') }}" alt="Growth Bubble Logo"
                             style="filter: brightness(0) saturate(100%); height: 40px">
                     </div>
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
+                    <div class="mb-3">
+                        <div>
+                            <strong><span style="font-size:17px; color:black; font-weight:bold"><u>SELECTED PRODUCT/PLAN:</u>
+                                    {{ $subscription->product->product }} > {{ $subscription->plan->plan }}
+                                    Plan</span></strong>
+                        </div>
+                    </div>
+
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
                                 fill="none">
                                 <path
                                     d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
+                                    fill="#0716AD"></path>
                             </svg>
                         </div>
                         <div>
-                            <strong><span style="font-size:18px">Get Your Business Online Quickly</span></strong><br />
-                            Build a new website or revamp an old one, all within 5 weeks.
+                            1 Active Task.
                         </div>
                     </div>
 
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
                                 fill="none">
                                 <path
                                     d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
+                                    fill="#0716AD"></path>
                             </svg>
                         </div>
                         <div>
-                            <strong><span style="font-size:18px">Escape Marketing Overwhelm</span></strong><br />
-                            Get unlimited maketing tasks completed for you monthly.
+                            1 Requestor
                         </div>
                     </div>
 
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                 viewBox="0 0 16 16" fill="none">
                                 <path
                                     d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
+                                    fill="#0716AD"></path>
                             </svg>
                         </div>
                         <div>
-                            <strong><span style="font-size:18px">Grow Your Business</span></strong><br />
-                            Focus on growth while we manage all of your wordpress websites.
+                            Avg 2-4 Business Day Turnaround
                         </div>
                     </div>
-
-                    <div class="mb-3" style="display: flex; gap: 10px; ">
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                 viewBox="0 0 16 16" fill="none">
                                 <path
                                     d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0765FF"></path>
+                                    fill="#0716AD"></path>
                             </svg>
                         </div>
                         <div>
-                            <strong><span style="font-size:18px">Grow Your Business</span></strong><br />
-                            Shop Templates and guides to grow your business.
+                            Recurring Tasks
+                        </div>
+                    </div>
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 16 16" fill="none">
+                                <path
+                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
+                                    fill="#0716AD"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            Pro-Active Website Protection & Monitoring
+                        </div>
+                    </div>
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 16 16" fill="none">
+                                <path
+                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
+                                    fill="#0716AD"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            Optimized WordPress Hosting
+                        </div>
+                    </div>
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 16 16" fill="none">
+                                <path
+                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
+                                    fill="#0716AD"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            Hack Fix Guarantee
+                        </div>
+                    </div>
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 16 16" fill="none">
+                                <path
+                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
+                                    fill="#0716AD"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            Growth Bubbles Marketing Toolkit
+                        </div>
+                    </div>
+                    <div class="mb-2" style="display: flex; gap: 10px; ">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 16 16" fill="none">
+                                <path
+                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
+                                    fill="#0716AD"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            Concierge AI Inc Clara Copywriter
                         </div>
                     </div>
 
+                    <div class="mt-4 display-price">
+                        <span style="color: black; font-weight:bold; font-size:32px">&pound;{{ $subscription->plan->pricing }}</span> <sub><span style="color: black; font-weight:bold; font-size:15px">GBP Billed {{ $subscription->plan->frequency }}</span></sub>
+                        <p style="color: black; font-size:13px">No Lock In Contract. Change Plan or Cancel Any Time.</p>
+                    </div>
+
                     <div class="mb-5">&nbsp;</div>
-                    <div class="mb-5">&nbsp;</div>
-                    <div class="mb-5">&nbsp;</div>
-                    <div class="mb-5">&nbsp;</div>
+                    {{-- <div class="mb-5">&nbsp;</div> --}}
 
                 </div>
             </div>

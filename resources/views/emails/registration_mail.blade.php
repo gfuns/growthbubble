@@ -69,24 +69,8 @@
         </div>
         <h1>Account Creation</h1>
         <p>Dear {{ $user->last_name . ', ' . $user->other_names }}</p>
-        <p>We are excited to have you join our platform. As a user of {{ env('APP_NAME') }}, you now have access to a
-            wide range of utilities and services. Here's a brief overview of what you can expect:</p>
 
-        <ul>
-            <li><b>Airtime Purchase:</b> Top up your mobile phone with airtime credits instantly. Stay connected and
-                never run out of talk time.</li>
-            <li><b>Data Subscription:</b> Purchase data bundles for your mobile devices and enjoy seamless internet
-                connectivity on the go.</li>
-            <li><b>Cable Subscription:</b> Subscribe to your favorite cable TV packages and enjoy a wide variety of
-                channels and entertainment options.</li>
-            <li><b>Electricity Purchase:</b> Pay your electricity bills conveniently through our platform. Say goodbye
-                to long queues and late payment penalties.</li>
-            <li><b>Crypto P2P Trades:</b> Engage in secure peer-to-peer cryptocurrency trading. Buy and sell various
-                cryptocurrencies with ease.</li>
-        </ul>
-
-        <p>We strive to provide a user-friendly experience and a secure environment for all your transactions. If you
-            have any questions or need assistance, our support team is always ready to help.</p>
+        <p>[ Mail Copy comes in here ]</p>
 
         <p>Thank you for choosing {{ env('APP_NAME') }}. Start exploring our services today and enjoy the convenience at
             your fingertips.</p>

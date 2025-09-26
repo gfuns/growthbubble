@@ -119,4 +119,35 @@ class User extends Authenticatable
         }
     }
 
+    public function onbInst()
+    {
+        $onboarding = OnboardingDetails::where("user_id", $this->id)->where("operation", "instruction")->first();
+        if (isset($onboarding)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function website($id)
+    {
+        $operation  = "website " . $id;
+        $onboarding = OnboardingDetails::where("user_id", $this->id)->where("operation", $operation)->first();
+        if (isset($onboarding)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function lastpass()
+    {
+        $onboarding = OnboardingDetails::where("user_id", $this->id)->where("operation", "lastpass")->first();
+        if (isset($onboarding)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

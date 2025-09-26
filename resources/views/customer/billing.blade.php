@@ -51,7 +51,7 @@
                         </li>
                         <li class="d-flex justify-content-between mt-4 mb-2">
                             <span class="text-dark">Pricing</span>
-                            <span class="text-dark fw-medium">&#8358;{{ number_format($plan->pricing, 2) }}</span>
+                            <span class="text-dark fw-medium"> &pound;{{ number_format($plan->pricing, 2) }}</span>
                         </li>
                         <li class="d-flex justify-content-between mt-4 mb-2">
                             <span class="text-dark">Effective Date</span>

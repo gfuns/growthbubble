@@ -38,7 +38,8 @@
                         </div>
                         <div class="card-body">
                             <div class="page-ath-form">
-                                <form class="register-form validate validate-modern" method="POST" action="">
+                                <form class="register-form validate validate-modern" method="POST"
+                                    action="{{ route('onboarding.storeWebsite') }}">
                                     @csrf
 
                                     <div class="mb-3" style="font-size: 13px; font-weight:bold">Fields with <span
@@ -48,7 +49,7 @@
                                         <label style="font-size:13px; font-weight:bold">Please enter the Website URL
                                             beginning with https:// <span style="color:red">*</span></label>
                                         <input type="text" placeholder="Your Website URL" class="input-bordered"
-                                            name="website_url" data-msg-required="Required." required>
+                                            name="website_url" data-msg-required="Required." required value="{{ $data->website_url ?? "" }}">
                                     </div>
 
                                     <div class="input-item">
@@ -57,18 +58,18 @@
                                                 style="color:red">*</span></label>
                                         <input type="text" placeholder="Your Admin Login URL for WordPress"
                                             class="input-bordered" name="admin_url"
-                                            data-msg-required="Required. "required>
+                                            data-msg-required="Required." required value="{{ $data->admin_url ?? "" }}">
                                     </div>
 
                                     <div class="input-item">
                                         <label style="font-size:13px; font-weight:bold">Please provide the Admin
                                             Username <span style="color:red">*</span></label>
                                         <input type="text" placeholder="Your Admin Username" class="input-bordered"
-                                            name="admin_username" data-msg-required="Required." required>
+                                            name="admin_username" data-msg-required="Required." required value="{{ $data->username ?? "" }}">
                                     </div>
 
                                     <div class="mb-5 mt-2" style="font-size: 13px; font-weight:bold">Please ensure that
-                                        you shared the necessary access with us and that they are valid. Otherwise, we
+                                        you have shared the necessary access with us and that they are valid. Otherwise, we
                                         will not be able to work on your website.</div>
 
                                     <button type="submit" class="btn btn-primary btn-block mt-3">Save and Continue
@@ -94,11 +95,16 @@
 
                     <div class="kycinstruction">
                         <ul class="onboardingSteps">
-                            <li>Important Information</li>
-                            <li class="active">Step 1 - Website Submission</li>
-                            <li>Step 2 - Submit Website 2</li>
-                            <li>Step 3 - Submit Website 3</li>
-                            <li>Step 4 - Share Password Securely</li>
+                            <li class="@if (Auth::user()->onbInst() == true) completed @endif"><a
+                                    href="{{ route('onboarding.instructions') }}">Important Information</a></li>
+                            <li class="active @if (Auth::user()->website(1) == true) completed @endif"><a
+                                    href="{{ route('onboarding.websiteOne') }}">Step 1 - Website Submission</a></li>
+                            <li class="@if (Auth::user()->website(2) == true) completed @endif"><a
+                                    href="{{ route('onboarding.additionalWebsites', [2]) }}">Step 2 - Submit Website 2</a></li>
+                            <li class="@if (Auth::user()->website(3) == true) completed @endif"><a
+                                    href="{{ route('onboarding.additionalWebsites', [3]) }}">Step 3 - Submit Website 3</a></li>
+                            <li class="@if (Auth::user()->lastpass() == true) completed @endif"><a
+                                    href="{{ route('onboarding.lastpass') }}">Step 4 - Share Password Securely</a></li>
                         </ul>
 
                     </div>
@@ -119,6 +125,10 @@
 
     <script src="{{ asset('assets/js/jquery.bundle.js') }}?ver=20241116180"></script>
     <script src="{{ asset('assets/js/script.js') }}?ver=20241116180"></script>
+
+    @include('sweetalert::alert')
+
+    <script src="{{ asset('assets/js/vendors/sweetalert2.all.min.js') }}"></script>
 
     <script type="text/javascript">
         jQuery(function() {

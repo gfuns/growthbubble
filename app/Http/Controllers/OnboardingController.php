@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Mail\RegistrationMail as RegistrationMail;
 use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
+use App\Models\OnboardingDetails;
 use App\Models\Product;
 use App\Models\SubscriptionInfo;
 use App\Models\SubscriptionPlan;
@@ -129,7 +130,7 @@ class OnboardingController extends Controller
     public function subscriptionPayment()
     {
         $subscription = SubscriptionInfo::where("user_id", Auth::user()->id)->first();
-        return view("payment");
+        return view("payment", compact("subscription"));
     }
 
     /**
@@ -238,6 +239,93 @@ class OnboardingController extends Controller
     {
         toast('Payment Method Added Successfully.', 'success');
         return redirect()->route("onboarding.instructions");
+    }
+
+    /**
+     * websiteOne
+     *
+     * @return void
+     */
+    public function websiteOne()
+    {
+        $onboardingData = OnboardingDetails::updateOrCreate(
+            [
+                "user_id"   => Auth::user()->id,
+                "operation" => "instruction"],
+            [
+                "completed" => true,
+            ]
+        );
+
+        if ($onboardingData) {
+            $data = OnboardingDetails::where("user_id", Auth::user()->id)->where("operation", "website 1")->first();
+            return view("website_information", compact("data"));
+        } else {
+            toast('Something Went Wrong.', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * storeWebsite
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeWebsite(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'website_url'    => 'required',
+            'admin_url'      => 'required',
+            'admin_username' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $onboardingData = OnboardingDetails::updateOrCreate(
+            [
+                "user_id"   => Auth::user()->id,
+                "operation" => "website 1"],
+            [
+                "website_url" => $request->website_url,
+                "admin_url"   => $request->admin_url,
+                "username"    => $request->admin_username,
+                "completed"   => true,
+            ]
+        );
+
+        if ($onboardingData) {
+            $website = 2;
+            return redirect()->route("onboarding.additionalWebsites", [$website]);
+        } else {
+            toast('Something Went Wrong.', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * additionalWebsites
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function additionalWebsites($site)
+    {
+        if ($site <= 3) {
+            $operation = "website " . $site;
+            $data      = OnboardingDetails::where("user_id", Auth::user()->id)->where("operation", $operation)->first();
+            return view("additional_websites", compact("data", "site"));
+        } else {
+            toast('Something Went Wrong.', 'error');
+            return back();
+        }
     }
 
     /**

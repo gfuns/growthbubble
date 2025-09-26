@@ -30,21 +30,17 @@ Route::group([
         return view('welcome');
     })->name("onboarding.instructions");
 
-    Route::get('/website_one', function () {
-        return view('website_one');
-    })->name("onboarding.websiteOne");
-
-    Route::get('/website_two', function () {
-        return view('website_two');
-    })->name("onboarding.websiteTwo");
-
-    Route::get('/website_three', function () {
-        return view('website_three');
-    })->name("onboarding.websiteThree");
-
     Route::get('/lastpass', function () {
         return view('lastpass');
     })->name("onboarding.lastpass");
+
+    Route::get('/website_one', [OnboardingController::class, 'websiteOne'])->name("onboarding.websiteOne");
+
+    Route::post('/storeWebsite', [OnboardingController::class, 'storeWebsite'])->name("onboarding.storeWebsite");
+
+    Route::get('/additional-websites/{id}', [OnboardingController::class, 'additionalWebsites'])->name("onboarding.additionalWebsites");
+
+    Route::get('/website_three', [OnboardingController::class, 'websiteThree'])->name("onboarding.websiteThree");
 
     Route::get('/payment', [OnboardingController::class, 'subscriptionPayment'])->name("onboarding.payment");
 
