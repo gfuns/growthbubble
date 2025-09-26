@@ -40,7 +40,9 @@ Route::group([
 
     Route::get('/additional-websites/{id}', [OnboardingController::class, 'additionalWebsites'])->name("onboarding.additionalWebsites");
 
-    Route::get('/website_three', [OnboardingController::class, 'websiteThree'])->name("onboarding.websiteThree");
+    Route::post('/storeAdditionalWebsite', [OnboardingController::class, 'storeAdditionalWebsite'])->name("onboarding.storeAdditionalWebsite");
+
+    Route::post('/completeOnboarding', [OnboardingController::class, 'completeOnboarding'])->name("onboarding.completeOnboarding");
 
     Route::get('/payment', [OnboardingController::class, 'subscriptionPayment'])->name("onboarding.payment");
 

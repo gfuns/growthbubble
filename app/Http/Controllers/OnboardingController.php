@@ -329,6 +329,86 @@ class OnboardingController extends Controller
     }
 
     /**
+     * storeAdditionalWebsite
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeAdditionalWebsite(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'website_url'    => 'required',
+            'admin_url'      => 'required',
+            'admin_username' => 'required',
+            'site'           => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $onboardingData = OnboardingDetails::updateOrCreate(
+            [
+                "user_id"   => Auth::user()->id,
+                "operation" => "website " . $request->site,
+            ],
+            [
+                "website_url" => $request->website_url,
+                "admin_url"   => $request->admin_url,
+                "username"    => $request->admin_username,
+                "completed"   => true,
+            ]
+        );
+
+        if ($onboardingData) {
+            if ($request->site == 2) {
+                $website = 3;
+                return redirect()->route("onboarding.additionalWebsites", [$website]);
+            } else {
+                return redirect()->route("onboarding.lastpass");
+            }
+
+        } else {
+            toast('Something Went Wrong.', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * completeOnboarding
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function completeOnboarding(Request $request)
+    {
+        $onboardingData = OnboardingDetails::updateOrCreate(
+            [
+                "user_id"   => Auth::user()->id,
+                "operation" => "lastpass",
+            ],
+            [
+                "completed" => true,
+            ]
+        );
+
+        if ($onboardingData) {
+            $user                    = Auth::user();
+            $user->onboarding_status = "onboarded";
+            $user->save();
+            return redirect()->route("customer.dashboard");
+        } else {
+            toast('Something Went Wrong.', 'error');
+            return back();
+        }
+    }
+
+    /**
      * verifyWithLink
      *
      * @param mixed token

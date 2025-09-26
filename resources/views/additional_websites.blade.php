@@ -42,7 +42,8 @@
                         </div>
                         <div class="card-body">
                             <div class="page-ath-form">
-                                <form class="register-form validate validate-modern" method="POST" action="">
+                                <form class="register-form validate validate-modern" method="POST"
+                                    action="{{ route('onboarding.storeAdditionalWebsite') }}">
                                     @csrf
 
                                     <div class="mb-3" style="font-size: 13px; font-weight:bold">Fields with <span
@@ -52,7 +53,7 @@
                                         <label style="font-size:13px; font-weight:bold">Please enter the Website URL
                                             beginning with https:// <span style="color:red">*</span></label>
                                         <input type="text" placeholder="Your Website URL" class="input-bordered"
-                                            name="website_url" data-msg-required="Required." required>
+                                            name="website_url" data-msg-required="Required." required value="{{ $data->website_url ?? "" }}">
                                     </div>
 
                                     <div class="input-item">
@@ -61,14 +62,14 @@
                                                 style="color:red">*</span></label>
                                         <input type="text" placeholder="Your Admin Login URL for WordPress"
                                             class="input-bordered" name="admin_url"
-                                            data-msg-required="Required. "required>
+                                            data-msg-required="Required. "required value="{{ $data->admin_url ?? "" }}">
                                     </div>
 
                                     <div class="input-item">
                                         <label style="font-size:13px; font-weight:bold">Please provide the Admin
                                             Username <span style="color:red">*</span></label>
                                         <input type="text" placeholder="Your Admin Username" class="input-bordered"
-                                            name="admin_username" data-msg-required="Required." required>
+                                            name="admin_username" data-msg-required="Required." required value="{{ $data->username ?? "" }}">
                                     </div>
 
                                     <div class="mb-5 mt-2" style="font-size: 13px; font-weight:bold">Please ensure that
@@ -76,11 +77,14 @@
                                         we
                                         will not be able to work on your website.</div>
 
+                                    <input type="hidden" name="site" value="{{ $site }}" />
+
                                     <button type="submit" class="btn btn-primary btn-block mt-3">Save and Continue
                                         &nbsp;<i class="fas fa-chevron-circle-right"></i></button>
 
                                     <div class="center-button">
-                                        <a href="{{ route("onboarding.lastpass") }}" class="skip">Skip to sharing your password using LastPass <i class="fas fa-long-arrow-alt-right"></i></a>
+                                        <a href="{{ route('onboarding.lastpass') }}" class="skip">Skip to sharing your
+                                            password using LastPass <i class="fas fa-long-arrow-alt-right"></i></a>
                                     </div>
 
                                 </form>

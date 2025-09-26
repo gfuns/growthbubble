@@ -68,10 +68,11 @@
                     </ul>
                 </div>
                 <div class="mt-5">
-                    <a href="{{ route('onboarding.websiteOne') }}">
-                        <button type="button" class="btn btn-primary btn-block">Complete Onboarding &nbsp;<i
+                    <form method="POST" action="{{ route('onboarding.completeOnboarding') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-block">Complete Onboarding &nbsp;<i
                                 class="fas fa-chevron-circle-right"></i></button>
-                    </a>
+                    </form>
                 </div>
 
             </div>
@@ -93,9 +94,11 @@
                             <li class="@if (Auth::user()->website(1) == true) completed @endif"><a
                                     href="{{ route('onboarding.websiteOne') }}">Step 1 - Website Submission</a></li>
                             <li class="@if (Auth::user()->website(2) == true) completed @endif"><a
-                                    href="{{ route('onboarding.additionalWebsites', [2]) }}">Step 2 - Submit Website 2</a></li>
+                                    href="{{ route('onboarding.additionalWebsites', [2]) }}">Step 2 - Submit Website
+                                    2</a></li>
                             <li class="@if (Auth::user()->website(3) == true) completed @endif"><a
-                                    href="{{ route('onboarding.additionalWebsites', [3]) }}">Step 3 - Submit Website 3</a></li>
+                                    href="{{ route('onboarding.additionalWebsites', [3]) }}">Step 3 - Submit Website
+                                    3</a></li>
                             <li class="active @if (Auth::user()->lastpass() == true) completed @endif"><a
                                     href="{{ route('onboarding.lastpass') }}">Step 4 - Share Password Securely</a></li>
                         </ul>
