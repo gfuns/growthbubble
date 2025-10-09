@@ -546,6 +546,7 @@ class CustomerController extends Controller
             $task->provided_access  = $request->shared_access;
             $task->creator          = Auth::user()->id;
             if ($request->hasFile('attached_files')) {
+                \Cloudinary::config('cloudinary://769452474942744:285nDMzMD7RDmlj3t5sy4UtJDcA@bdicprod');
                 $uploadedFileUrl     = Cloudinary::uploadFile($request->file('attached_files')->getRealPath())->getSecurePath();
                 $task->attached_file = $uploadedFileUrl;
             }
