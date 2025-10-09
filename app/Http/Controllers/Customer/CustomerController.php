@@ -523,6 +523,8 @@ class CustomerController extends Controller
             'attached_files'   => 'nullable',
         ]);
 
+        dd($request->all());
+
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             $errors = implode("<br>", $errors);
@@ -564,7 +566,8 @@ class CustomerController extends Controller
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
-            toast('Something went wrong. Pleasetry again', 'error');
+            dd($e->getMessage());
+            toast('Something went wrong. Please try again', 'error');
             return back();
         }
     }
