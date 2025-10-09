@@ -523,7 +523,6 @@ class CustomerController extends Controller
             'attached_files'   => 'nullable',
         ]);
 
-        dd($request->all());
         dd(env("CLOUDINARY_URL"));
 
         if ($validator->fails()) {
