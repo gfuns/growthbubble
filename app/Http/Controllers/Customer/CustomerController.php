@@ -564,7 +564,6 @@ class CustomerController extends Controller
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
-            dd($e->getMessage);
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
