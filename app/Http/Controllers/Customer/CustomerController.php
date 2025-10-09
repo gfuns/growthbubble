@@ -524,6 +524,7 @@ class CustomerController extends Controller
         ]);
 
         dd($request->all());
+        dd(env("CLOUDINARY_URL"));
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
