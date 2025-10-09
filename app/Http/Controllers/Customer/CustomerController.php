@@ -523,8 +523,6 @@ class CustomerController extends Controller
             'attached_files'   => 'nullable',
         ]);
 
-        dd(env("CLOUDINARY_URL"));
-
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             $errors = implode("<br>", $errors);
@@ -548,7 +546,9 @@ class CustomerController extends Controller
             $task->provided_access  = $request->shared_access;
             $task->creator          = Auth::user()->id;
             if ($request->has('attached_files')) {
-                $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                dd($request->file('attached_files'));
+                $uploadedFileUrl = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                // dd($uploadedFileUrl);
                 $task->attached_file = $uploadedFileUrl;
             }
             $task->save();
