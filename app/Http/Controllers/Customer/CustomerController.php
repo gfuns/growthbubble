@@ -16,8 +16,7 @@ use App\Models\TaskConversation;
 use App\Models\TicketResponses;
 use App\Models\User;
 use Auth;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-// use Cloudinary;
+use Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -546,9 +545,8 @@ class CustomerController extends Controller
             $task->date_scheduled   = $request->scheduled_date;
             $task->provided_access  = $request->shared_access;
             $task->creator          = Auth::user()->id;
-            if ($request->hasFile('attached_files')) {
-                \Cloudinary::config('cloudinary://769452474942744:285nDMzMD7RDmlj3t5sy4UtJDcA@bdicprod');
-                $uploadedFileUrl     = Cloudinary::uploadFile($request->file('attached_files')->getRealPath())->getSecurePath();
+            if ($request->has('attached_files')) {
+                $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
                 $task->attached_file = $uploadedFileUrl;
             }
             $task->save();
@@ -566,7 +564,7 @@ class CustomerController extends Controller
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
-            dd($e->getMessage());
+            dd($e->getMessage);
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
