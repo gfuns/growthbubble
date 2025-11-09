@@ -110,12 +110,24 @@
                                         <th scope="col">Phone Number</th>
                                         <th scope="col">Organization</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        {{-- <th scope="col">Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody class="text-dark">
                                     @foreach ($customers as $cust)
-                                        <tr>
+                                        <tr style="cursor: pointer" data-bs-toggle="modal"
+                                            data-bs-target="#viewCustomer" data-myid="{{ $cust->id }}"
+                                            data-othernames="{{ $cust->other_names }}"
+                                            data-lastname="{{ $cust->last_name }}" data-email="{{ $cust->email }}"
+                                            data-phone="{{ $cust->phone_number }}"
+                                            data-organization="{{ $cust->organization }}"
+                                            data-photo="{{ $cust->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
+                                            data-product="{{ $cust->selectedProduct() }}"
+                                            data-plan="{{ $cust->selectedPlan() }}"
+                                            data-effectivedate="{{ $cust->effectiveDate() }}"
+                                            data-expirydate="{{ $cust->expiryDate() }}"
+                                            data-status="{{ $cust->subStatus() }}"
+                                            data-address="{{ $cust->contact_address ?? 'NIL' }}">
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
                                             <td class="align-middle">
                                                 {{ $cust->last_name . ', ' . $cust->other_names }}
@@ -131,7 +143,7 @@
                                                 @endif
                                             </td>
 
-                                            <td class="align-middle">
+                                            {{-- <td class="align-middle">
                                                 <div class="hstack gap-4">
 
                                                     <span class="dropdown dropstart">
@@ -143,7 +155,8 @@
                                                         <span class="dropdown-menu"><span
                                                                 class="dropdown-header">Action</span>
 
-                                                            <a href="{{ route("admin.customerWebsites", [$cust->id]) }}" class="dropdown-item"><i
+                                                            <a href="{{ route('admin.customerWebsites', [$cust->id]) }}"
+                                                                class="dropdown-item"><i
                                                                     class="fe fe-globe dropdown-item-icon"></i>View
                                                                 Customer Websites</a>
                                                             <a style="cursor:pointer" class="dropdown-item"
@@ -201,7 +214,7 @@
                                                     </span>
 
                                                 </div>
-                                            </td>
+                                            </td> --}}
 
                                         </tr>
                                     @endforeach
@@ -303,10 +316,42 @@
                         </tr>
                     </tbody>
                 </table>
+
+                @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
+                    <div class="row mt-4">
+                        <div class="col-3">
+                            <button id="editDetailsBtn" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                                data-bs-target="#editCustomer"><i class="fe fe-edit dropdown-item-icon"
+                                    style="color:white; font-weight: bold"></i> Edit Details</button>
+                        </div>
+
+
+                        <div class="col-3">
+                            <button id="changePlan" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                                data-bs-target="#changeCustomerPlan"><i class="fe fe-refresh-cw dropdown-item-icon"
+                                    style="color:white; font-weight: bold"></i> Change Plan</button>
+                        </div>
+                        <div class="col-3">
+                            <a id="suspendLink" href="#"
+                                onclick="return confirm('Are you sure you want to suspend this customer?');">
+                                <button class="btn btn-primary btn-sm"><i class="fe fe-x-circle dropdown-item-icon"
+                                        style="color:white; font-weight: bold"></i> Suspend Account</button>
+                            </a>
+                        </div>
+                        <div class="col-3">
+                            <a id="activateLink" href="#"
+                                onclick="return confirm('Are you sure you want to activate this customer?');">
+                                <button class="btn btn-primary btn-sm"><i
+                                        class="fe fe-check-circle dropdown-item-icon"
+                                        style="color:white; font-weight: bold"></i> Activate Account</button>
+                            </a>
+                        </div>
+                    </div>
+                @endif
             </div>
-            <div class="modal-footer">
+            {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

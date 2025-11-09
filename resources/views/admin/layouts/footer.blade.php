@@ -282,6 +282,7 @@
             var subdate = button.data('effectivedate') // Extract info from data-* attributes
             var renewaldate = button.data('expirydate') // Extract info from data-* attributes
             var status = button.data('status') // Extract info from data-* attributes
+            var myid = button.data('myid') // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
@@ -298,7 +299,39 @@
             document.getElementById("vsubdate").innerHTML = subdate;
             document.getElementById("vrenewaldate").innerHTML = renewaldate;
             document.getElementById("vstatus").innerHTML = status;
+            if (activateLink) {
+                document.getElementById("activateLink").href = "/portal/admin/activate-customer/" + myid;
+            }
+            if (suspendLink) {
+                document.getElementById("suspendLink").href = "/portal/admin/suspend-customer/" + myid;
+            }
+
+            $("#editDetailsBtn").data({
+                myid: myid,
+                lastname: lastname,
+                othernames: othernames,
+                email: email,
+                phone: phone,
+                organization: organization,
+                address: address
+            });
+
+            $("#changePlan").data({
+                myid: myid,
+            });
+
+            $('#editDetailsBtn').on('click', function() {
+                // Close the modal before opening the offcanvas
+                $('#viewCustomer').modal('hide');
+            });
+
+            $('#changePlan').on('click', function() {
+                // Close the modal before opening the offcanvas
+                $('#viewCustomer').modal('hide');
+            });
         })
+
+
 
         $('#editTaskCategory').on('show.bs.offcanvas', function(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal

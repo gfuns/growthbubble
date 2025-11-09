@@ -34,7 +34,7 @@
         <div class="col-lg-12 col-md-12 col-12">
             <div class="border-bottom pb-3 mb-3 d-lg-flex justify-content-between align-items-center">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="mb-0 h3 fw-bold">Administrative Dashboard</h1>
+                    <h1 class="mb-0 h3 fw-bold">Dashboard</h1>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route("admin.customerTasks") }}?status=in progress">
+                    <a href="{{ route('admin.customerTasks') }}?status=in progress">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Ongoing Tasks</h4>
@@ -63,7 +63,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route("admin.customerTasks") }}?status=queued">
+                    <a href="{{ route('admin.customerTasks') }}?status=queued">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Queued Tasks</h4>
@@ -81,7 +81,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route("admin.customerTasks") }}?recurring=yes">
+                    <a href="{{ route('admin.customerTasks') }}?recurring=yes">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Recurring Tasks</h4>
@@ -99,7 +99,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route("admin.customerTasks") }}?status=completed">
+                    <a href="{{ route('admin.customerTasks') }}?status=completed">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Completed Tasks</h4>
@@ -121,95 +121,6 @@
         <div class="row">
             <div class="col-lg-8 col-md-12 col-12">
                 <!-- Card -->
-                <div class="card mb-4" style="height: 400px">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-12">
-                            <!-- Card header -->
-
-                            <div class="card-header border-bottom-0 p-0">
-                                <ul class="nav nav-lb-tab" id="tab" role="tablist">
-                                    @foreach ($products as $prod)
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link text-dark fw-bold @if ($loop->first) active @endif"
-                                                id="{{ $prod->id }}-tab" data-bs-toggle="pill"
-                                                href="#product{{ $prod->id }}" role="tab"
-                                                aria-controls="product{{ $prod->id }}"
-                                                aria-selected="true">{{ $prod->product }} Customers</a>
-                                        </li>
-                                    @endforeach
-
-                                </ul>
-                            </div>
-
-                            <div>
-                                <!-- Table -->
-                                <div class="tab-content" id="tabContent">
-                                    @foreach ($products as $prod)
-                                        <div class="tab-pane fade active @if ($loop->first) show @endif "
-                                            id="product{{ $prod->id }}" role="tabpanel"
-                                            aria-labelledby="tab-{{ $prod->id }}">
-                                            <!-- Table -->
-                                            <div class="table-responsive">
-                                                <table id="prodTable{{ $prod->id }}" class="table mb-0 table-hover"
-                                                    style="font-size: 13px">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Phone Number</th>
-                                                            <th>Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @php
-                                                            $sno = 1;
-                                                        @endphp
-                                                        @foreach ($prod->customers as $cust)
-                                                            <tr class="text-dark">
-                                                                <td>{{ $sno++ }}.</td>
-                                                                <td><a href="#" class="text-dark"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#viewCustomer"
-                                                                        data-myid="{{ $cust->customer->id }}"
-                                                                        data-othernames="{{ $cust->customer->other_names }}"
-                                                                        data-lastname="{{ $cust->customer->last_name }}"
-                                                                        data-email="{{ $cust->customer->email }}"
-                                                                        data-phone="{{ $cust->customer->phone_number }}"
-                                                                        data-organization="{{ $cust->customer->organization }}"
-                                                                        data-photo="{{ $cust->customer->profile_photo }}"
-                                                                        data-product="{{ $cust->customer->selectedProduct() }}"
-                                                                        data-plan="{{ $cust->customer->selectedPlan() }}"
-                                                                        data-effectivedate="{{ $cust->customer->effectiveDate() }}"
-                                                                        data-expirydate="{{ $cust->customer->expiryDate() }}"
-                                                                        data-status="{{ $cust->customer->subStatus() }}"
-                                                                        data-address="{{ $cust->customer->contact_address ?? 'NIL' }}">
-                                                                        {{ $cust->customer->last_name . ', ' . $cust->customer->other_names }}
-                                                                    </a>
-                                                                </td>
-                                                                <td>{{ $cust->customer->email }}</td>
-                                                                <td>{{ $cust->customer->phone_number }}</td>
-                                                                <td>
-                                                                    @if ($cust->customer->status == 'active')
-                                                                        <span
-                                                                            class="badge text-success bg-light-success">Active</span>
-                                                                    @else
-                                                                        <span
-                                                                            class="badge text-danger bg-light-danger">Suspended</span>
-                                                                    @endif
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="card mb-4" style="height: 400px">
                     <!-- Card header -->
@@ -219,7 +130,7 @@
                             <ul class="nav nav-lb-tab border-bottom-0" id="tab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link text-dark fw-bold active" role="tab"><i></i>
-                                        Customer Tasks</a>
+                                        Tasks</a>
                                 </li>
                             </ul>
                         </div>
@@ -288,6 +199,96 @@
 
                     </div>
                 </div>
+
+                <div class="card mb-4" style="height: 400px">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-12">
+                            <!-- Card header -->
+
+                            <div class="card-header border-bottom-0 p-0">
+                                <ul class="nav nav-lb-tab" id="tab" role="tablist">
+                                    @foreach ($products as $prod)
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link text-dark fw-bold @if ($loop->first) active @endif"
+                                                id="{{ $prod->id }}-tab" data-bs-toggle="pill"
+                                                href="#product{{ $prod->id }}" role="tab"
+                                                aria-controls="product{{ $prod->id }}"
+                                                aria-selected="true">{{ $prod->product }} Customers</a>
+                                        </li>
+                                    @endforeach
+
+                                </ul>
+                            </div>
+
+                            <div>
+                                <!-- Table -->
+                                <div class="tab-content" id="tabContent">
+                                    @foreach ($products as $prod)
+                                        <div class="tab-pane fade active @if ($loop->first) show @endif "
+                                            id="product{{ $prod->id }}" role="tabpanel"
+                                            aria-labelledby="tab-{{ $prod->id }}">
+                                            <!-- Table -->
+                                            <div class="table-responsive">
+                                                <table id="prodTable{{ $prod->id }}"
+                                                    class="table mb-0 table-hover" style="font-size: 13px">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Name</th>
+                                                            <th>Email</th>
+                                                            <th>Phone Number</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @php
+                                                            $sno = 1;
+                                                        @endphp
+                                                        @foreach ($prod->customers as $cust)
+                                                            <tr class="text-dark" data-bs-toggle="modal"
+                                                                data-bs-target="#viewCustomer"
+                                                                data-myid="{{ $cust->customer->id }}"
+                                                                data-othernames="{{ $cust->customer->other_names }}"
+                                                                data-lastname="{{ $cust->customer->last_name }}"
+                                                                data-email="{{ $cust->customer->email }}"
+                                                                data-phone="{{ $cust->customer->phone_number }}"
+                                                                data-organization="{{ $cust->customer->organization }}"
+                                                                data-photo="{{ $cust->customer->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
+                                                                data-product="{{ $cust->customer->selectedProduct() }}"
+                                                                data-plan="{{ $cust->customer->selectedPlan() }}"
+                                                                data-effectivedate="{{ $cust->customer->effectiveDate() }}"
+                                                                data-expirydate="{{ $cust->customer->expiryDate() }}"
+                                                                data-status="{{ $cust->customer->subStatus() }}"
+                                                                data-address="{{ $cust->customer->contact_address ?? 'NIL' }}"
+                                                                style="cursor: pointer">
+                                                                <td>{{ $sno++ }}.</td>
+                                                                <td>{{ $cust->customer->last_name . ', ' . $cust->customer->other_names }}
+                                                                </td>
+                                                                <td>{{ $cust->customer->email }}</td>
+                                                                <td>{{ $cust->customer->phone_number }}</td>
+                                                                <td>
+                                                                    @if ($cust->customer->status == 'active')
+                                                                        <span
+                                                                            class="badge text-success bg-light-success">Active</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="badge text-danger bg-light-danger">Suspended</span>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="col-lg-4 col-12">
@@ -315,7 +316,8 @@
                                     <div class="row">
                                         <div class="col-auto">
                                             <div class="avatar avatar-md avatar-indicators avatar-online">
-                                                <img alt="avatar" src="{{ $activity->user->profile_photo }}"
+                                                <img alt="avatar"
+                                                    src="{{ $activity->user->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
                                                     class="rounded-circle">
                                             </div>
                                         </div>
@@ -396,7 +398,7 @@
                                 <td class=""><span id="vlastname"></span></td>
                                 <td class="" rowspan="11" align="right" style="text-align: center"><img
                                         src="" id="vphoto" class="img-responsive"
-                                        style="max-width: 150px" />
+                                        style="max-width: 100px" />
                                 </td>
                             </tr>
 
@@ -451,15 +453,179 @@
                             </tr>
                         </tbody>
                     </table>
+                    @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
+                        <div class="row mt-4">
+                            <div class="col-3">
+                                <button id="editDetailsBtn" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                                    data-bs-target="#editCustomer"><i class="fe fe-edit dropdown-item-icon"
+                                        style="color:white; font-weight: bold"></i> Edit Details</button>
+                            </div>
+
+
+                            <div class="col-3">
+                                <button id="changePlan" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                                    data-bs-target="#changeCustomerPlan"><i
+                                        class="fe fe-refresh-cw dropdown-item-icon"
+                                        style="color:white; font-weight: bold"></i> Change Plan</button>
+                            </div>
+                            <div class="col-3">
+                                <a id="suspendLink" href="#"
+                                    onclick="return confirm('Are you sure you want to suspend this customer?');">
+                                    <button class="btn btn-primary btn-sm"><i
+                                            class="fe fe-x-circle dropdown-item-icon"
+                                            style="color:white; font-weight: bold"></i> Suspend Account</button>
+                                </a>
+                            </div>
+                            <div class="col-3">
+                                <a id="activateLink" href="#"
+                                    onclick="return confirm('Are you sure you want to activate this customer?');">
+                                    <button class="btn btn-primary btn-sm"><i
+                                            class="fe fe-check-circle dropdown-item-icon"
+                                            style="color:white; font-weight: bold"></i> Activate Account</button>
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-                <div class="modal-footer">
+                {{-- <div class="modal-footer">
                     <button type="button" class="btn btn-outline-success ms-2"
                         data-bs-dismiss="modal">Close</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
 </section>
+
+
+@if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="editCustomer" style="width: 600px;">
+        <div class="offcanvas-body" data-simplebar>
+            <div class="offcanvas-header px-2 pt-0">
+                <h3 class="offcanvas-title" id="offcanvasExampleLabel"> Edit Customer Information</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <!-- card body -->
+            <div class="container">
+                <!-- form -->
+                <form class="needs-validation" novalidate method="post"
+                    action="{{ route('admin.updateCustomer') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <!-- form group -->
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input id="lastname" type="text" name="last_name" class="form-control"
+                                placeholder="Enter Last Name" required>
+                            <div class="invalid-feedback">Please provide last name.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">First Name <span class="text-danger">*</span></label>
+                            <input id="othernames" type="text" name="first_name" class="form-control"
+                                placeholder="Enter First Name" required>
+                            <div class="invalid-feedback">Please provide first name.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input id="email" type="email" name="email" class="form-control"
+                                placeholder="Enter Email" required>
+                            <div class="invalid-feedback">Please provide a valid email.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input id="phone" type="text" name="phone_number" class="form-control"
+                                placeholder="Enter Phone Number" required>
+                            <div class="invalid-feedback">Please provide a valid phone number.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Organization Name</label>
+                            <input id="organization" type="text" name="organization_name" class="form-control"
+                                placeholder="Enter Organization Name">
+                            <div class="invalid-feedback">Please provide a customer organization.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Contact Address</label>
+                            <textarea id="address" name="contact_address" class="form-control" placeholder="Enter Contact Address"
+                                rows="3" style="resize: none"></textarea>
+                            <div class="invalid-feedback">Please provide a contact address organization.</div>
+                        </div>
+
+                        <input id="myid" type="hidden" name="customer_id" class="form-control" required>
+
+                        <div class="col-md-12 border-bottom"></div>
+                        <!-- button -->
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary" type="submit">Save Changes</button>
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
+                                aria-label="Close">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="changeCustomerPlan" style="width: 600px;">
+        <div class="offcanvas-body" data-simplebar>
+            <div class="offcanvas-header px-2 pt-0">
+                <h3 class="offcanvas-title" id="offcanvasExampleLabel"> Change Customer Subscription Plan</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <!-- card body -->
+            <div class="container">
+                <!-- form -->
+                <form class="needs-validation" novalidate method="post"
+                    action="{{ route('admin.changeCustomerPlan') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <!-- form group -->
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Product <span class="text-danger">*</span></label>
+                            <select id="custProduct" name="product" class="form-control" data-width="100%" required>
+                                <option value="">Select Product</option>
+                                @foreach ($products as $prod)
+                                    <option value="{{ $prod->id }}">{{ $prod->product }} Plan</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select product.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Plan <span class="text-danger">*</span></label>
+                            <select id="custPlan" name="plan" class="form-control" data-width="100%" required>
+                                <option value="">Select Plan</option>
+                            </select>
+                            <div class="invalid-feedback">Please select plan.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Effective Date <span class="text-danger">*</span></label>
+                            <input id="date" type="date" name="effective_date" class="form-control"
+                                placeholder="Enter Effective Date" required>
+                            <div class="invalid-feedback">Please select effective date.</div>
+                        </div>
+
+                        <input id="myid" type="hidden" name="customer" class="form-control" required>
+
+                        <div class="col-md-12 border-bottom"></div>
+                        <!-- button -->
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary" type="submit">Change Customer Plan</button>
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
+                                aria-label="Close">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endif
 
 <script>
     document.getElementById("dashboard").classList.add('active');
