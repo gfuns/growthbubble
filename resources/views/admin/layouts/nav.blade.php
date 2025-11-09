@@ -93,6 +93,18 @@
                 </div>
             </li>
 
+            @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 8) == true)
+                <li class="nav-item">
+                    <div class="nav-divider"></div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link " id="tickets" href="">
+                        <i class="nav-icon bi bi-folder me-2"></i>
+                        Files
+                    </a>
+                </li>
+            @endif
 
 
             @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 7) == true)
@@ -108,14 +120,15 @@
                 </li>
             @endif
 
+
             @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 6) == true)
                 <li class="nav-item">
                     <div class="nav-divider"></div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse"
-                        data-bs-target="#navAdmin" aria-expanded="false" aria-controls="navAdmin">
+                    <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navAdmin"
+                        aria-expanded="false" aria-controls="navAdmin">
                         <i class="nav-icon fe fe-dollar-sign me-2"></i> Admin
                     </a>
                     <div id="navAdmin" class="collapse " data-bs-parent="#sideNavbar">
