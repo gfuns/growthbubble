@@ -11,6 +11,7 @@ use App\Models\OnboardingDetails;
 use App\Models\PlatformActivities;
 use App\Models\PlatformFeature;
 use App\Models\Product;
+use App\Models\ProductFeatures;
 use App\Models\Project;
 use App\Models\SubscriptionPlan;
 use App\Models\TaskActivities;
@@ -808,6 +809,85 @@ class AdminController extends Controller
         $product->description = $request->product_description;
         if ($product->save()) {
             toast('Product Information Updated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+
+        }
+    }
+
+    /**
+     * productFeatures
+     *
+     * @return void
+     */
+    public function productFeatures($id)
+    {
+        $product  = Product::find($id);
+        $features = ProductFeatures::where("product_id", $id)->get();
+        return view("admin.product_features", compact("product", "features"));
+    }
+
+    /**
+     * storeProductFeature
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeProductFeature(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_id'      => 'required',
+            'product_feature' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $feature             = new ProductFeatures;
+        $feature->product_id = $request->product_id;
+        $feature->feature    = $request->product_feature;
+        if ($feature->save()) {
+            toast('Product Feature Added Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+
+        }
+    }
+
+    /**
+     * updateProductFeature
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function updateProductFeature(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'feature_id'      => 'required',
+            'product_feature' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $feature          = ProductFeatures::find($request->feature_id);
+        $feature->feature = $request->product_feature;
+        if ($feature->save()) {
+            toast('Product Feature Updated Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');

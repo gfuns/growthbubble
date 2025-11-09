@@ -6,6 +6,7 @@ use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
 use App\Models\OnboardingDetails;
 use App\Models\Product;
+use App\Models\ProductFeatures;
 use App\Models\SubscriptionInfo;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
@@ -73,6 +74,12 @@ class OnboardingController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errors = $validator->errors();
+
+            if ($errors->has('email') || $errors->has('phone_number')) {
+                session()->flash('emailPhoneError', 'The email or phone number is already registered.');
+            }
+
             $errors = $validator->errors()->all();
             $errors = implode("<br>", $errors);
             toast($errors, 'error');
@@ -130,7 +137,8 @@ class OnboardingController extends Controller
     public function subscriptionPayment()
     {
         $subscription = SubscriptionInfo::where("user_id", Auth::user()->id)->first();
-        return view("payment", compact("subscription"));
+        $features     = ProductFeatures::where("product_id", $subscription->product_id)->get();
+        return view("payment", compact("subscription", "features"));
     }
 
     /**

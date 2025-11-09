@@ -27,7 +27,7 @@
         .logo-name {
             /* color:#495463; */
             font-weight: bolder;
-            margin-left: 10px;
+            /* margin-left: 10px; */
             font-size: 20px;
             line-height: 1em
                 /* #0040ff */
@@ -37,7 +37,7 @@
             background: #fff;
             border: 1px solid #E2E8F0;
             border-radius: 8px;
-            margin-top: 80px;
+            margin-top: 50px;
             margin-left: 50px;
             margin-right: 100px;
             padding: 20px
@@ -108,13 +108,21 @@
             </div>
 
             <div class="page-ath-header mb-3">
-                <div class="logo-name text-center mb-3">Your Online Marketing Team Starts Here...</div>
+                <div class="logo-name mb-3 text-left">Unlock unlimited marketing tasks for one flat monthly fee</div>
 
-                <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>Now you can
-                            finally
-                            make that dream happen by offloading your marketing tasks to our team of
-                            heroes.</strong></small></div>
+                <div class="mb-4" style="font-size: 19px; line-height:1em; max-width: 700px"><small><strong>Get
+                            started in 3 simple steps; create an account below and complete payment, complete onboarding
+                            and grant us access, send in your marketing task and watch our gurus get the job
+                            done.</strong></small></div>
             </div>
+
+            @if (Session::has('emailPhoneError'))
+                <div class="alert alert-dismissible fade show alert-danger" style="max-width: 700px"><a href="javascript:void(0)" class="close"
+                        data-dismiss="alert" aria-label="close" style="color:white">&nbsp;</a>
+                    It looks like we have met before, <a href="/login">Click Here</a> to login if you already have an account or try with a
+                    different email or phone number
+                </div>
+            @endif
 
             @if ($errors->has('regError'))
                 <div class="alert alert-dismissible fade show alert-danger"><a href="javascript:void(0)" class="close"
@@ -130,31 +138,31 @@
                     <div style="display: flex; gap: 20px; ">
                         <div class="input-item" style="width:100%">
                             {{-- <label style="font-size:12px; font-weight:bold">First Name <span style="color:red">*</span></label> --}}
-                            <input type="text" placeholder="Your First Name" class="input-bordered" name="first_name"
+                            <input type="text" placeholder="First Name" class="input-bordered" name="first_name"
                                 value="" data-msg-required="Required." required>
                         </div>
                         <div class="input-item" style="width:100%">
                             {{-- <label style="font-size:12px; font-weight:bold">Last Name <span style="color:red">*</span></label> --}}
-                            <input type="text" placeholder="Your Last Name" class="input-bordered" name="last_name"
+                            <input type="text" placeholder="Last Name" class="input-bordered" name="last_name"
                                 value="" data-msg-required="Required." required>
                         </div>
                     </div>
                     <div class="input-item">
                         {{-- <label style="font-size:12px; font-weight:bold">Email Address <span style="color:red">*</span></label> --}}
-                        <input type="email" placeholder="Your Email Address" class="input-bordered" name="email"
+                        <input type="email" placeholder="Email Address" class="input-bordered" name="email"
                             value=""data-msg-required="Required." data-msg-email="Enter valid email." required>
                     </div>
 
                     <div class="input-item">
                         {{-- <label style="font-size:12px; font-weight:bold">Phone Number <span style="color:red">*</span></label> --}}
-                        <input type="text" placeholder="Your Phone Number" class="input-bordered" name="phone_number"
+                        <input type="text" placeholder="Phone Number" class="input-bordered" name="phone_number"
                             value=""data-msg-required="Required." data-msg-email="Enter valid phone number."
                             required>
                     </div>
 
                     <div class="input-item">
                         {{-- <label style="font-size:12px; font-weight:bold">Business Name <span style="color:red">*</span></label> --}}
-                        <input type="text" placeholder="Your Company / Business Name" class="input-bordered"
+                        <input type="text" placeholder="Company / Business Name" class="input-bordered"
                             name="organization_name" value=""data-msg-required="Required."
                             data-msg-email="Enter company / business name." required>
                     </div>
@@ -186,8 +194,9 @@
                         <input name="terms" class="input-checkbox input-checkbox-md" id="agree"
                             type="checkbox" required="required"
                             data-msg-required="You should accept our terms and policy.">
-                        <label for="agree">I agree to the <a target="_blank" href="#">Terms</a>
-                            and <a target="_blank" href="#">Privacy
+                        <label for="agree">I agree to the <a target="_blank"
+                                href="https://growthbubbles.com/terms-of-service/">Terms</a>
+                            and <a target="_blank" href="https://growthbubbles.com/privacy-policy/">Privacy
                                 Policy</a>.</label>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block mt-4">Create Account</button>

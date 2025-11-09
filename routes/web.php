@@ -108,6 +108,12 @@ Route::group([
 
     Route::post('/updateProductPlan', [AdminController::class, 'updateProductPlan'])->name('admin.updateProductPlan');
 
+    Route::get('/product-features/{id}', [AdminController::class, 'productFeatures'])->name('admin.productFeatures');
+
+    Route::post('/storeProductFeature', [AdminController::class, 'storeProductFeature'])->name('admin.storeProductFeature');
+
+    Route::post('/updateProductFeature', [AdminController::class, 'updateProductFeature'])->name('admin.updateProductFeature');
+
     Route::get('/registered-customers', [AdminController::class, 'registeredCustomers'])->name('admin.customers');
 
     Route::get('/customer-websites/{id}', [AdminController::class, 'customerWebsites'])->name('admin.customerWebsites');

@@ -29,7 +29,7 @@
         .logo-name {
             /* color:#495463; */
             font-weight: bolder;
-            margin-left: 10px;
+            /* margin-left: 10px; */
             font-size: 20px;
             line-height: 1em
                 /* #0040ff */
@@ -62,7 +62,7 @@
             display: none;
         }
 
-        .display-price{
+        .display-price {
             padding: 15px 20px;
             background: white;
             border: 1px solid #ccc;
@@ -107,11 +107,11 @@
             </div>
 
             <div class="page-ath-header mb-3">
-                <div class="logo-name text-center mb-3">Add Payment Details</div>
+                <div class="logo-name mb-3">Add Payment Details</div>
 
-                <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>By providing your
+                {{-- <div class="text-center mb-3" style="font-size: 19px; line-height:1em"><small><strong>By providing your
                             card information, you allow Growth Bubbles to charge your card for future payments in
-                            accordance with our terms.</strong></small></div>
+                            accordance with our terms.</strong></small></div> --}}
             </div>
 
             <div class="alert alert-danger" id="card-errors" role="alert"></div>
@@ -137,7 +137,7 @@
 
                     <div class="input-item">
                         <label style="font-size:13px; font-weight:bold">Contact Address</label>
-                        <input id="address" type="text" placeholder="Your Contact Address" class="input-bordered"
+                        <input id="address" type="text" placeholder="Contact Address" class="input-bordered"
                             name="contact_address" value=""data-msg-required="Required."
                             data-msg-email="Enter contact address." required>
                     </div>
@@ -149,11 +149,11 @@
                     <div class="input-item text-left">
                         <input name="terms" class="input-checkbox input-checkbox-md" id="agree" type="checkbox"
                             required="required" data-msg-required="You should accept our terms and policy.">
-                        <label for="agree">I have read and agreed to the <a target="_blank" href="#">Terms</a>
-                            and <a target="_blank" href="#">Privacy
-                                Policies</a>.</label>
+                        <label for="agree">By proceeding, you authorise Growth Bubbles to charge your card for this
+                            transaction and for future recurring payments in accordance with our terms of service. You
+                            can cancel your service anytime.</a></label>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-3" id="submit-btn">Complete Sign Up
+                    <button type="submit" class="btn btn-primary btn-block mt-3" id="submit-btn">Complete Checkout
                         &nbsp;<i class="fas fa-chevron-circle-right"></i></button>
                 </form>
 
@@ -171,134 +171,34 @@
                     </div>
                     <div class="mb-3">
                         <div>
-                            <strong><span style="font-size:17px; color:black; font-weight:bold"><u>SELECTED PRODUCT/PLAN:</u>
+                            <strong><span style="font-size:17px; color:black; font-weight:bold"><u>SELECTED
+                                        PRODUCT/PLAN:</u>
                                     {{ $subscription->product->product }} > {{ $subscription->plan->plan }}
                                     Plan</span></strong>
                         </div>
                     </div>
 
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                                fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
+                    @foreach ($features as $feat)
+                        <div class="mb-2" style="display: flex; gap: 10px; ">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 16 16" fill="none">
+                                    <path
+                                        d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
+                                        fill="#0716AD"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                {{ $feat->feature }}
+                            </div>
                         </div>
-                        <div>
-                            1 Active Task.
-                        </div>
-                    </div>
-
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                                fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            1 Requestor
-                        </div>
-                    </div>
-
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            Avg 2-4 Business Day Turnaround
-                        </div>
-                    </div>
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            Recurring Tasks
-                        </div>
-                    </div>
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            Pro-Active Website Protection & Monitoring
-                        </div>
-                    </div>
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            Optimized WordPress Hosting
-                        </div>
-                    </div>
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            Hack Fix Guarantee
-                        </div>
-                    </div>
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            Growth Bubbles Marketing Toolkit
-                        </div>
-                    </div>
-                    <div class="mb-2" style="display: flex; gap: 10px; ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none">
-                                <path
-                                    d="M7.99998 0C3.59199 0 0 3.5921 0 8.00021C0 12.4083 3.59199 16.0004 7.99998 16.0004C12.408 16.0004 16 12.4083 16 8.00021C16 3.5921 12.408 0 7.99998 0ZM11.824 6.16017L7.28798 10.6963C7.17598 10.8083 7.02398 10.8723 6.86398 10.8723C6.70398 10.8723 6.55198 10.8083 6.43998 10.6963L4.17599 8.43223C3.94399 8.20022 3.94399 7.81621 4.17599 7.5842C4.40799 7.3522 4.79199 7.3522 5.02399 7.5842L6.86398 9.42425L10.976 5.31214C11.208 5.08014 11.592 5.08014 11.824 5.31214C12.056 5.54415 12.056 5.92016 11.824 6.16017Z"
-                                    fill="#0716AD"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            Concierge AI Inc Clara Copywriter
-                        </div>
-                    </div>
+                    @endforeach
 
                     <div class="mt-4 display-price">
-                        <span style="color: black; font-weight:bold; font-size:32px">&pound;{{ $subscription->plan->pricing }}</span> <sub><span style="color: black; font-weight:bold; font-size:15px">GBP Billed {{ $subscription->plan->frequency }}</span></sub>
+                        <span
+                            style="color: black; font-weight:bold; font-size:32px">&pound;{{ $subscription->plan->pricing }}</span>
+                        <sub><span style="color: black; font-weight:bold; font-size:15px">GBP Billed
+                                {{ $subscription->plan->frequency }}</span></sub>
                         <p style="color: black; font-size:13px">No Lock In Contract. Change Plan or Cancel Any Time.</p>
                     </div>
 
@@ -355,7 +255,8 @@
 
         // 3. Create card element
         const card = elements.create('card', {
-            style
+            style,
+            hidePostalCode: true
         });
         card.mount('#card-element');
 
