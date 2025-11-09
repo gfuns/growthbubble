@@ -99,8 +99,8 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">S/No</th>
-                                        <th scope="col">Customer Name</th>
-                                        <th scope="col">Task Title</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Customer</th>
                                         <th scope="col">Creator</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
@@ -110,10 +110,10 @@
                                     @foreach ($customerTasks as $cTask)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
+                                            <td class="align-middle">{{ $cTask->title }} </td>
                                             <td class="align-middle">
                                                 {{ $cTask->user->last_name . ', ' . $cTask->user->other_names }}
                                             </td>
-                                            <td class="align-middle">{{ $cTask->title }} </td>
                                             <td class="align-middle">{{ $cTask->creator() }}</td>
                                             <td>
                                                 @if ($cTask->status == 'queued' || $cTask->status == 'on hold')
@@ -191,6 +191,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navConcierge").classList.add('show');
     document.getElementById("tasks").classList.add('active');
 </script>
 

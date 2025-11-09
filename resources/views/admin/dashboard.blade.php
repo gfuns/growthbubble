@@ -376,8 +376,6 @@
     </div>
 
 
-
-
     <div class="modal fade" id="viewCustomer" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -456,14 +454,14 @@
                     @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
                         <div class="row mt-4">
                             <div class="col-3">
-                                <button id="editDetailsBtn" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                                <button id="editDetailsBtn" class="btn btn-primary btn-sm w-100" data-bs-toggle="offcanvas"
                                     data-bs-target="#editCustomer"><i class="fe fe-edit dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Edit Details</button>
                             </div>
 
 
                             <div class="col-3">
-                                <button id="changePlan" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                                <button id="changePlan" class="btn btn-primary btn-sm w-100" data-bs-toggle="offcanvas"
                                     data-bs-target="#changeCustomerPlan"><i
                                         class="fe fe-refresh-cw dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Change Plan</button>
@@ -471,7 +469,7 @@
                             <div class="col-3">
                                 <a id="suspendLink" href="#"
                                     onclick="return confirm('Are you sure you want to suspend this customer?');">
-                                    <button class="btn btn-primary btn-sm"><i
+                                    <button class="btn btn-primary btn-sm w-100"><i
                                             class="fe fe-x-circle dropdown-item-icon"
                                             style="color:white; font-weight: bold"></i> Suspend Account</button>
                                 </a>
@@ -479,7 +477,7 @@
                             <div class="col-3">
                                 <a id="activateLink" href="#"
                                     onclick="return confirm('Are you sure you want to activate this customer?');">
-                                    <button class="btn btn-primary btn-sm"><i
+                                    <button class="btn btn-primary btn-sm w-100"><i
                                             class="fe fe-check-circle dropdown-item-icon"
                                             style="color:white; font-weight: bold"></i> Activate Account</button>
                                 </a>

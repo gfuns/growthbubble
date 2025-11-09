@@ -53,10 +53,10 @@
                                     <!-- Table Head -->
                                     <thead class="table-light">
                                         <tr>
-                                            <th>#</th>
-                                            <th>Task Category</th>
+                                            <th width="5%">#</th>
+                                            <th width="85%">Task Category</th>
                                             @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 1) == true)
-                                                <th><i class="nav-icon bi bi-three-dots me-2"></i></th>
+                                                <th width="10%"><i class="nav-icon bi bi-three-dots me-2"></i></th>
                                             @endif
                                         </tr>
                                     </thead>
@@ -197,7 +197,7 @@
     </div>
 @endif
 <script type="text/javascript">
-    document.getElementById("platSettings").classList.add('show');
+    document.getElementById("navConcierge").classList.add('show');
     document.getElementById("categories").classList.add('active');
 </script>
 

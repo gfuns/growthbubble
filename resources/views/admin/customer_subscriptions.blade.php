@@ -156,6 +156,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navAdmin").classList.add('show');
     document.getElementById("subscriptions").classList.add('active');
 </script>
 

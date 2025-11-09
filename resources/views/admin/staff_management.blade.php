@@ -340,6 +340,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navTeam").classList.add('show');
     document.getElementById("staff").classList.add('active');
 </script>
 

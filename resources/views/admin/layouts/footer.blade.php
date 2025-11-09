@@ -286,6 +286,7 @@
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
+
             var modal = $(this)
             document.getElementById("vlastname").innerHTML = lastname;
             document.getElementById("vothernames").innerHTML = othernames;
@@ -299,10 +300,12 @@
             document.getElementById("vsubdate").innerHTML = subdate;
             document.getElementById("vrenewaldate").innerHTML = renewaldate;
             document.getElementById("vstatus").innerHTML = status;
-            if (activateLink) {
+
+
+            if (document.getElementById('activateLink')) {
                 document.getElementById("activateLink").href = "/portal/admin/activate-customer/" + myid;
             }
-            if (suspendLink) {
+            if (document.getElementById('suspendLink')) {
                 document.getElementById("suspendLink").href = "/portal/admin/suspend-customer/" + myid;
             }
 
@@ -355,6 +358,8 @@
             var description = button.data('description') // Extract info from data-* attributes
             var date = button.data('date') // Extract info from data-* attributes
             var status = button.data('status') // Extract info from data-* attributes
+            var myid = button.data('myid') // Extract info from data-* attributes
+            var customerid = button.data('customerid') // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
@@ -364,6 +369,23 @@
             document.getElementById("vdescription").innerHTML = description;
             document.getElementById("vdate").innerHTML = date;
             document.getElementById("vstatus").innerHTML = status;
+            if (closeProject) {
+                document.getElementById("closeProject").href = "/portal/admin/project/close/" + myid;
+            }
+
+            $("#editProjectBtn").data({
+                myid: myid,
+                customer: customerid,
+                title: title,
+                description: description,
+            });
+
+            $('#editProjectBtn').on('click', function() {
+                // Close the modal before opening the offcanvas
+                $('#viewProject').modal('hide');
+            });
+
+
         })
 
 

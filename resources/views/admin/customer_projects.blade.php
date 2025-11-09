@@ -90,21 +90,43 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">S/No</th>
-                                        <th scope="col">Customer Name</th>
-                                        <th scope="col">Project Title</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Customer</th>
                                         <th scope="col">Creator</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        {{-- <th scope="col">Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody class="text-dark">
                                     @foreach ($customerProjects as $cProj)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
-                                            <td class="align-middle">
+                                            <td class="align-middle" data-bs-toggle="modal"
+                                                data-bs-target="#viewProject" data-myid="{{ $cProj->id }}"
+                                                data-customerid="{{ $cProj->user_id }}"
+                                                data-customer="{{ $cProj->user->last_name . ', ' . $cProj->user->other_names }}"
+                                                data-title="{{ $cProj->project_title }}"
+                                                data-description="{{ $cProj->project_description }}"
+                                                data-date="{{ date_format($cProj->created_at, 'jS F, Y g:ia') }}"
+                                                data-status="{{ ucwords($cProj->status) }}" style="cursor: pointer">
+                                                {{ $cProj->project_title }} </td>
+                                           <td class="align-middle" data-bs-toggle="modal"
+                                                data-bs-target="#viewCustomer" data-myid="{{ $cProj->user->id }}"
+                                                data-othernames="{{ $cProj->user->other_names }}"
+                                                data-lastname="{{ $cProj->user->last_name }}"
+                                                data-email="{{ $cProj->user->email }}"
+                                                data-phone="{{ $cProj->user->phone_number }}"
+                                                data-organization="{{ $cProj->user->organization }}"
+                                                data-photo="{{ $cProj->user->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
+                                                data-product="{{ $cProj->user->selectedProduct() }}"
+                                                data-plan="{{ $cProj->user->selectedPlan() }}"
+                                                data-effectivedate="{{ $cProj->user->effectiveDate() }}"
+                                                data-expirydate="{{ $cProj->user->expiryDate() }}"
+                                                data-status="{{ $cProj->user->subStatus() }}"
+                                                data-address="{{ $cProj->user->contact_address ?? 'NIL' }}"
+                                                style="cursor: pointer">
                                                 {{ $cProj->user->last_name . ', ' . $cProj->user->other_names }}
                                             </td>
-                                            <td class="align-middle"> {{ $cProj->project_title }} </td>
                                             <td class="align-middle"> {{ $cProj->creator() }} </td>
                                             <td>
                                                 @if ($cProj->status == 'open')
@@ -114,7 +136,7 @@
                                                 @endif
                                             </td>
 
-                                            <td class="align-middle">
+                                            {{-- <td class="align-middle">
                                                 <div class="hstack gap-4">
                                                     <span class="dropdown dropstart">
                                                         <a class="btn btn-primary bg-light-primary text-primary btn-sm"
@@ -156,7 +178,7 @@
                                                         </span>
                                                     </span>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -237,13 +259,117 @@
                         </tr>
                     </tbody>
                 </table>
+
+                @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 4) == true)
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <button id="editProjectBtn" class="btn btn-primary btn-sm w-100"
+                                data-bs-toggle="offcanvas" data-bs-target="#updateProject"><i
+                                    class="fe fe-edit dropdown-item-icon" style="color:white; font-weight: bold"></i>
+                                Update Project</button>
+                        </div>
+
+
+                        <div class="col-6">
+                            <a id="closeProject" href="#"
+                                onclick="return confirm('Are you sure you want to close this project?');">
+                                <button class="btn btn-primary btn-sm w-100"><i
+                                        class="fe fe-x-circle dropdown-item-icon"
+                                        style="color:white; font-weight: bold"></i> Close Project</button>
+                            </a>
+                        </div>
+                    </div>
+                @endif
             </div>
-            <div class="modal-footer">
+            {{-- <div class="modal-footer">
                 <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="viewCustomer" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                        View Customer Information
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="">Last Name</td>
+                                <td class=""><span id="vlastname"></span></td>
+                                <td class="" rowspan="11" align="right" style="text-align: center"><img
+                                        src="" id="vphoto" class="img-responsive"
+                                        style="max-width: 100px" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="">First Name</td>
+                                <td class=""><span id="vothernames"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Email</td>
+                                <td class=""><span id="vemail"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Phone Number</td>
+                                <td class=""><span id="vphone"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Organization</td>
+                                <td class=""><span id="vorganization"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Contact Address</td>
+                                <td class=""><span id="vaddress"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Selected Product</td>
+                                <td class=""><span id="vproduct"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Subscribed Plan</td>
+                                <td class=""><span id="vplan"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Subsciption Date</td>
+                                <td class=""><span id="vsubdate"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Next Renewal Date</td>
+                                <td class=""><span id="vrenewaldate"></span></td>
+                            </tr>
+
+                            <tr>
+                                <td class="">Status</td>
+                                <td class=""><span id="vstatus"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 4) == true)
     <!-- offcanvas -->
@@ -365,6 +491,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navConcierge").classList.add('show');
     document.getElementById("projects").classList.add('active');
 </script>
 

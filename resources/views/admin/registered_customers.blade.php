@@ -28,13 +28,13 @@
                 </div>
 
 
-                @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 3) == true)
+                {{-- @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 3) == true)
                     <!-- button -->
                     <div>
                         <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasRight">Create New Customer Account</a>
                     </div>
-                @endif
+                @endif --}}
 
             </div>
         </div>
@@ -320,28 +320,28 @@
                 @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
                     <div class="row mt-4">
                         <div class="col-3">
-                            <button id="editDetailsBtn" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                            <button id="editDetailsBtn" class="btn btn-primary btn-sm w-100" data-bs-toggle="offcanvas"
                                 data-bs-target="#editCustomer"><i class="fe fe-edit dropdown-item-icon"
                                     style="color:white; font-weight: bold"></i> Edit Details</button>
                         </div>
 
 
                         <div class="col-3">
-                            <button id="changePlan" class="btn btn-primary btn-sm" data-bs-toggle="offcanvas"
+                            <button id="changePlan" class="btn btn-primary btn-sm w-100" data-bs-toggle="offcanvas"
                                 data-bs-target="#changeCustomerPlan"><i class="fe fe-refresh-cw dropdown-item-icon"
                                     style="color:white; font-weight: bold"></i> Change Plan</button>
                         </div>
                         <div class="col-3">
                             <a id="suspendLink" href="#"
                                 onclick="return confirm('Are you sure you want to suspend this customer?');">
-                                <button class="btn btn-primary btn-sm"><i class="fe fe-x-circle dropdown-item-icon"
+                                <button class="btn btn-primary btn-sm w-100"><i class="fe fe-x-circle dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Suspend Account</button>
                             </a>
                         </div>
                         <div class="col-3">
                             <a id="activateLink" href="#"
                                 onclick="return confirm('Are you sure you want to activate this customer?');">
-                                <button class="btn btn-primary btn-sm"><i
+                                <button class="btn btn-primary btn-sm w-100"><i
                                         class="fe fe-check-circle dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Activate Account</button>
                             </a>
@@ -356,7 +356,7 @@
     </div>
 </div>
 
-@if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 3) == true)
+{{-- @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 3) == true)
     <!-- offcanvas -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
         <div class="offcanvas-body" data-simplebar>
@@ -453,7 +453,7 @@
             </div>
         </div>
     </div>
-@endif
+@endif --}}
 
 
 @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
@@ -588,6 +588,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navCRM").classList.add('show');
     document.getElementById("customers").classList.add('active');
 </script>
 
