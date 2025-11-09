@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments("id");
             $table->integer("user_id")->unsigned();
             $table->text("subject");
+            $table->enum("priority", ["high", "medium", "low"]);
             $table->enum("status", ["open", "on hold", "closed"])->default("open");
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

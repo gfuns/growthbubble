@@ -187,8 +187,8 @@
                             <div class="d-inline-flex">
                                 <div class="form-check me-3">
                                     <input type="radio" id="regularTimeline" name="timeline"
-                                        class="form-check-input" value="regular timeline" />
-                                    <label class="form-check-label" for="regularTimeline">Regular Timeline</label>
+                                        class="form-check-input" value="immediately" />
+                                    <label class="form-check-label" for="regularTimeline">Immediately</label>
                                 </div>
                                 <div class="form-check">
                                     <input type="radio" id="laterSchedule" name="timeline"

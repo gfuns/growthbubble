@@ -246,15 +246,15 @@ class OnboardingController extends Controller
     public function pmSuccess()
     {
         toast('Payment Method Added Successfully.', 'success');
-        return redirect()->route("onboarding.instructions");
+        return redirect()->route("customer.dashboard");
     }
 
     /**
-     * websiteOne
+     * websites
      *
      * @return void
      */
-    public function websiteOne()
+    public function websites()
     {
         $onboardingData = OnboardingDetails::updateOrCreate(
             [
@@ -267,7 +267,7 @@ class OnboardingController extends Controller
 
         if ($onboardingData) {
             $data = OnboardingDetails::where("user_id", Auth::user()->id)->where("operation", "website 1")->first();
-            return view("website_information", compact("data"));
+            return view("customer.onboarding.websites", compact("data"));
         } else {
             toast('Something Went Wrong.', 'error');
             return back();
@@ -309,8 +309,7 @@ class OnboardingController extends Controller
         );
 
         if ($onboardingData) {
-            $website = 2;
-            return redirect()->route("onboarding.additionalWebsites", [$website]);
+            return redirect()->route("onboarding.lastpass");
         } else {
             toast('Something Went Wrong.', 'error');
             return back();
@@ -409,6 +408,7 @@ class OnboardingController extends Controller
             $user                    = Auth::user();
             $user->onboarding_status = "onboarded";
             $user->save();
+            toast('Onboarding Completed Successfully.', 'success');
             return redirect()->route("customer.dashboard");
         } else {
             toast('Something Went Wrong.', 'error');

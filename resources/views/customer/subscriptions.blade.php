@@ -51,12 +51,12 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">S/No</th>
-                                        <th scope="col">Selected Product</th>
-                                        <th scope="col">Selected Plan</th>
-                                        <th scope="col">Amount Paid</th>
-                                        <th scope="col">Effective Date</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Plan</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Date Paid</th>
                                         <th scope="col">Expiry Date</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Receipt</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-dark">
@@ -71,11 +71,7 @@
                                             <td class="align-middle">
                                                 {{ date_format(new DateTime($sub->expiry_date), 'jS F, Y') }} </td>
                                             <td>
-                                                @if ($sub->status == 'active')
-                                                    <span class="badge text-success bg-light-success">Active</span>
-                                                @else
-                                                    <span class="badge text-danger bg-light-danger">Terminated</span>
-                                                @endif
+                                                <a href=""><button class="btn btn-primary btn-xs">Download Receipt</button></a>
                                             </td>
 
                                         </tr>
@@ -106,6 +102,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navSettings").classList.add('show');
     document.getElementById("subscriptions").classList.add('active');
 </script>
 

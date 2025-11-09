@@ -50,6 +50,11 @@
                                 <span class="text-dark col-md-10">{{ $ticket->subject }}</span>
                             </div>
 
+                            <div class="mb-3 row">
+                                <label class="form-label text-dark col-md-2">Priority:</label>
+                                <span class="text-dark col-md-10">{{ ucwords($ticket->priority) }}</span>
+                            </div>
+
                             <div class="mb-3 ">
                                 <label class="form-label text-dark col-md-2">Date Created:</label>
                                 <span class="text-dark col-md-10">{{ $ticket->created_at->diffforhumans() }}</span>

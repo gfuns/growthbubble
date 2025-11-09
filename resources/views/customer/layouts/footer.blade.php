@@ -104,6 +104,10 @@
             dropdownParent: $('#taskAssignment')
         });
 
+        $('#priority').select2({
+            dropdownParent: $('#newTicket')
+        });
+
         $('#selProduct').select2({
             dropdownParent: $('#offcanvasRight')
         });

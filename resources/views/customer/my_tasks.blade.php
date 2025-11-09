@@ -188,6 +188,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navConcierge").classList.add('show');
     document.getElementById("tasks").classList.add('active');
 </script>
 

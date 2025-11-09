@@ -27,14 +27,14 @@ Route::group([
 ], function ($router) {
 
     Route::get('/', function () {
-        return view('welcome');
+        return view('customer.onboarding.instructions');
     })->name("onboarding.instructions");
 
     Route::get('/lastpass', function () {
-        return view('lastpass');
+        return view('customer.onboarding.lastpass');
     })->name("onboarding.lastpass");
 
-    Route::get('/website_one', [OnboardingController::class, 'websiteOne'])->name("onboarding.websiteOne");
+    Route::get('/website', [OnboardingController::class, 'websites'])->name("onboarding.websites");
 
     Route::post('/storeWebsite', [OnboardingController::class, 'storeWebsite'])->name("onboarding.storeWebsite");
 
@@ -53,7 +53,7 @@ Route::group([
 
 Route::group([
     'prefix'     => 'portal/customer',
-    'middleware' => ['webauthenticated', 'onboarded', 'g2fa'],
+    'middleware' => ['webauthenticated', 'g2fa'],
 
 ], function ($router) {
 

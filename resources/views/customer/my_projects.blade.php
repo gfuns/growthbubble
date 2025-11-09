@@ -323,6 +323,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navConcierge").classList.add('show');
     document.getElementById("projects").classList.add('active');
 </script>
 

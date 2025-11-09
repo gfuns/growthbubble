@@ -12,7 +12,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        My Tickets
+                        Support Tickets
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">
@@ -21,7 +21,7 @@
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                My Tickets
+                                Support Tickets
                             </li>
                         </ol>
                     </nav>
@@ -116,7 +116,8 @@
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}.</td>
                                             <td class="align-middle"><a
-                                                    href="{{ route('customer.ticketDetails', [$ticket->id]) }}" class="">{{ $ticket->subject }}</a>
+                                                    href="{{ route('customer.ticketDetails', [$ticket->id]) }}"
+                                                    class="">{{ $ticket->subject }}</a>
                                             </td>
                                             <td class="align-middle">{{ $ticket->lastReplier() }}</td>
                                             <td class="align-middle">
@@ -189,7 +190,7 @@
                     <div class="row">
                         <!-- form group -->
 
-                        <div class="mb-3 col-md-12">
+                        <div class="mb-3 col-12">
                             <!-- Title -->
                             <label class="form-label">Subject</label>
                             <input type="text" name="subject" id="" class="form-control text-dark"
@@ -198,8 +199,20 @@
                         </div>
 
                         <div class="mb-3 col-12">
+                            <!-- Title -->
+                            <label class="form-label d-block">Priority</label>
+                            <select id="priority" name="priority" class="form-select" style="width: 100%">
+                                <option value="">Priority</option>
+                                <option value="High">High </option>
+                                <option value="Medium">Medium </option>
+                                <option value="Low">Low </option>
+                            </select>
+                            <div class="invalid-feedback">Please select an option.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
                             <label class="form-label">Description </label>
-                            <div id="editor" style="height: 250px">
+                            <div id="editor" style="height: 200px">
                                 <p>&nbsp;</p>
                             </div>
                             <input type="hidden" name="description" id="hiddenContent">

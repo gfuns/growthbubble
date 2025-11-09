@@ -1,7 +1,7 @@
 <nav class="navbar-vertical navbar">
     <div class="vh-100" data-simplebar>
         <!-- Brand logo -->
-        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
+        <a class="navbar-brand" href="{{ route('customer.dashboard') }}">
             <h3 class="fw-bold"><img src="{{ asset('images/logo.png') }}" alt=""
                     style="filter: brightness(0) invert(1);"> <span style="color: white; margin-left: 15px">Growth
                     Bubble</span>
@@ -17,59 +17,52 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <div class="nav-divider"></div>
-            </li>
+            @if (Auth::user()->onboarding_status != 'onboarded')
+                <li class="nav-item">
+                    <div class="nav-divider"></div>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link " id="projects" href="{{ route('customer.projects') }}">
-                    <i class="nav-icon fe fe-briefcase me-2"></i>
-                    My Projects
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <div class="nav-divider"></div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link " id="tasks" href="{{ route('customer.tasks') }}">
-                    <i class="nav-icon fe fe-check-circle me-2"></i>
-                    My Tasks
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <div class="nav-divider"></div>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link " id="subscriptions" href="{{ route('customer.subscriptions') }}">
-                    <i class="nav-icon fe fe-dollar-sign me-2"></i>
-                    Payment History
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link " id="onboarding" href="{{ route('onboarding.instructions') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-person-walking" viewBox="0 0 16 16">
+                            <path
+                                d="M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0M6.44 3.752A.75.75 0 0 1 7 3.5h1.445c.742 0 1.32.643 1.243 1.38l-.43 4.083a1.8 1.8 0 0 1-.088.395l-.318.906.213.242a.8.8 0 0 1 .114.175l2 4.25a.75.75 0 1 1-1.357.638l-1.956-4.154-1.68-1.921A.75.75 0 0 1 6 8.96l.138-2.613-.435.489-.464 2.786a.75.75 0 1 1-1.48-.246l.5-3a.75.75 0 0 1 .18-.375l2-2.25Z" />
+                            <path
+                                d="M6.25 11.745v-1.418l1.204 1.375.261.524a.8.8 0 0 1-.12.231l-2.5 3.25a.75.75 0 1 1-1.19-.914zm4.22-4.215-.494-.494.205-1.843.006-.067 1.124 1.124h1.44a.75.75 0 0 1 0 1.5H11a.75.75 0 0 1-.531-.22Z" />
+                        </svg>
+                        {{-- <i class="nav-icon bi bi-person-walking me-2"></i> --}}
+                        &nbsp;Onboarding
+                    </a>
+                </li>
+            @endif
 
             <li class="nav-item">
                 <div class="nav-divider"></div>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " id="websites" href="{{ route('customer.submittedWebsites') }}">
-                    <i class="nav-icon fe fe-globe me-2"></i>
-                    Submitted Websites
+                <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navConcierge"
+                    aria-expanded="false" aria-controls="navConcierge">
+                    <i class="nav-icon bi bi-briefcase me-2"></i> Concierge
                 </a>
-            </li>
+                <div id="navConcierge" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
 
-            <li class="nav-item">
-                <div class="nav-divider"></div>
-            </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="projects" href="{{ route('customer.projects') }}">
+                                Projects
+                            </a>
+                        </li>
 
-            <li class="nav-item">
-                <a class="nav-link " id="tickets" href="{{ route('customer.tickets') }}">
-                    <i class="nav-icon fe fe-file-text me-2"></i>
-                    Tickets
-                </a>
+                        <li class="nav-item">
+                            <a class="nav-link " id="tasks" href="{{ route('customer.tasks') }}">
+                                Tasks
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
             </li>
 
             <li class="nav-item">
@@ -79,26 +72,54 @@
             <li class="nav-item">
                 <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navSettings"
                     aria-expanded="false" aria-controls="navSettings">
-                    <i class="nav-icon bi bi-gear-wide-connected me-2"></i> Account Settings
+                    <i class="nav-icon bi bi-person-bounding-box me-2"></i> Account
                 </a>
                 <div id="navSettings" class="collapse " data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
 
                         <li class="nav-item">
-                            <a class="nav-link " id="profile" href="{{ route('customer.viewProfile') }}">
-                                Profile Information
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
                             <a class="nav-link " id="billing" href="{{ route('customer.billing') }}">
-                                Billing Information
+                                Billing
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link " id="security" href="{{ route('customer.security') }}">
-                                Account Security
+                            <a class="nav-link " id="websites" href="{{ route('customer.submittedWebsites') }}">
+                                Websites
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " id="subscriptions" href="{{ route('customer.subscriptions') }}">
+                                Payment History
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <div class="nav-divider"></div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navFolder"
+                    aria-expanded="false" aria-controls="navFolder">
+                    <i class="nav-icon bi bi-folder me-2"></i> Files
+                </a>
+                <div id="navFolder" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+
+                        <li class="nav-item">
+                            <a class="nav-link " id="projects" href="">
+                                My Files
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " id="tasks" href="">
+                                Shared With Me
                             </a>
                         </li>
 
@@ -112,14 +133,22 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="{{ route('logout') }}"
-                    onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();">
-                    <i class="nav-icon fe fe-log-out me-2"></i> Logout
+                <a class="nav-link " id="tickets" href="{{ route('customer.tickets') }}">
+                    <i class="nav-icon bi bi-headset me-2"></i>
+                    Support Tickets
                 </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    {{ csrf_field() }}
-                </form>
+            </li>
+
+
+            <li class="nav-item">
+                <div class="nav-divider"></div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link " id="tickets" target="_blank" href="https://help.growthbubbles.com/">
+                    <i class="nav-icon fe fe-file-text me-2"></i>
+                    Help Docs
+                </a>
             </li>
         </ul>
         <!-- Card -->

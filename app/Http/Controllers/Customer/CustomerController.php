@@ -774,6 +774,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'subject'        => 'required',
             'description'    => 'required',
+            'priority'       => 'required',
             'attached_files' => 'nullable',
         ]);
 
@@ -786,9 +787,10 @@ class CustomerController extends Controller
         try {
             DB::beginTransaction();
 
-            $ticket          = new CustomerTickets;
-            $ticket->user_id = Auth::user()->id;
-            $ticket->subject = $request->subject;
+            $ticket           = new CustomerTickets;
+            $ticket->user_id  = Auth::user()->id;
+            $ticket->subject  = $request->subject;
+            $ticket->priority = $request->priority;
             $ticket->save();
 
             $comment            = new TicketResponses;

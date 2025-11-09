@@ -44,7 +44,7 @@
                         </li>
                         <li>Follow the on-screen instructions to create a secure LastPass account (if you don't have
                             one already).</li>
-                        <li>One logged in, use LastPass to securely share the relevant password with <a
+                        <li>Once logged in, use LastPass to securely share the relevant password with <a
                                 href="#">concierge@growthbubbles.com</a>.</li>
                     </ol>
                 </div>

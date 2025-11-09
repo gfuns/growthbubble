@@ -34,6 +34,12 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
 
+            <div class="alert alert-primary d-flex justify-content-between align-items-center">
+                <div>Want to add/remove websites?</div>
+                <div><button class="btn btn-primary btn-xs" data-bs-toggle="modal" data-bs-target="#newTicket">Submit a
+                        Support Request</button></div>
+            </div>
+
             <!-- Tab -->
             <div class="tab-content">
                 <!-- Tab pane -->
@@ -61,7 +67,7 @@
                                     @foreach ($websites as $web)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}.</td>
-                                            <td class="align-middle"> Website  {{ $loop->index + 1 }}</td>
+                                            <td class="align-middle"> Website {{ $loop->index + 1 }}</td>
                                             <td class="align-middle"> {{ $web->website_url }} </td>
                                             <td class="align-middle"> {{ $web->admin_url }} </td>
                                             <td class="align-middle"> {{ $web->username }} </td>
@@ -91,10 +97,90 @@
     </div>
 </section>
 
+<div class="modal fade" id="newTicket" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                    Submit New Ticket.
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form class="needs-validation" novalidate method="post" action="{{ route('customer.submitTicket') }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <!-- form group -->
+
+                        <div class="mb-3 col-12">
+                            <!-- Title -->
+                            <label class="form-label">Subject</label>
+                            <input type="text" name="subject" id="" class="form-control text-dark"
+                                placeholder="Subject">
+                            <div class="invalid-feedback">Please provide a response.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <!-- Title -->
+                            <label class="form-label d-block">Priority</label>
+                            <select id="priority" name="priority" class="form-select" style="width: 100%">
+                                <option value="">Priority</option>
+                                <option value="High">High </option>
+                                <option value="Medium">Medium </option>
+                                <option value="Low">Low </option>
+                            </select>
+                            <div class="invalid-feedback">Please select an option.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Description </label>
+                            <div id="editor" style="height: 200px">
+                                <p>&nbsp;</p>
+                            </div>
+                            <input type="hidden" name="description" id="hiddenContent">
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <!-- Title -->
+                            <label class="form-label">Attach Files</label>
+                            <input type="file" name="attached_files" id="" class="form-control text-dark"
+                                placeholder="Attached Files">
+                            <div class="invalid-feedback">Please provide a response.</div>
+                        </div>
+
+                        <div class="col-md-12 border-bottom"></div>
+                        <!-- button -->
+                        <div class="col-12 mt-4">
+                            <button id="submitbutton2" class="btn btn-success" type="submit">Submit Ticket</button>
+                            <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
+                                aria-label="Close">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">
+    document.getElementById("navSettings").classList.add('show');
     document.getElementById("websites").classList.add('active');
 </script>
 
+@endsection
+
+@section('customjs')
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    quill.on('text-change', function() {
+        document.getElementById('hiddenContent').value = quill.root.innerHTML;
+    });
+</script>
 @endsection

@@ -106,16 +106,6 @@
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label">Task Description <span class="text-danger">*</span></label>
-                            <div id="editor" style="min-height: 250px">
-                                <p>&nbsp;</p>
-                            </div>
-                            <input type="hidden" name="task_description" id="hiddenContent">
-                            <div class="invalid-feedback">Please provide a response.</div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
                             <label class="form-label d-block">What Type of Task is this? <span
                                     class="text-danger">*</span></label>
                             <div class="d-inline-flex">
@@ -127,19 +117,28 @@
                                             for="category{{ $taskCat->id }}">{{ $taskCat->category }}</label>
                                     </div>
                                 @endforeach
-                                <div class="form-check">
+                                {{-- <div class="form-check">
                                     <input type="radio" id="categoryUnsure" name="task_category"
                                         class="form-check-input" value="" />
-                                    <label class="form-check-label" for="categoryUnsure">Unsure</label>
-                                </div>
+                                    <label class="form-check-label" for="categoryUnsure">Others</label>
+                                </div> --}}
                             </div>
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label d-block">Is this a Recurring Task? <span
-                                    class="text-danger">*</span></label>
+                            <label class="form-label">Task Description <span class="text-danger">*</span></label>
+                            <div id="editor" style="min-height: 250px">
+                                <p>&nbsp;</p>
+                            </div>
+                            <input type="hidden" name="task_description" id="hiddenContent">
+                            <div class="invalid-feedback">Please provide a response.</div>
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <!-- Title -->
+                            <label class="form-label d-block">Recurring Task? <span class="text-danger">*</span></label>
                             <div class="d-inline-flex">
                                 <div class="form-check me-3">
                                     <input type="radio" id="recurringYes" name="recurring" class="form-check-input"
@@ -157,29 +156,32 @@
 
                         <div id="autopt1" class="mb-3 col-md-12" style="display: none">
                             <!-- Title -->
-                            <label class="form-label">If this is a Recurring Task, please specify the Recurring Task
-                                Date <span class="text-danger">*</span></label>
-                            <div class="day-picker-container">
+                            <label class="form-label">Specify which day of the week/month you want this task to be
+                                recurring <span class="text-danger">*</span></label>
+                            <input type="text" name="recurring_date" id="recurringDate"
+                                class="form-control text-dark"
+                                placeholder="Specify which day of the week/month you want this task to be recurring">
+
+                            {{-- <div class="day-picker-container">
                                 <input id="dayInput" type="text" name="recurring_date" id="recurringDate"
                                     class="form-control text-dark" placeholder="Select Recurring Task Date">
 
                                 <div class="day-picker" id="dayPicker">
                                     <div class="day-grid" id="dayGrid"></div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label d-block">Would you like us to fix this using standard timelines or
-                                schedule this for a later fix? <span class="text-danger">*</span></label>
+                            <label class="form-label d-block">When should we execute? <span class="text-danger">*</span></label>
                             <div class="d-inline-flex">
                                 <div class="form-check me-3">
                                     <input type="radio" id="regularTimeline" name="timeline"
-                                        class="form-check-input" value="regular timeline" />
-                                    <label class="form-check-label" for="regularTimeline">Regular Timeline</label>
+                                        class="form-check-input" value="immediately" checked />
+                                    <label class="form-check-label" for="regularTimeline">Immediately</label>
                                 </div>
                                 <div class="form-check">
                                     <input type="radio" id="laterSchedule" name="timeline"
@@ -193,8 +195,7 @@
                         <div id="autopt2" style="display: none">
                             <div class="mb-3 col-md-12">
                                 <!-- Title -->
-                                <label class="form-label">If you choose to Schedule this Task for later, please specify
-                                    the Schedule Date <span class="text-danger">*</span></label>
+                                <label class="form-label">Specify a schedule date <span class="text-danger">*</span></label>
                                 <input type="date" name="scheduled_date" id="scheduledDate"
                                     class="form-control text-dark" placeholder="">
                                 <div class="invalid-feedback">Please provide a response.</div>
@@ -234,7 +235,7 @@
                         <div class="col-md-8"></div>
                         <!-- button -->
                         <div class="col-12">
-                            <button class="btn btn-primary w-100" type="submit">Submit And Proceed</button>
+                            <button class="btn btn-primary w-100" type="submit">Submit Task</button>
 
                         </div>
                     </div>
@@ -248,6 +249,7 @@
 
 
 <script type="text/javascript">
+    document.getElementById("navConcierge").classList.add('show');
     document.getElementById("tasks").classList.add('active');
 </script>
 
@@ -297,6 +299,5 @@
             dayPicker.style.display = 'none';
         }
     });
-
 </script>
 @endsection

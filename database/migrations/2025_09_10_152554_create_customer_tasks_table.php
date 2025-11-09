@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('task_category')->unsigned()->nullable();
             $table->enum('recurring', ["yes", "no"])->default("no");
             $table->date('recurring_date')->nullable();
-            $table->enum('timeline', ["regular timeline", "scheduled for later"])->default("regular timeline");
+            $table->enum('timeline', ["immediately", "scheduled for later"])->default("immediately");
             $table->date('date_scheduled')->nullable();
             $table->enum('provided_access', ["yes", "no"])->default("yes");
             $table->text('attached_file')->nullable();
