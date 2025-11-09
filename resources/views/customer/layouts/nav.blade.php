@@ -112,13 +112,13 @@
                     <ul class="nav flex-column">
 
                         <li class="nav-item">
-                            <a class="nav-link " id="projects" href="">
+                            <a class="nav-link " id="projects" href="{{ route('customer.myFiles') }}">
                                 My Files
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link " id="tasks" href="">
+                            <a class="nav-link " id="tasks" href="{{ route('customer.sharedFiles') }}">
                                 Shared With Me
                             </a>
                         </li>

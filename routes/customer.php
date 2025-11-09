@@ -119,4 +119,10 @@ Route::group([
 
     Route::get('/close-ticket/{id}', [CustomerController::class, 'closeTicket'])->name('customer.closeTicket');
 
+    Route::get('/my-files', [CustomerController::class, 'myFiles'])->name('customer.myFiles');
+
+    Route::post('/uploadFile', [CustomerController::class, 'uploadFile'])->name('customer.uploadFile');
+
+    Route::get('/shared-files', [CustomerController::class, 'sharedFiles'])->name('customer.sharedFiles');
+
 });

@@ -897,6 +897,38 @@ class CustomerController extends Controller
     }
 
     /**
+     * myFiles
+     *
+     * @return void
+     */
+    public function myFiles()
+    {
+
+    }
+
+    /**
+     * uploadFile
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function uploadFile(Request $request)
+    {
+
+    }
+
+    /**
+     * sharedFiles
+     *
+     * @return void
+     */
+    public function sharedFiles()
+    {
+
+    }
+
+    /**
      * getMarkers Helper Function
      *
      * @param mixed lastRecord
