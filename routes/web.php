@@ -116,6 +116,8 @@ Route::group([
 
     Route::get('/registered-customers', [AdminController::class, 'registeredCustomers'])->name('admin.customers');
 
+    Route::get('/new-customer', [AdminController::class, 'newCustomer'])->name('admin.newCustomer');
+
     Route::get('/customer-websites/{id}', [AdminController::class, 'customerWebsites'])->name('admin.customerWebsites');
 
     Route::post('/updateWebsite', [AdminController::class, 'updateWebsite'])->name('admin.updateWebsite');

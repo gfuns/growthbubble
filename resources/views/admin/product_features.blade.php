@@ -19,7 +19,10 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Product Features</a>
+                                <a href="#">Settings</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Product Features
                             </li>
                         </ol>
                     </nav>
@@ -198,7 +201,7 @@
 @endif
 <script type="text/javascript">
     document.getElementById("platSettings").classList.add('show');
-    document.getElementById("plans").classList.add('active');
+    document.getElementById("product").classList.add('active');
 </script>
 
 @endsection

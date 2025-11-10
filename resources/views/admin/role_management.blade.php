@@ -19,7 +19,10 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Roles and Permissions</a>
+                                <a href="#">Team</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Roles and Permissions
                             </li>
                         </ol>
                     </nav>

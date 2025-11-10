@@ -19,7 +19,10 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Product Management</a>
+                                <a href="#">Settings</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Product Management
                             </li>
                         </ol>
                     </nav>

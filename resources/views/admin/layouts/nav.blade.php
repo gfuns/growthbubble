@@ -41,7 +41,7 @@
 
                             @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 3) == true)
                                 <li class="nav-item">
-                                    <a class="nav-link " id="newClient" href="">
+                                    <a class="nav-link " id="newClient" href="{{ route("admin.newCustomer") }}">
                                         New Client
                                     </a>
                                 </li>
@@ -99,7 +99,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="tickets" href="">
+                    <a class="nav-link " id="files" href="">
                         <i class="nav-icon bi bi-folder me-2"></i>
                         Files
                     </a>

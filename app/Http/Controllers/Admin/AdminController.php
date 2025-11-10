@@ -986,6 +986,18 @@ class AdminController extends Controller
     }
 
     /**
+     * newCustomer
+     *
+     * @return void
+     */
+    public function newCustomer()
+    {
+        $products = Product::all();
+
+        return view("admin.new_customer", compact("products"));
+    }
+
+    /**
      * registeredCustomers
      *
      * @return void
@@ -1034,15 +1046,15 @@ class AdminController extends Controller
     public function storeCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'last_name'         => 'required',
-            'first_name'        => 'required',
-            'email'             => 'required|unique:users',
-            'phone_number'      => 'required|unique:users',
-            'organization_name' => 'nullable',
-            'contact_address'   => 'nullable',
-            'product'           => 'nullable',
-            'plan'              => 'nullable',
-            'effective_date'    => 'nullable',
+            'last_name'       => 'required',
+            'first_name'      => 'required',
+            'email'           => 'required|unique:users',
+            'phone_number'    => 'required|unique:users',
+            'organization'    => 'nullable',
+            'contact_address' => 'nullable',
+            'product'         => 'nullable',
+            'plan'            => 'nullable',
+            'effective_date'  => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -1072,7 +1084,7 @@ class AdminController extends Controller
             $customer->phone_number    = $request->phone_number;
             $customer->password        = Hash::make($request->phone_number);
             $customer->role_id         = 0;
-            $customer->organization    = ucwords(strtolower($request->organization_name));
+            $customer->organization    = ucwords(strtolower($request->organization));
             $customer->contact_address = $request->contact_address;
             $customer->token           = Str::random(60);
             $customer->save();
@@ -1081,6 +1093,7 @@ class AdminController extends Controller
             $subscription->user_id        = $customer->id;
             $subscription->product_id     = $request->product;
             $subscription->plan_id        = $request->plan;
+            $subscription->pricing        = $plan->pricing;
             $subscription->effective_date = $request->effective_date;
             $subscription->expiry_date    = Carbon::now()->addMonths($duration);
             $subscription->save();
@@ -1092,7 +1105,7 @@ class AdminController extends Controller
             } catch (\Exception $e) {
                 report($e);
             } finally {
-                toast('Customer Account Created Successfully.', 'success');
+                toast('Client Account Created Successfully.', 'success');
                 return back();
             }
         } catch (\Throwable $e) {
@@ -1152,7 +1165,7 @@ class AdminController extends Controller
         $customer->contact_address = $request->contact_address;
         $customer->token           = Str::random(60);
         if ($customer->save()) {
-            toast('Customer Information Updated Successfully.', 'success');
+            toast('Client Information Updated Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');
@@ -1245,12 +1258,13 @@ class AdminController extends Controller
             $subscription->product_id     = $request->product;
             $subscription->plan_id        = $request->plan;
             $subscription->effective_date = $request->effective_date;
+            $subscription->pricing        = $plan->pricing;
             $subscription->expiry_date    = Carbon::now()->addMonths($duration);
             $subscription->save();
 
             DB::commit();
 
-            toast('Customer Subscription Activated Successfully.', 'success');
+            toast('Client Subscription Activated Successfully.', 'success');
             return back();
 
         } catch (\Exception $e) {
