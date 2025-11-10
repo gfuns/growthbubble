@@ -132,13 +132,13 @@ Route::group([
 
     Route::get('/activate-customer/{id}', [AdminController::class, 'activateCustomer'])->name('admin.activateCustomer');
 
-    Route::get('/task-categories', [AdminController::class, 'taskCategories'])->name('admin.taskCategories');
+    Route::get('/task-categories/{id}', [AdminController::class, 'taskCategories'])->name('admin.taskCategories');
 
     Route::post('/storeTaskCategory', [AdminController::class, 'storeTaskCategory'])->name('admin.storeTaskCategory');
 
     Route::post('/updateTaskCategory', [AdminController::class, 'updateTaskCategory'])->name('admin.updateTaskCategory');
 
-    Route::get('/projects', [AdminController::class, 'customerProjects'])->name('admin.customerProjects');
+    Route::get('/projects/{id}', [AdminController::class, 'customerProjects'])->name('admin.customerProjects');
 
     Route::post('/storeProject', [AdminController::class, 'storeProject'])->name('admin.storeProject');
 
@@ -146,9 +146,9 @@ Route::group([
 
     Route::get('/project/close/{id}', [AdminController::class, 'closeProject'])->name('admin.closeProject');
 
-    Route::get('/tasks', [AdminController::class, 'customerTasks'])->name('admin.customerTasks');
+    Route::get('/tasks/{id}', [AdminController::class, 'customerTasks'])->name('admin.customerTasks');
 
-    Route::get('/task/create', [AdminController::class, 'newCustomerTask'])->name('admin.newCustomerTask');
+    Route::get('/task/create/{id}', [AdminController::class, 'newCustomerTask'])->name('admin.newCustomerTask');
 
     Route::get('/task/details/{id}', [AdminController::class, 'taskDetails'])->name('admin.taskDetails');
 

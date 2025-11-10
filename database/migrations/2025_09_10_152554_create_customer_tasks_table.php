@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('customer_tasks', function (Blueprint $table) {
             $table->increments("id");
+            $table->integer("product_id")->unsigned();
             $table->integer("user_id")->unsigned();
             $table->integer("project_id")->unsigned()->nullable();
             $table->string('title');
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->integer('assigned_by')->unsigned()->nullable();
             $table->integer('assigned_to')->unsigned()->nullable();
             $table->timestamps();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->foreign('creator')->references('id')->on('users')->onDelete('cascade');

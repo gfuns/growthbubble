@@ -41,7 +41,7 @@
 
                             @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 3) == true)
                                 <li class="nav-item">
-                                    <a class="nav-link " id="newClient" href="{{ route("admin.newCustomer") }}">
+                                    <a class="nav-link " id="newClient" href="{{ route('admin.newCustomer') }}">
                                         New Client
                                     </a>
                                 </li>
@@ -53,45 +53,51 @@
                 </li>
             @endif
 
-            <li class="nav-item">
-                <div class="nav-divider"></div>
-            </li>
+            @foreach (app('product')->products() as $prod)
+                <li class="nav-item">
+                    <div class="nav-divider"></div>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navConcierge"
-                    aria-expanded="false" aria-controls="navConcierge">
-                    <i class="nav-icon bi bi-briefcase me-2"></i> Concierge
-                </a>
-                <div id="navConcierge" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse"
+                        data-bs-target="#navProduct{{ $prod->id }}" aria-expanded="false"
+                        aria-controls="navProduct{{ $prod->id }}">
+                        <i class="nav-icon bi bi-briefcase me-2"></i> {{ $prod->product }}
+                    </a>
+                    <div id="navProduct{{ $prod->id }}" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
 
-                        @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 4) == true)
-                            <li class="nav-item">
-                                <a class="nav-link " id="projects" href="{{ route('admin.customerProjects') }}">
-                                    Projects
-                                </a>
-                            </li>
-                        @endif
+                            @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 4) == true)
+                                <li class="nav-item">
+                                    <a class="nav-link " id="projects{{ $prod->id }}"
+                                        href="{{ route('admin.customerProjects', [$prod->id]) }}">
+                                        Projects
+                                    </a>
+                                </li>
+                            @endif
 
-                        @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 5) == true)
-                            <li class="nav-item">
-                                <a class="nav-link " id="tasks" href="{{ route('admin.customerTasks') }}">
-                                    Tasks
-                                </a>
-                            </li>
-                        @endif
+                            @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 5) == true)
+                                <li class="nav-item">
+                                    <a class="nav-link " id="tasks{{ $prod->id }}"
+                                        href="{{ route('admin.customerTasks', [$prod->id]) }}">
+                                        Tasks
+                                    </a>
+                                </li>
+                            @endif
 
-                        @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 1) == true)
-                            <li class="nav-item">
-                                <a class="nav-link " id="categories" href="{{ route('admin.taskCategories') }}">
-                                    Task Categories
-                                </a>
-                            </li>
-                        @endif
+                            @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 1) == true)
+                                <li class="nav-item">
+                                    <a class="nav-link " id="categories{{ $prod->id }}"
+                                        href="{{ route('admin.taskCategories', [$prod->id]) }}">
+                                        Task Categories
+                                    </a>
+                                </li>
+                            @endif
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endforeach
 
             @if (\App\Http\Controllers\MenuController::allowAccess(Auth::user()->role_id, 8) == true)
                 <li class="nav-item">

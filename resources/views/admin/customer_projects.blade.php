@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Customer Projects')
+@section('title', env('APP_NAME') . ' | Projects')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -12,7 +12,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        Customer Projects
+                        Projects
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">
@@ -21,10 +21,10 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Concierge</a>
+                                <a href="#">{{ $product->product }}</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Customer Projects
+                                Projects
                             </li>
                         </ol>
                     </nav>
@@ -94,7 +94,7 @@
                                     <tr>
                                         <th scope="col">S/No</th>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Customer</th>
+                                        <th scope="col">Client</th>
                                         <th scope="col">Creator</th>
                                         <th scope="col">Status</th>
                                         {{-- <th scope="col">Action</th> --}}
@@ -113,7 +113,7 @@
                                                 data-date="{{ date_format($cProj->created_at, 'jS F, Y g:ia') }}"
                                                 data-status="{{ ucwords($cProj->status) }}" style="cursor: pointer">
                                                 {{ $cProj->project_title }} </td>
-                                           <td class="align-middle" data-bs-toggle="modal"
+                                            <td class="align-middle" data-bs-toggle="modal"
                                                 data-bs-target="#viewCustomer" data-myid="{{ $cProj->user->id }}"
                                                 data-othernames="{{ $cProj->user->other_names }}"
                                                 data-lastname="{{ $cProj->user->last_name }}"
@@ -237,22 +237,22 @@
                 <table class="table table-bordered text-dark">
                     <tbody>
                         <tr>
-                            <td class=""><b>Customer Name</b></td>
-                            <td class=""><span id="vcustomer"></span></td>
-                        </tr>
-
-                        <tr>
-                            <td class=""><b>Project Title</b></td>
+                            <td class=""><b>Title</b></td>
                             <td class=""><span id="vtitle"></span></td>
                         </tr>
 
                         <tr>
-                            <td class=""><b>Project Description</b></td>
+                            <td class=""><b>Client</b></td>
+                            <td class=""><span id="vcustomer"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class=""><b>Description</b></td>
                             <td class=""><span id="vdescription"></span></td>
                         </tr>
 
                         <tr>
-                            <td class=""><b>Project Status</b></td>
+                            <td class=""><b>Status</b></td>
                             <td class=""><span id="vstatus"></span></td>
                         </tr>
 
@@ -293,85 +293,84 @@
 
 
 <div class="modal fade" id="viewCustomer" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                        View Customer Information
-                    </h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                    View Customer Information
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="">Last Name</td>
-                                <td class=""><span id="vlastname"></span></td>
-                                <td class="" rowspan="11" align="right" style="text-align: center"><img
-                                        src="" id="vphoto" class="img-responsive"
-                                        style="max-width: 100px" />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="">First Name</td>
-                                <td class=""><span id="vothernames"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Email</td>
-                                <td class=""><span id="vemail"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Phone Number</td>
-                                <td class=""><span id="vphone"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Organization</td>
-                                <td class=""><span id="vorganization"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Contact Address</td>
-                                <td class=""><span id="vaddress"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Selected Product</td>
-                                <td class=""><span id="vproduct"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Subscribed Plan</td>
-                                <td class=""><span id="vplan"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Subsciption Date</td>
-                                <td class=""><span id="vsubdate"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Next Renewal Date</td>
-                                <td class=""><span id="vrenewaldate"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Status</td>
-                                <td class=""><span id="vstatus"></span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
+                </button>
             </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="">Last Name</td>
+                            <td class=""><span id="vlastname"></span></td>
+                            <td class="" rowspan="11" align="right" style="text-align: center"><img
+                                    src="" id="vphoto" class="img-responsive" style="max-width: 100px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">First Name</td>
+                            <td class=""><span id="vothernames"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Email</td>
+                            <td class=""><span id="vemail"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Phone Number</td>
+                            <td class=""><span id="vphone"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Organization</td>
+                            <td class=""><span id="vorganization"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Contact Address</td>
+                            <td class=""><span id="vaddress"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Selected Product</td>
+                            <td class=""><span id="vproduct"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Subscribed Plan</td>
+                            <td class=""><span id="vplan"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Subsciption Date</td>
+                            <td class=""><span id="vsubdate"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Next Renewal Date</td>
+                            <td class=""><span id="vrenewaldate"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Status</td>
+                            <td class=""><span id="vstatus"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
+</div>
 
 
 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 4) == true)
@@ -417,6 +416,9 @@
                                 style="resize: none" rows="5"></textarea>
                             <div class="invalid-feedback">Please provide project description.</div>
                         </div>
+
+                        <input id="myid" type="hidden" name="product_id" value="{{ $product->id }}"
+                            class="form-control" required>
 
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->
@@ -494,8 +496,9 @@
 
 
 <script type="text/javascript">
-    document.getElementById("navConcierge").classList.add('show');
-    document.getElementById("projects").classList.add('active');
+    const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("projects" + productId).classList.add('active');
 </script>
 
 @endsection

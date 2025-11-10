@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Task Categories')
+@section('title', env('APP_NAME') . ' | Categories')
 
 
 <!-- Container fluid -->
@@ -11,7 +11,7 @@
             <!-- Page header -->
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
-                    <h1 class="mb-0 h3 fw-bold">Task Categories</h1>
+                    <h1 class="mb-0 h3 fw-bold">Categories</h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -19,7 +19,7 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Task Categories</a>
+                                <a href="#">Categories</a>
                             </li>
                         </ol>
                     </nav>
@@ -28,7 +28,7 @@
                 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 1) == true)
                     <div>
                         <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasRight">Add New Task Category</a>
+                            data-bs-target="#offcanvasRight">Add New Category</a>
 
                     </div>
                 @endif
@@ -44,7 +44,7 @@
                 <div>
                     <div class="tab-content" id="tabContent">
                         <!-- Tab -->
-                        <div class="tab-pane fade show active" id="all-orders" role="tabpanel"
+                        <div class="tab-pane fade show active mb-5" id="all-orders" role="tabpanel"
                             aria-labelledby="all-orders-tab">
                             <div class="table-responsive" style="min-height:200px">
                                 <!-- Table -->
@@ -94,17 +94,19 @@
                                                 @endif
                                             </tr>
                                         @endforeach
-
-                                        @if (count($taskcategories) < 1)
-                                            <tr>
-                                                <td colspan="3">
-                                                    <center>No Record Found</center>
-                                                </td>
-                                            </tr>
-                                        @endif
-
                                     </tbody>
                                 </table>
+
+                                @if (count($taskcategories) < 1)
+                                    <div class="col-xl-12 col-12 job-items job-empty">
+                                        <div class="text-center mt-4"><i class="bi bi-emoji-frown"
+                                                style="font-size: 48px"></i>
+                                            <h3 class="mt-2">No Record Found</h3>
+                                            <div class="mt-2 text-muted"> There are no task categories found.
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
 
 
@@ -144,10 +146,13 @@
                             <div class="invalid-feedback">Please provide category.</div>
                         </div>
 
+                        <input id="myid" type="hidden" name="product_id" value="{{ $product->id }}"
+                            class="form-control" required>
+
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->
                         <div class="col-12 mt-4">
-                            <button class="btn btn-primary" type="submit">Save Task Category</button>
+                            <button class="btn btn-primary" type="submit">Save Category</button>
                             <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
                                 aria-label="Close">Cancel</button>
                         </div>
@@ -197,8 +202,9 @@
     </div>
 @endif
 <script type="text/javascript">
-    document.getElementById("navConcierge").classList.add('show');
-    document.getElementById("categories").classList.add('active');
+    const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("categories" + productId).classList.add('active');
 </script>
 
 @endsection

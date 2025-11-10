@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Customer Tasks')
+@section('title', env('APP_NAME') . ' | Tasks')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -12,7 +12,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        Customer Tasks
+                        Tasks
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">
@@ -21,10 +21,10 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Concierge</a>
+                                <a href="#">{{ $product->product }}</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Customer Tasks
+                                Tasks
                             </li>
                         </ol>
                     </nav>
@@ -34,7 +34,7 @@
                 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 5) == true)
                     <!-- button -->
                     <div>
-                        <a href="{{ route('admin.newCustomerTask') }}" class="btn btn-primary btn-sm me-2">Create New
+                        <a href="{{ route('admin.newCustomerTask', [$product->id]) }}" class="btn btn-primary btn-sm me-2">Create New
                             Task</a>
                     </div>
                 @endif
@@ -194,8 +194,9 @@
 
 
 <script type="text/javascript">
-    document.getElementById("navConcierge").classList.add('show');
-    document.getElementById("tasks").classList.add('active');
+    const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("tasks" + productId).classList.add('active');
 </script>
 
 @endsection

@@ -1281,10 +1281,11 @@ class AdminController extends Controller
      *
      * @return void
      */
-    public function taskCategories()
+    public function taskCategories($id)
     {
-        $taskcategories = TaskCategory::all();
-        return view("admin.task_categories", compact("taskcategories"));
+        $taskcategories = TaskCategory::where("product_id", $id)->get();
+        $product        = Product::find($id);
+        return view("admin.task_categories", compact("taskcategories", "product"));
     }
 
     /**
@@ -1297,7 +1298,8 @@ class AdminController extends Controller
     public function storeTaskCategory(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'required',
+            'category'   => 'required',
+            'product_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -1307,8 +1309,9 @@ class AdminController extends Controller
             return back();
         }
 
-        $category           = new TaskCategory;
-        $category->category = $request->category;
+        $category             = new TaskCategory;
+        $category->product_id = $request->product_id;
+        $category->category   = $request->category;
         if ($category->save()) {
             toast('Task Category Created Successfully.', 'success');
             return back();
@@ -1356,12 +1359,14 @@ class AdminController extends Controller
      *
      * @return void
      */
-    public function customerProjects()
+    public function customerProjects($id)
     {
         $status = request()->status;
         $search = request()->search;
 
         $query = Project::query();
+
+        $query->where("product_id", $id);
 
         if (isset(request()->search)) {
             $query->where(function ($param) use ($search) {
@@ -1380,8 +1385,9 @@ class AdminController extends Controller
         $marker           = $this->getMarkers($lastRecord, request()->page);
         $customerProjects = $query->paginate(50);
         $customers        = User::where("role_id", 0)->get();
+        $product          = Product::find($id);
 
-        return view("admin.customer_projects", compact("customerProjects", "customers", "search", "status", "marker", "lastRecord"));
+        return view("admin.customer_projects", compact("customerProjects", "customers", "product", "search", "status", "marker", "lastRecord"));
     }
 
     /**
@@ -1397,6 +1403,7 @@ class AdminController extends Controller
             'customer'            => 'required',
             'project_title'       => 'required',
             'project_description' => 'required',
+            'product_id'          => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -1410,6 +1417,7 @@ class AdminController extends Controller
             DB::beginTransaction();
 
             $project                      = new Project;
+            $project->product_id          = $request->product_id;
             $project->user_id             = $request->customer;
             $project->project_title       = $request->project_title;
             $project->project_description = $request->project_description;
@@ -1511,13 +1519,15 @@ class AdminController extends Controller
      *
      * @return void
      */
-    public function customerTasks()
+    public function customerTasks($id)
     {
         $status    = request()->status;
         $search    = request()->search;
         $recurring = request()->recurring;
 
         $query = CustomerTasks::query();
+
+        $query->where("product_id", $id);
 
         if (isset(request()->search)) {
             $query->where(function ($param) use ($search) {
@@ -1544,8 +1554,9 @@ class AdminController extends Controller
         $marker        = $this->getMarkers($lastRecord, request()->page);
         $customerTasks = $query->paginate(50);
         $customers     = User::where("role_id", 0)->get();
+        $product       = Product::find($id);
 
-        return view("admin.customer_tasks", compact("customerTasks", "customers", "search", "status", "marker", "lastRecord"));
+        return view("admin.customer_tasks", compact("customerTasks", "customers", "product", "search", "status", "marker", "lastRecord"));
     }
 
     /**
@@ -1573,6 +1584,7 @@ class AdminController extends Controller
             'project'          => 'nullable',
             'customer'         => 'required',
             'title'            => 'required',
+            'product_id'       => 'required',
             'task_description' => 'required',
             'task_category'    => 'required',
             'recurring'        => 'required',
@@ -1594,6 +1606,7 @@ class AdminController extends Controller
             DB::beginTransaction();
 
             $task                   = new CustomerTasks;
+            $project->product_id    = $request->product_id;
             $task->user_id          = $request->customer;
             $task->project_id       = $request->project;
             $task->title            = $request->title;
@@ -1971,6 +1984,16 @@ class AdminController extends Controller
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
+    }
+
+    /**
+     * products
+     *
+     * @return void
+     */
+    public function products()
+    {
+        return Product::all();
     }
 
     /**

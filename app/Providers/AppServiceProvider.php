@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Providers;
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
@@ -32,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
             });
 
             return $this;
+        });
+
+        $this->app->singleton('product', function ($app) {
+            return new AdminController();
         });
     }
 }

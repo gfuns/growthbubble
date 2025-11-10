@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->increments("id");
+            $table->integer("product_id")->unsigned();
             $table->integer("user_id")->unsigned();
             $table->string('project_title');
             $table->text('project_description')->nullable();
             $table->integer('creator')->unsigned();
             $table->enum('status', ["open", "closed"])->default("open");
             $table->timestamps();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('creator')->references('id')->on('users')->onDelete('cascade');
         });

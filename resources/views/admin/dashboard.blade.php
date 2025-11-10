@@ -45,7 +45,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('admin.customerTasks') }}?status=in progress">
+                    <a href="{{ route('admin.customerTasks', [1]) }}?status=in progress">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Ongoing Tasks</h4>
@@ -63,7 +63,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('admin.customerTasks') }}?status=queued">
+                    <a href="{{ route('admin.customerTasks', [1]) }}?status=queued">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Queued Tasks</h4>
@@ -81,7 +81,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('admin.customerTasks') }}?recurring=yes">
+                    <a href="{{ route('admin.customerTasks', [1]) }}?recurring=yes">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Recurring Tasks</h4>
@@ -99,7 +99,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('admin.customerTasks') }}?status=completed">
+                    <a href="{{ route('admin.customerTasks', [1]) }}?status=completed">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Completed Tasks</h4>
