@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountCreationMail as AccountCreationMail;
 use App\Mail\CustomerCreationMail as CustomerCreationMail;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Mail;
 use Session;
 
@@ -2002,6 +2004,17 @@ class AdminController extends Controller
         $startDate = request()->start_date;
         $endDate   = request()->end_date;
 
+        $params = [
+            'draftCount'   => Invoice::where("status", "draft")->count(),
+            'draftSum'     => Invoice::where("status", "draft")->sum("amount"),
+            'dueCount'     => Invoice::where("status", "due")->count(),
+            'dueSum'       => Invoice::where("status", "due")->sum("amount"),
+            'overdueCount' => Invoice::where("status", "overdue")->count(),
+            'overdueSum'   => Invoice::where("status", "overdue")->sum("amount"),
+            'invCount'     => Invoice::count(),
+            'invSum'       => Invoice::sum("amount"),
+        ];
+
         $query = Invoice::query();
 
         if (isset(request()->search)) {
@@ -2034,7 +2047,8 @@ class AdminController extends Controller
 
         $products  = Product::all();
         $customers = User::where("role_id", 0)->get();
-        return view("admin.customer_payments", compact("invoices", "customers", "products", "lastRecord", "marker", "search", "product", "status", "startDate", "endDate"));
+
+        return view("admin.customer_payments", compact("invoices", "customers", "products", "lastRecord", "marker", "search", "product", "status", "startDate", "endDate", "params"));
     }
 
     /**
@@ -2074,6 +2088,17 @@ class AdminController extends Controller
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
+    }
+
+    /**
+     * downloadInvoice
+     *
+     * @return void
+     */
+    public function downloadInvoice()
+    {
+        $filename = "Payments_" . strtotime(now()) . ".xlsx";
+        return Excel::download(new ExportInvoice(), $filename);
     }
 
     /**

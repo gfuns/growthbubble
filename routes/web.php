@@ -164,6 +164,8 @@ Route::group([
 
     Route::post('/storeInvoice', [AdminController::class, 'storeInvoice'])->name('admin.storeInvoice');
 
+    Route::get('/downloadInvoice', [AdminController::class, 'downloadInvoice'])->name('admin.downloadInvoice');
+
     Route::get('/tickets', [AdminController::class, 'customerTickets'])->name('admin.customerTickets');
 
     Route::get('/ticket/details/{id}', [AdminController::class, 'ticketDetails'])->name('admin.ticketDetails');

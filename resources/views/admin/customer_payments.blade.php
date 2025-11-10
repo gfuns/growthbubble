@@ -49,9 +49,9 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Draft</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["draftCount"], 0) }} Invoice(s) in Draft</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["draftSum"], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -62,9 +62,9 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Due</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["dueCount"], 0) }} Invoice(s) in Due</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["dueSum"], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -75,9 +75,9 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) Created</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["invCount"], 0) }} Invoice(s) Created</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["invSum"], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -88,9 +88,9 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Overdue</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["overdueCount"], 0) }} Invoice(s) in Overdue</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["overdueSum"], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="col-6 col-lg-1">
                                     <!-- form select -->
-                                    <button class="btn btn-primary btn-md"><i class="bi bi-cloud-download"></i></button>
+                                    <a href="{{ route("admin.downloadInvoice") }}"><button type="button" class="btn btn-primary btn-md"><i class="bi bi-cloud-download"></i></button></a>
                                 </div>
                             </div>
                         </form>
