@@ -66,7 +66,10 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Create New Task</a>
+                                <a href="#">{{ $product->product }}</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Create New Task
                             </li>
                         </ol>
                     </nav>
@@ -74,7 +77,8 @@
             </div>
         </div>
     </div>
-    <form id="taskForm" method="POST" action="{{ route('admin.storeTask') }}" class="needs-validation" novalidate enctype="multipart/form-data">
+    <form id="taskForm" method="POST" action="{{ route('admin.storeTask') }}" class="needs-validation" novalidate
+        enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="offset-xl-1 col-xl-10 col-lg-10 col-md-12 col-12">
@@ -115,16 +119,6 @@
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label">Task Description <span class="text-danger">*</span></label>
-                            <div id="editor" style="min-height: 250px">
-                                <p>&nbsp;</p>
-                            </div>
-                            <input type="hidden" name="task_description" id="hiddenContent">
-                            <div class="invalid-feedback">Please provide a response.</div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
                             <label class="form-label d-block">What Type of Task is this? <span
                                     class="text-danger">*</span></label>
                             <div class="d-inline-flex">
@@ -136,12 +130,17 @@
                                             for="category{{ $taskCat->id }}">{{ $taskCat->category }}</label>
                                     </div>
                                 @endforeach
-                                <div class="form-check">
-                                    <input type="radio" id="categoryUnsure" name="task_category"
-                                        class="form-check-input" value="" />
-                                    <label class="form-check-label" for="categoryUnsure">Unsure</label>
-                                </div>
                             </div>
+                            <div class="invalid-feedback">Please provide a response.</div>
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <!-- Title -->
+                            <label class="form-label">Task Description <span class="text-danger">*</span></label>
+                            <div id="editor" style="min-height: 250px">
+                                <p>&nbsp;</p>
+                            </div>
+                            <input type="hidden" name="task_description" id="hiddenContent">
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
@@ -166,28 +165,33 @@
 
                         <div id="autopt1" class="mb-3 col-md-12" style="display: none">
                             <!-- Title -->
-                            <label class="form-label">If this is a Recurring Task, please specify the Recurring Task
-                                Date <span class="text-danger">*</span></label>
-                            <div class="day-picker-container">
+                            <label class="form-label">Specify which day of the week/month you want this task to be
+                                recurring <span class="text-danger">*</span></label>
+
+                            <input type="text" name="recurring_date" id="recurringDate"
+                                class="form-control text-dark"
+                                placeholder="Specify which day of the week/month you want this task to be recurring">
+
+                            {{-- <div class="day-picker-container">
                                 <input id="dayInput" type="text" name="recurring_date" id="recurringDate"
                                     class="form-control text-dark" placeholder="Select Recurring Task Date">
 
                                 <div class="day-picker" id="dayPicker">
                                     <div class="day-grid" id="dayGrid"></div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label d-block">Would you like us to fix this using standard timelines or
-                                schedule this for a later fix? <span class="text-danger">*</span></label>
+                            <label class="form-label d-block">When should we execute? <span
+                                    class="text-danger">*</span></label>
                             <div class="d-inline-flex">
                                 <div class="form-check me-3">
                                     <input type="radio" id="regularTimeline" name="timeline"
-                                        class="form-check-input" value="immediately" />
+                                        class="form-check-input" value="immediately" checked />
                                     <label class="form-check-label" for="regularTimeline">Immediately</label>
                                 </div>
                                 <div class="form-check">
@@ -202,8 +206,8 @@
                         <div id="autopt2" style="display: none">
                             <div class="mb-3 col-md-12">
                                 <!-- Title -->
-                                <label class="form-label">If you choose to Schedule this Task for later, please specify
-                                    the Schedule Date <span class="text-danger">*</span></label>
+                                <label class="form-label">Specify a schedule date <span
+                                        class="text-danger">*</span></label>
                                 <input type="date" name="scheduled_date" id="scheduledDate"
                                     class="form-control text-dark" placeholder="">
                                 <div class="invalid-feedback">Please provide a response.</div>
@@ -238,7 +242,8 @@
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
-
+                        <input id="myid" type="hidden" name="product_id" value="{{ $product->id }}"
+                            class="form-control" required>
                         <!-- button -->
                         <div class="col-md-8"></div>
                         <!-- button -->
@@ -257,15 +262,35 @@
 
 
 <script type="text/javascript">
-    document.getElementById("tasks").classList.add('active');
+    const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("tasks" + productId).classList.add('active');
 </script>
 
 @endsection
 
 @section('customjs')
 
-
 <script>
+    $('#customer').change(function() {
+        var customerId = $(this).val();
+        $('#project').html(
+            '<option value="">Fetching data, please wait...</option>'); // Show "Fetching data" message
+        $.ajax({
+            url: "/ajax/get-projects/" + customerId,
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                var options = "<option value=''>Select Customer Projects</option>";
+                $.each(data, function(key, value) {
+                    options += "<option value='" + key + "'>" + value + "</option>";
+                });
+                $('#project').html(options);
+            }
+        });
+    });
+
+
     var quill = new Quill('#editor', {
         theme: 'snow'
     });
@@ -278,6 +303,8 @@
         alert(quill.root.innerHTML);
         document.querySelector('#hiddenContent').value = quill.root.innerHTML;
     });
+
+
 
     const dayInput = document.getElementById('dayInput');
     const dayPicker = document.getElementById('dayPicker');
@@ -305,24 +332,6 @@
         if (!e.target.closest('.day-picker-container')) {
             dayPicker.style.display = 'none';
         }
-    });
-
-    $('#customer').change(function() {
-        var customerId = $(this).val();
-        $('#project').html(
-            '<option value="">Fetching data, please wait...</option>'); // Show "Fetching data" message
-        $.ajax({
-            url: "/ajax/get-projects/" + customerId,
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                var options = "<option value=''>Select Customer Projects</option>";
-                $.each(data, function(key, value) {
-                    options += "<option value='" + key + "'>" + value + "</option>";
-                });
-                $('#project').html(options);
-            }
-        });
     });
 </script>
 @endsection

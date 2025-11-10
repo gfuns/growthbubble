@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Customer Task Details')
+@section('title', env('APP_NAME') . ' | Task Details')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -10,7 +10,7 @@
             <!-- Page header -->
             <div class="border-bottom pb-4 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
-                    <h1 class="mb-0 h3 fw-bold">Customer Task Details </h1>
+                    <h1 class="mb-0 h3 fw-bold">Task Details </h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -18,7 +18,10 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Customer Task Details</a>
+                                <a href="#">{{ $product->product }}</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                Task Details
                             </li>
                         </ol>
                     </nav>
@@ -310,232 +313,243 @@
             </div>
         </div>
     </div>
-    </div>
-</section>
-
-<script type="text/javascript">
-    document.getElementById("tasks").classList.add('active');
-</script>
-
-@endsection
 
 
-<div class="modal fade" id="viewActivity" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-        <div class="modal-body">
-            <p id="activity"></p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
-        </div>
-    </div>
-</div>
-</div>
 
-@if (Auth::user()->role_id == 1)
-<div class="modal fade" id="taskAssignment" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                    Assign Task To Team Member
-                </h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-                <form class="needs-validation" novalidate method="post"
-                    action="{{ route('admin.assignTask') }}">
-                    @csrf
-                    <div class="row">
-                        <!-- form group -->
-
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Select Team Member </label>
-                            <select id="teamMember" name="team_member" class="form-control" data-width="100%"
-                                required>
-                                <option value="">Select Team Member</option>
-                                @foreach ($staffList as $staff)
-                                    <option value="{{ $staff->id }}">
-                                        {{ $staff->last_name . ' ' . $staff->other_names }}</option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback">Please select team member.</div>
-                        </div>
-
-                        <input type="hidden" name="task_id" value="{{ $task->id }}"
-                            class="form-control text-dark" required>
-
-                        <div class="col-md-12 border-bottom"></div>
-                        <!-- button -->
-                        <div class="col-12 mt-4">
-                            <button id="submitbutton2" class="btn btn-success" type="submit">Assign
-                                Task</button>
-                            <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
-                                aria-label="Close">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-
+    <div class="modal fade" id="viewActivity" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p id="activity"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success ms-2"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-@endif
 
-<div class="modal fade" id="updateTask" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
-<div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                Manage Task Information
-            </h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
 
-            <form class="needs-validation" novalidate method="post" action="{{ route('admin.updateTask') }}"
-                enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <!-- form group -->
-
-                    <div class="mb-3 col-md-6 col-12">
-                        <label class="form-label">Priority </label>
-                        <select id="taskPriority" name="task_priority" class="form-control" data-width="100%"
-                            required>
-                            <option value="">Select Task Priority</option>
-                            <option value="normal">Normal</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
-                        <div class="invalid-feedback">Please select task priority.</div>
+    @if (Auth::user()->role_id == 1)
+        <div class="modal fade" id="taskAssignment" tabindex="-1" role="dialog"
+            aria-labelledby="newCatgoryLabel">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                            Assign Task To Team Member
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
 
-                    <div class="mb-3 col-md-6 col-12">
-                        <label class="form-label">Task Status </label>
-                        <select id="taskStat" name="task_status" class="form-control" data-width="100%"
-                            required>
-                            <option value="">Select Task Priority</option>
-                            <option value="queued">Queued</option>
-                            <option value="in progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                            <option value="on hold">On Hold</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                        <div class="invalid-feedback">Please select task status.</div>
-                    </div>
+                        <form class="needs-validation" novalidate method="post"
+                            action="{{ route('admin.assignTask') }}">
+                            @csrf
+                            <div class="row">
+                                <!-- form group -->
 
-                    <div class="mb-3 col-12">
-                        <label class="form-label">Comment </label>
-                        <div id="editor" style="height: 250px">
-                            <p>&nbsp;</p>
-                        </div>
-                        <input type="hidden" name="comment" id="hiddenContent">
+                                <div class="mb-3 col-12">
+                                    <label class="form-label">Select Team Member </label>
+                                    <select id="teamMember" name="team_member" class="form-control"
+                                        data-width="100%" required>
+                                        <option value="">Select Team Member</option>
+                                        @foreach ($staffList as $staff)
+                                            <option value="{{ $staff->id }}">
+                                                {{ $staff->last_name . ' ' . $staff->other_names }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">Please select team member.</div>
+                                </div>
 
-                        <div class="invalid-feedback">Please select team member.</div>
-                    </div>
+                                <input type="hidden" name="task_id" value="{{ $task->id }}"
+                                    class="form-control text-dark" required>
 
-                    <div class="mb-3 col-md-12">
-                        <!-- Title -->
-                        <label class="form-label">Attach Files</label>
-                        <input type="file" name="attached_files" id=""
-                            class="form-control text-dark" placeholder="Attached Files">
-                        <div class="invalid-feedback">Please provide a response.</div>
-                    </div>
+                                <div class="col-md-12 border-bottom"></div>
+                                <!-- button -->
+                                <div class="col-12 mt-4">
+                                    <button id="submitbutton2" class="btn btn-success" type="submit">Assign
+                                        Task</button>
+                                    <button type="button" class="btn btn-outline-success ms-2"
+                                        data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
 
-                    <input type="hidden" name="task_id" value="{{ $task->id }}"
-                        class="form-control text-dark" required>
-
-                    <div class="col-md-12 border-bottom"></div>
-                    <!-- button -->
-                    <div class="col-12 mt-4">
-                        <button id="submitbutton2" class="btn btn-success" type="submit">Submit Task
-                            Update</button>
-                        <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
-                            aria-label="Close">Cancel</button>
                     </div>
                 </div>
-            </form>
+            </div>
+        </div>
+    @endif
 
+    <div class="modal fade" id="updateTask" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                        Manage Task Information
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form class="needs-validation" novalidate method="post"
+                        action="{{ route('admin.updateTask') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <!-- form group -->
+
+                            <div class="mb-3 col-md-6 col-12">
+                                <label class="form-label">Priority </label>
+                                <select id="taskPriority" name="task_priority" class="form-control"
+                                    data-width="100%" required>
+                                    <option value="">Select Task Priority</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                                <div class="invalid-feedback">Please select task priority.</div>
+                            </div>
+
+                            <div class="mb-3 col-md-6 col-12">
+                                <label class="form-label">Task Status </label>
+                                <select id="taskStat" name="task_status" class="form-control" data-width="100%"
+                                    required>
+                                    <option value="">Select Task Priority</option>
+                                    <option value="queued">Queued</option>
+                                    <option value="in progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="on hold">On Hold</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                                <div class="invalid-feedback">Please select task status.</div>
+                            </div>
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Comment </label>
+                                <div id="editor" style="height: 250px">
+                                    <p>&nbsp;</p>
+                                </div>
+                                <input type="hidden" name="comment" id="hiddenContent">
+
+                                <div class="invalid-feedback">Please select team member.</div>
+                            </div>
+
+                            <div class="mb-3 col-md-12">
+                                <!-- Title -->
+                                <label class="form-label">Attach Files</label>
+                                <input type="file" name="attached_files" id=""
+                                    class="form-control text-dark" placeholder="Attached Files">
+                                <div class="invalid-feedback">Please provide a response.</div>
+                            </div>
+
+                            <input type="hidden" name="task_id" value="{{ $task->id }}"
+                                class="form-control text-dark" required>
+
+                            <div class="col-md-12 border-bottom"></div>
+                            <!-- button -->
+                            <div class="col-12 mt-4">
+                                <button id="submitbutton2" class="btn btn-success" type="submit">Submit Task
+                                    Update</button>
+                                <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
+                                    aria-label="Close">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
-<div class="modal fade" id="viewConversations" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
-<div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                Conversations For This Task Are Below:
-            </h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" style="height: 650px;">
 
-            <div class="scrollable-card-body">
 
-                @foreach ($conversations as $chat)
-                    @if (Auth::user()->id == $chat->user_id)
-                        <!-- My message -->
-                        <div class="d-flex justify-content-end mb-3">
-                            <div class="p-2 rounded bg-success text-white" style="max-width: 75%;">
-                                @php echo $chat->comment; @endphp
-                            </div>
-                        </div>
+    <div class="modal fade" id="viewConversations" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                        Conversations For This Task Are Below:
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="height: 650px;">
 
-                        @if (isset($chat->uploaded_file))
-                            <div class="d-flex justify-content-end mb-3">
-                                <div class="rounded border" style="max-width: 20%;">
-                                    <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
-                                        class="img-fluid rounded" alt="Shared Image">
+                    <div class="scrollable-card-body">
+
+                        @foreach ($conversations as $chat)
+                            @if (Auth::user()->id == $chat->user_id)
+                                <!-- My message -->
+                                <div class="d-flex justify-content-end mb-3">
+                                    <div class="p-2 rounded bg-success text-white" style="max-width: 75%;">
+                                        @php echo $chat->comment; @endphp
+                                    </div>
                                 </div>
-                            </div>
-                        @endif
-                    @else
-                        <!-- Other person's message -->
-                        <div class="d-flex mb-3">
-                            <img src="{{ $chat->user->profile_photo ?? 'https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg' }}"
-                                class="rounded-circle me-2" alt="User" style="height: 35px; width:35px">
-                            <div>
-                                <h6 class="mb-1 small fw-bold">
-                                    {{ $chat->user->last_name . ' ' . $chat->user->other_names }}</h6>
-                                <div class="p-2 rounded bg-light border" style="max-width: 75%;">
-                                    @php echo $chat->comment; @endphp
-                                </div>
-                            </div>
-                        </div>
 
-                        @if (isset($chat->uploaded_file))
-                            <div class="d-flex mb-3">
-                                <div class="rounded border" style="margin-left: 45px; max-width: 20%;">
-                                    <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
-                                        class="img-fluid rounded" alt="Shared Image">
+                                @if (isset($chat->uploaded_file))
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <div class="rounded border" style="max-width: 20%;">
+                                            <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
+                                                class="img-fluid rounded" alt="Shared Image">
+                                        </div>
+                                    </div>
+                                @endif
+                            @else
+                                <!-- Other person's message -->
+                                <div class="d-flex mb-3">
+                                    <img src="{{ $chat->user->profile_photo ?? 'https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg' }}"
+                                        class="rounded-circle me-2" alt="User" style="height: 35px; width:35px">
+                                    <div>
+                                        <h6 class="mb-1 small fw-bold">
+                                            {{ $chat->user->last_name . ' ' . $chat->user->other_names }}</h6>
+                                        <div class="p-2 rounded bg-light border" style="max-width: 75%;">
+                                            @php echo $chat->comment; @endphp
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        @endif
-                    @endif
-                @endforeach
 
-                {{-- <div class="card-footer bg-white">
+                                @if (isset($chat->uploaded_file))
+                                    <div class="d-flex mb-3">
+                                        <div class="rounded border" style="margin-left: 45px; max-width: 20%;">
+                                            <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
+                                                class="img-fluid rounded" alt="Shared Image">
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+                        @endforeach
+
+                        {{-- <div class="card-footer bg-white">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Type a message...">
                     <button class="btn btn-primary">Send</button>
                 </div>
                 </div> --}}
 
-            </div>
+                    </div>
 
-            {{-- <div class="modal-footer">
+                    {{-- <div class="modal-footer">
             <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
             </div> --}}
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
+
+</section>
+
+<script type="text/javascript">
+    const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("tasks" + productId).classList.add('active');
+</script>
+
+@endsection
+
+
 @section('customjs')
 <script>
     var quill = new Quill('#editor', {

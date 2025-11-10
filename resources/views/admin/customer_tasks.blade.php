@@ -34,7 +34,8 @@
                 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 5) == true)
                     <!-- button -->
                     <div>
-                        <a href="{{ route('admin.newCustomerTask', [$product->id]) }}" class="btn btn-primary btn-sm me-2">Create New
+                        <a href="{{ route('admin.newCustomerTask', [$product->id]) }}"
+                            class="btn btn-primary btn-sm me-2">Create New
                             Task</a>
                     </div>
                 @endif
@@ -106,15 +107,33 @@
                                         <th scope="col">Customer</th>
                                         <th scope="col">Creator</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        {{-- <th scope="col">Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody class="text-dark">
                                     @foreach ($customerTasks as $cTask)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
-                                            <td class="align-middle">{{ $cTask->title }} </td>
                                             <td class="align-middle">
+                                                <a href="{{ route('admin.taskDetails', [$cTask->id]) }}">
+                                                    {{ $cTask->title }}
+                                                </a>
+                                            </td>
+                                            <td class="align-middle" data-bs-toggle="modal"
+                                                data-bs-target="#viewCustomer" data-myid="{{ $cTask->user->id }}"
+                                                data-othernames="{{ $cTask->user->other_names }}"
+                                                data-lastname="{{ $cTask->user->last_name }}"
+                                                data-email="{{ $cTask->user->email }}"
+                                                data-phone="{{ $cTask->user->phone_number }}"
+                                                data-organization="{{ $cTask->user->organization }}"
+                                                data-photo="{{ $cTask->user->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
+                                                data-product="{{ $cTask->user->selectedProduct() }}"
+                                                data-plan="{{ $cTask->user->selectedPlan() }}"
+                                                data-effectivedate="{{ $cTask->user->effectiveDate() }}"
+                                                data-expirydate="{{ $cTask->user->expiryDate() }}"
+                                                data-status="{{ $cTask->user->subStatus() }}"
+                                                data-address="{{ $cTask->user->contact_address ?? 'NIL' }}"
+                                                style="cursor: pointer">
                                                 {{ $cTask->user->last_name . ', ' . $cTask->user->other_names }}
                                             </td>
                                             <td class="align-middle">{{ $cTask->creator() }}</td>
@@ -134,7 +153,7 @@
                                                 @endif
                                             </td>
 
-                                            <td class="align-middle">
+                                            {{-- <td class="align-middle">
                                                 <div class="hstack gap-4">
                                                     <span class="dropdown dropstart">
                                                         <a class="btn btn-primary bg-light-primary text-primary btn-sm"
@@ -152,7 +171,7 @@
                                                         </span>
                                                     </span>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -191,6 +210,85 @@
     </div>
 </section>
 
+<div class="modal fade" id="viewCustomer" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                    View Customer Information
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="">Last Name</td>
+                            <td class=""><span id="vlastname"></span></td>
+                            <td class="" rowspan="11" align="right" style="text-align: center"><img
+                                    src="" id="vphoto" class="img-responsive" style="max-width: 100px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="">First Name</td>
+                            <td class=""><span id="vothernames"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Email</td>
+                            <td class=""><span id="vemail"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Phone Number</td>
+                            <td class=""><span id="vphone"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Organization</td>
+                            <td class=""><span id="vorganization"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Contact Address</td>
+                            <td class=""><span id="vaddress"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Selected Product</td>
+                            <td class=""><span id="vproduct"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Subscribed Plan</td>
+                            <td class=""><span id="vplan"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Subsciption Date</td>
+                            <td class=""><span id="vsubdate"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Next Renewal Date</td>
+                            <td class=""><span id="vrenewaldate"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class="">Status</td>
+                            <td class=""><span id="vstatus"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">

@@ -1564,11 +1564,12 @@ class AdminController extends Controller
      *
      * @return void
      */
-    public function newCustomerTask()
+    public function newCustomerTask($id)
     {
-        $taskCategories = TaskCategory::all();
+        $taskCategories = TaskCategory::where("product_id", $id)->get();
         $customers      = User::where("role_id", 0)->get();
-        return view("admin.new_customer_task", compact("taskCategories", "customers"));
+        $product        = Product::find($id);
+        return view("admin.new_customer_task", compact("taskCategories", "customers", "product"));
     }
 
     /**
@@ -1606,7 +1607,7 @@ class AdminController extends Controller
             DB::beginTransaction();
 
             $task                   = new CustomerTasks;
-            $project->product_id    = $request->product_id;
+            $task->product_id       = $request->product_id;
             $task->user_id          = $request->customer;
             $task->project_id       = $request->project;
             $task->title            = $request->title;
@@ -1633,7 +1634,7 @@ class AdminController extends Controller
             DB::commit();
 
             toast('Customer Task Created Successfully.', 'success');
-            return redirect()->route("admin.customerTasks");
+            return redirect()->route("admin.customerTasks", [$task->product_id]);
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
@@ -1655,7 +1656,8 @@ class AdminController extends Controller
         $staffList     = User::where("role_id", ">", 1)->get();
         $activities    = TaskActivities::orderBy("id", "desc")->where("task_id", $id)->get();
         $conversations = TaskConversation::where("task_id", $id)->get();
-        return view("admin.task_details", compact("task", "staffList", "activities", "conversations"));
+        $product       = Product::find($id);
+        return view("admin.task_details", compact("task", "staffList", "activities", "conversations", "product"));
     }
 
     /**
