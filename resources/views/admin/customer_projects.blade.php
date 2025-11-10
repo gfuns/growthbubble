@@ -276,7 +276,7 @@
                         <div class="col-6">
                             <a id="closeProject" href="#"
                                 onclick="return confirm('Are you sure you want to close this project?');">
-                                <button class="btn btn-primary btn-sm w-100"><i
+                                <button class="btn btn-danger btn-sm w-100"><i
                                         class="fe fe-x-circle dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Close Project</button>
                             </a>

@@ -373,7 +373,7 @@
             document.getElementById("vdescription").innerHTML = description;
             document.getElementById("vdate").innerHTML = date;
             document.getElementById("vstatus").innerHTML = status;
-            if (closeProject) {
+            if (document.getElementById('closeProject')) {
                 document.getElementById("closeProject").href = "/portal/admin/project/close/" + myid;
             }
 
