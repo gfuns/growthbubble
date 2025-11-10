@@ -10,6 +10,13 @@
         color:white;
         padding: 5px;
     }
+    .receipt{
+        font-size: 15px;
+        border-radius:55%;
+        background:#c3ccdb;
+        padding: 8px;
+        margin-right: 10px;
+    }
 </style>
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -195,7 +202,6 @@
                                 style="font-size:14px">
                                 <thead class="table-light">
                                     <tr>
-                                        <th scope="col">SNo.</th>
                                         <th scope="col">Invoice Name</th>
                                         <th scope="col">Invoice Number</th>
                                         <th scope="col">Client</th>
@@ -207,9 +213,9 @@
                                 <tbody class="text-dark">
                                     @foreach ($invoices as $inv)
                                         <tr>
-                                            <td class="align-middle">{{ $loop->index + 1 }}</td>
                                             <td class="align-middle">
-                                                 {{ $inv->name() }} Invoice
+                                                 <span class="receipt"><a href="{{ route("admin.downloadInvReceipt", [$inv->id]) }}"><i class="bi bi-receipt"></i></a></span>
+                                                {{ $inv->name() }} Invoice
                                             </td>
                                             <td class="align-middle"> {{ $inv->invoice_number }} </td>
                                             <td class="align-middle">

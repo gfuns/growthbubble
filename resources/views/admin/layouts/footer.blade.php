@@ -468,6 +468,68 @@
             document.getElementById("activity").innerHTML = activity;
         })
 
+        $('#uploadedFileModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var model = button.data('model') // Extract info from data-* attributes
+            var myid = button.data('myid') // Extract info from data-* attributes
+            var uploadedfile = button.data('uploadedfile') // Extract info from data-* attributes
+            var extension = button.data('filetype') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            var container = document.getElementById('uploadedFileContent');
+            container.innerHTML = ''; // Clear previous content
+
+
+            if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
+                // Image
+                var img = document.createElement('img');
+                img.src = uploadedfile;
+                img.className = 'img-fluid';
+                container.appendChild(img);
+            } else if (extension === 'pdf') {
+                // PDF
+                var iframe = document.createElement('iframe');
+                iframe.src = uploadedfile;
+                iframe.width = '100%';
+                iframe.height = '500px';
+                iframe.style.border = 'none';
+                container.appendChild(iframe);
+            } else if (['xls', 'xlsx', 'csv', 'ppt', 'pptx'].includes(extension)) {
+                // Office files via Google Docs Viewer
+                var iframe = document.createElement('iframe');
+                iframe.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(uploadedfile) +
+                    '&embedded=true';
+                iframe.width = '100%';
+                iframe.height = '500px';
+                iframe.style.border = 'none';
+                container.appendChild(iframe);
+            } else {
+                // Fallback: download link
+                var a = document.createElement('a');
+                a.href = uploadedfile;
+                a.textContent = 'Download File';
+                a.target = '_blank';
+                container.appendChild(a);
+            }
+
+
+            // document.getElementById("downloadDocBtn").href = uploadedfile;
+            document.getElementById("deleteDocBtn").href = "/portal/admin/deleteFile/" + myid;
+            document.getElementById("downloadDocBtn").href = "/portal/admin/downloadFile/" + myid;
+        })
+
+        $('#fileComment').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var model = button.data('model') // Extract info from data-* attributes
+            var comment = button.data('comment') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+            var modal = $(this)
+            document.getElementById("comment").innerHTML = comment;
+        })
+
         $('#copyPlanURL').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var model = button.data('model') // Extract info from data-* attributes

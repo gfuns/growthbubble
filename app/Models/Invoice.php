@@ -30,6 +30,12 @@ class Invoice extends Model
         return $name;
     }
 
+    public function initials()
+    {
+        $initials = substr($this->customer->last_name, 0, 1) . "" . substr($this->customer->other_names, 0, 1);
+        return $initials;
+    }
+
     public static function booted()
     {
 

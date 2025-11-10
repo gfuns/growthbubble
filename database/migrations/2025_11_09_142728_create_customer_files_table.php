@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("creator")->unsigned();
             $table->integer("shared_with")->unsigned()->nullable();
+            $table->string("file_name");
             $table->text("uploaded_file");
             $table->longText("comment")->nullable();
             $table->timestamps();

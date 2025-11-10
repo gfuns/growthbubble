@@ -5,6 +5,7 @@ use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountCreationMail as AccountCreationMail;
 use App\Mail\CustomerCreationMail as CustomerCreationMail;
+use App\Models\CustomerFiles;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
 use App\Models\CustomerTickets;
@@ -2099,6 +2100,135 @@ class AdminController extends Controller
     {
         $filename = "Payments_" . strtotime(now()) . ".xlsx";
         return Excel::download(new ExportInvoice(), $filename);
+    }
+
+    public function downloadInvReceipt($id)
+    {
+        $invoice = Invoice::find($id);
+        return back();
+    }
+
+    /**
+     * files
+     *
+     * @return void
+     */
+    public function files()
+    {
+        $search = request()->search;
+        $client = request()->client;
+
+        $query = CustomerFiles::query();
+
+        $query->orderBy("id", "desc");
+
+        if (isset(request()->search)) {
+            $query->where('file_name', $search);
+        }
+
+        if (isset(request()->client)) {
+            $query->where(function ($q) use ($client) {
+                $q->where('creator', $client)
+                    ->orWhere('shared_with', $client);
+            });
+
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $files      = $query->paginate(50);
+
+        $customers = User::where("role_id", 0)->get();
+
+        return view("admin.customer_files", compact("files", "search", "client", "customers", "marker", "lastRecord"));
+    }
+
+    /**
+     * storeFile
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeFile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file'      => 'required',
+            'file_name' => 'required',
+            'comment'   => 'required',
+            'client'    => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $file              = new CustomerFiles;
+        $file->creator     = Auth::user()->id;
+        $file->shared_with = $request->client;
+        $file->file_name   = $request->file_name;
+        $file->comment     = $request->comment;
+        if ($request->has('file')) {
+
+            $fileType = strtolower($request->file('file')->getClientOriginalExtension());
+
+            $filename = "/files/uploaded/" . time() . "." . $request->file('file')->getClientOriginalName();
+            $path     = public_path('/files/uploaded/');
+            $request->file('file')->move($path, $filename);
+            $file->uploaded_file = env('APP_URL_LOCAL') . $filename;
+            $file->local_path    = $filename;
+            $file->file_type     = $fileType;
+
+        }
+
+        if ($file->save()) {
+            toast('File Uploaded Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+
+        }
+    }
+
+    /**
+     * downloadFile
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function downloadFile($id)
+    {
+        $file     = CustomerFiles::find($id);
+        $filePath = public_path($file->local_path);
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+    }
+
+    /**
+     * deleteFile
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function deleteFile($id)
+    {
+        $file = CustomerFiles::find($id);
+        if ($file->delete()) {
+            toast('File Deleted Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+
+        }
     }
 
     /**

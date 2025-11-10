@@ -105,7 +105,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="files" href="">
+                    <a class="nav-link " id="files" href="{{ route("admin.files") }}">
                         <i class="nav-icon bi bi-folder me-2"></i>
                         Files
                     </a>

@@ -166,13 +166,23 @@ Route::group([
 
     Route::get('/downloadInvoice', [AdminController::class, 'downloadInvoice'])->name('admin.downloadInvoice');
 
+    Route::get('/downloadInvReceipt/{id}', [AdminController::class, 'downloadInvReceipt'])->name('admin.downloadInvReceipt');
+
     Route::get('/tickets', [AdminController::class, 'customerTickets'])->name('admin.customerTickets');
 
     Route::get('/ticket/details/{id}', [AdminController::class, 'ticketDetails'])->name('admin.ticketDetails');
 
     Route::post('/replyTicket', [AdminController::class, 'replyTicket'])->name('admin.replyTicket');
 
-    Route::get('/close-ticket/{id}', [AdminController::class, 'closeTicket'])->name('admin.closeTicket');
+    Route::get('/downloadInvoice', [AdminController::class, 'downloadInvoice'])->name('admin.downloadInvoice');
+
+    Route::get('/files', [AdminController::class, 'files'])->name('admin.files');
+
+    Route::post('/storeFile', [AdminController::class, 'storeFile'])->name('admin.storeFile');
+
+    Route::get('/downloadFile/{id}', [AdminController::class, 'downloadFile'])->name('admin.downloadFile');
+
+    Route::get('/deleteFile/{id}', [AdminController::class, 'deleteFile'])->name('admin.deleteFile');
 });
 
 Route::get('/ajax/get-projects/{customer}', [App\Http\Controllers\AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
