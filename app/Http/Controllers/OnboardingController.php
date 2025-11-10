@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Mail\RegistrationMail as RegistrationMail;
 use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
+use App\Models\Invoice;
 use App\Models\OnboardingDetails;
 use App\Models\Product;
 use App\Models\ProductFeatures;
@@ -20,7 +21,6 @@ use Illuminate\Support\Str;
 use Mail;
 use Stripe\Customer;
 use Stripe\PaymentIntent;
-use Stripe\PaymentMethod;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 
@@ -142,13 +142,13 @@ class OnboardingController extends Controller
     }
 
     /**
-     * savePaymentMethod
+     * validatePayment
      *
      * @param Request request
      *
      * @return void
      */
-    public function savePaymentMethod(Request $request)
+    public function validatePayment(Request $request)
     {
         try {
 
@@ -201,10 +201,25 @@ class OnboardingController extends Controller
                 $user->onboarding_status     = "pending";
                 $user->stripe_customer_id    = $customer->id;
                 $user->stripe_payment_method = $paymentMethodId;
+                $user->product_id            = $plan->product_id;
                 $user->save();
+
+                $pm = "Credit Card (" . ucwords($paymentMethod->card->brand) . " ****-****-****-" . $paymentMethod->card->last4 . ")";
+
+                $invoice                 = new Invoice;
+                $invoice->user_id        = $user->id;
+                $invoice->product_id     = $plan->product_id;
+                $invoice->plan_id        = $plan->id;
+                $invoice->due_date       = Carbon::now()->addDays(5);
+                $invoice->amount         = $plan->pricing;
+                $invoice->payment_method = $pm;
+                $invoice->txn_id         = "TXN" . preg_replace("/pi/", "", $paymentIntent->id);
+                $invoice->status         = "paid";
+                $invoice->save();
 
                 $subscription                 = new CustomerSubscription;
                 $subscription->user_id        = $user->id;
+                $subscription->invoice_id     = $invoice->id;
                 $subscription->product_id     = $plan->product_id;
                 $subscription->plan_id        = $plan->id;
                 $subscription->pricing        = $plan->pricing;
@@ -243,10 +258,94 @@ class OnboardingController extends Controller
      *
      * @return void
      */
+    public function paymentValidated()
+    {
+        toast('Payment Processed Successfully.', 'success');
+        return redirect()->route("customer.dashboard");
+    }
+
+    /**
+     * savePaymentMethod
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function savePaymentMethod(Request $request)
+    {
+        try {
+
+            $user = Auth::user();
+
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            $customer = Customer::create([
+                'email' => Auth::user()->email,
+                'name'  => Auth::user()->last_name . " " . Auth::user()->other_names,
+            ]);
+
+            $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
+
+            $paymentMethodId = $request->payment_method;
+            $paymentMethod   = $stripe->paymentMethods->retrieve($paymentMethodId);
+
+            $stripe->paymentMethods->attach(
+                $paymentMethodId,
+                ['customer' => $customer->id]
+            );
+
+            $amount = 1;
+
+            $paymentIntent = PaymentIntent::create([
+                'customer'       => $customer->id,
+                'amount'         => ($amount * 100),
+                'currency'       => 'gbp',
+                'payment_method' => $paymentMethodId,
+                'off_session'    => true,
+                'confirm'        => true,
+            ]);
+
+            if (isset($paymentIntent->status) && $paymentIntent->status == "succeeded") {
+
+                DB::beginTransaction();
+
+                $user->stripe_customer_id    = $customer->id;
+                $user->stripe_payment_method = $paymentMethodId;
+                $user->save();
+
+                $card                     = new CustomerCards;
+                $card->user_id            = $user->id;
+                $card->authorization_code = $paymentMethodId;
+                $card->last_four_digits   = $paymentMethod->card->last4;
+                $card->expiry_month       = $paymentMethod->card->exp_month;
+                $card->expiry_year        = $paymentMethod->card->exp_year;
+                $card->card_brand         = $paymentMethod->card->brand;
+                $card->default_card       = 1;
+                $card->save();
+
+                DB::commit();
+
+                return response()->json(['success' => true]);
+
+            } else {
+                return response()->json(['success' => false]);
+            }
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+            return response()->json(['success' => false]);
+        }
+    }
+
+    /**
+     * pmSuccess
+     *
+     * @return void
+     */
     public function pmSuccess()
     {
         toast('Payment Method Added Successfully.', 'success');
-        return redirect()->route("customer.dashboard");
+        return redirect()->route("customer.billing");
     }
 
     /**

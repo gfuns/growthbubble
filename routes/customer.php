@@ -46,7 +46,11 @@ Route::group([
 
     Route::get('/payment', [OnboardingController::class, 'subscriptionPayment'])->name("onboarding.payment");
 
+    Route::post('/validatePayment', [OnboardingController::class, 'validatePayment'])->name("onboarding.validatePayment");
+
     Route::post('/savePaymentMethod', [OnboardingController::class, 'savePaymentMethod'])->name("onboarding.savePaymentMethod");
+
+    Route::get('/paymentValidated', [OnboardingController::class, 'paymentValidated'])->name("onboarding.paymentValidated");
 
     Route::get('/pmSuccess', [OnboardingController::class, 'pmSuccess'])->name("onboarding.pmSuccess");
 });

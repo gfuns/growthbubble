@@ -23,6 +23,11 @@ class CustomerSubscription extends Model
         return $this->belongsTo('App\Models\SubscriptionPlan', "plan_id");
     }
 
+    public function invoice()
+    {
+        return $this->belongsTo('App\Models\Invoice', "invoice_id");
+    }
+
     public function name()
     {
         $date = (new \DateTime($this->due_date))->format('M, Y');

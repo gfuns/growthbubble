@@ -195,7 +195,7 @@
                 </td>
                 <td>
                     <div class="receipt-status">
-                        @if ($subscription->status == 'paid')
+                        @if ($subscription->invoice->status == 'paid')
                             <div class="status-badge" style="color: green;">
                                 <h1>Paid</h1>
                             </div>
@@ -228,13 +228,13 @@
                     <div class="details-block">
                         <h3>Payment Information</h3>
                         <p>&nbsp;</p>
-                        <p><strong>Receipt No:</strong> {{ $subscription->invoice_number }}</p>
+                        <p><strong>Receipt No:</strong> {{ $subscription->invoice->invoice_number }}</p>
                         <p>&nbsp;</p>
-                        <p><strong>Date Issued:</strong> {{ date_format($subscription->created_at, 'F j, Y') }}</p>
+                        <p><strong>Date Issued:</strong> {{ date_format($subscription->invoice->created_at, 'F j, Y') }}</p>
                         <p>&nbsp;</p>
-                        <p><strong>Method:</strong> {{ $subscription->payment_method }}</p>
+                        <p><strong>Method:</strong> {{ $subscription->invoice->payment_method }}</p>
                         <p>&nbsp;</p>
-                        <p><strong>Transaction ID:</strong> {{ $subscription->txn_id }}</p>
+                        <p><strong>Transaction ID:</strong> {{ $subscription->invoice->txn_id }}</p>
                     </div>
                 </td>
             </tr>

@@ -1134,7 +1134,7 @@ class CustomerController extends Controller
         view()->share(['subscription' => $subscription]);
 
         $pdf      = PDF::loadView('customer.receipts.subscription');
-        $fileName = "Receipt_" . $subscription->invoice_number . ".pdf";
+        $fileName = "Receipt_" . strtotime(now()) . ".pdf";
 
         return $pdf->download($fileName);
 

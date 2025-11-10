@@ -306,7 +306,7 @@
                 // console.log("Payment Method:", paymentMethod);
 
                 // Send to backend for storage/charging later
-                fetch("/onboarding/savePaymentMethod", {
+                fetch("/onboarding/validatePayment", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -321,7 +321,7 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            window.location.href = "{{ route('onboarding.pmSuccess') }}";
+                            window.location.href = "{{ route('onboarding.paymentValidated') }}";
                         } else {
                             document.getElementById('submit-btn').disabled = false;
                             Swal.fire({
