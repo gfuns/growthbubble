@@ -132,7 +132,8 @@
 
         // 3. Create card element
         const card = elements.create('card', {
-            style
+            style,
+            hidePostalCode: true
         });
         card.mount('#card-element');
 

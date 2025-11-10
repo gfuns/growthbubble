@@ -86,7 +86,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                             <h4 class="fs-6 fw-bold ls-md">{{ number_format($params['invCount'], 0) }} Invoice(s)
-                                Created</h4>
+                                Received</h4>
                         </div>
                         <h4 class="fw-bold mb-1">&pound;{{ number_format($params['invSum'], 2) }}</h4>
                     </div>

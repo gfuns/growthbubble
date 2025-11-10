@@ -12,7 +12,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        Submitted Websites
+                        Websites
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">

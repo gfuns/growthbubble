@@ -1049,21 +1049,22 @@ class CustomerController extends Controller
         $endDate   = request()->end_date;
 
         $params = [
-            'draftCount'   => Invoice::where("status", "draft")->count(),
-            'draftSum'     => Invoice::where("status", "draft")->sum("amount"),
-            'dueCount'     => Invoice::where("status", "due")->count(),
-            'dueSum'       => Invoice::where("status", "due")->sum("amount"),
-            'overdueCount' => Invoice::where("status", "overdue")->count(),
-            'overdueSum'   => Invoice::where("status", "overdue")->sum("amount"),
-            'invCount'     => Invoice::count(),
-            'invSum'       => Invoice::sum("amount"),
+            'draftCount'   => Invoice::where("user_id", Auth::user()->id)->where("status", "draft")->count(),
+            'draftSum'     => Invoice::where("user_id", Auth::user()->id)->where("status", "draft")->sum("amount"),
+            'dueCount'     => Invoice::where("user_id", Auth::user()->id)->where("status", "due")->count(),
+            'dueSum'       => Invoice::where("user_id", Auth::user()->id)->where("status", "due")->sum("amount"),
+            'overdueCount' => Invoice::where("user_id", Auth::user()->id)->where("status", "overdue")->count(),
+            'overdueSum'   => Invoice::where("user_id", Auth::user()->id)->where("status", "overdue")->sum("amount"),
+            'invCount'     => Invoice::where("user_id", Auth::user()->id)->count(),
+            'invSum'       => Invoice::where("user_id", Auth::user()->id)->sum("amount"),
         ];
 
         $query = Invoice::query();
 
+        $query->where("user_id", Auth::user()->id);
+
         if (isset(request()->search)) {
-            $query->where('invoice_number', $search)
-                ->orWhereHas('customer', fn($q) => $q->whereLike(['last_name', 'other_names'], $search));
+            $query->whereLike('invoice_number', $search);
         }
 
         if (isset(request()->product)) {
