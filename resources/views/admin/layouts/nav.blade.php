@@ -121,7 +121,7 @@
                 <li class="nav-item">
                     <a class="nav-link " id="tickets" href="{{ route('admin.customerTickets') }}">
                         <i class="nav-icon fe fe-file-text me-2"></i>
-                        Customer Tickets
+                        Support Tickets
                     </a>
                 </li>
             @endif
@@ -142,7 +142,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link " id="payments" href="">
+                                <a class="nav-link " id="payments" href="{{ route("admin.payments") }}">
                                     Payments
                                 </a>
                             </li>

@@ -7,6 +7,7 @@ use App\Mail\CustomerCreationMail as CustomerCreationMail;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
 use App\Models\CustomerTickets;
+use App\Models\Invoice;
 use App\Models\OnboardingDetails;
 use App\Models\PlatformActivities;
 use App\Models\PlatformFeature;
@@ -1986,6 +1987,42 @@ class AdminController extends Controller
             toast('Something went wrong. Please try again', 'error');
             return back();
         }
+    }
+
+    /**
+     * payments
+     *
+     * @return void
+     */
+    public function payments()
+    {
+        $search  = request()->search;
+        $product = request()->product;
+        $status  = request()->status;
+
+        $query = Invoice::query();
+
+        if (isset(request()->search)) {
+            $query->whereHas('customer', function ($query) use ($search) {
+                $query->whereLike(["last_name", "other_names"], $search);
+            });
+        }
+
+        if (isset(request()->product)) {
+            $query->where("product_id", $product);
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $invoices   = $query->paginate(50);
+
+        $products = Product::all();
+
+        return view("admin.customer_payments", compact("invoices", "products", "lastRecord", "marker", "search", "product", "status"));
     }
 
     /**

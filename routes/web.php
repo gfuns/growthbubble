@@ -160,6 +160,8 @@ Route::group([
 
     Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
 
+    Route::get('/payments', [AdminController::class, 'payments'])->name('admin.payments');
+
     Route::get('/tickets', [AdminController::class, 'customerTickets'])->name('admin.customerTickets');
 
     Route::get('/ticket/details/{id}', [AdminController::class, 'ticketDetails'])->name('admin.ticketDetails');
