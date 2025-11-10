@@ -7,9 +7,10 @@
     <title>Payment Receipt</title>
     <style>
         /* --- General Styles & Fonts --- */
-       body {
+        body {
             font-family: Helvetica, Arial, sans-serif;
-            background-color: #ffffff; /* White background is best for PDFs */
+            background-color: #ffffff;
+            /* White background is best for PDFs */
             margin: 0;
             padding: 20px;
             color: #333;
@@ -19,18 +20,30 @@
         /* --- Main Receipt Container --- */
 
         .receipt-container {
-            margin: 0 auto; /* Centering on the page */
+            margin: 0 auto;
+            /* Centering on the page */
             background: #ffffff;
         }
 
-        /* --- Header Section --- */
-        .receipt-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+         .header-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 40px;
+        }
+
+        .header-table td {
+            vertical-align: middle; /* Vertically aligns content in the middle of the cell */
             padding-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-table td:first-child {
+            border-bottom: 2px solid #333;
+        }
+
+        .header-table td:last-child {
+            text-align: right;
+            border-bottom: 2px solid #333;
         }
 
         .company-info h1 {
@@ -40,42 +53,45 @@
         }
 
         .company-info p {
-            margin: 5px 0 0;
-            font-size: 14px;
+            margin: 150px !important;
+            font-size: 13px;
             color: #555;
         }
 
-        .receipt-status {
-            text-align: right;
+        .receipt-status{
+            padding: 20px !important;
         }
 
         .status-badge {
             display: inline-block;
-            background-color: #28a745;
-            /* Green for 'Paid' */
-            color: white;
-            padding: 8px 16px;
+            /* background-color: #28a745; */
+            color: green;
+            padding: 20px !important;
             border-radius: 4px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
             text-transform: uppercase;
         }
 
         /* --- Client & Payment Details Section --- */
-         .details-table {
+        .details-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 50px;
+            margin-bottom: 70px;
         }
 
         .details-table td {
-            width: 50%; /* Ensures two equal columns */
-            vertical-align: top; /* Aligns content to the top */
-            padding-right: 20px; /* Adds spacing between columns */
+            width: 50%;
+            /* Ensures two equal columns */
+            vertical-align: top;
+            /* Aligns content to the top */
+            padding-right: 20px;
+            /* Adds spacing between columns */
         }
 
         .details-block {
-            page-break-inside: avoid; /* Prevents this block from being split across pages */
+            page-break-inside: avoid;
+            /* Prevents this block from being split across pages */
         }
 
         .details-block h3 {
@@ -161,30 +177,7 @@
             padding-top: 20px;
         }
 
-        /* --- Responsive Design --- */
-        @media (max-width: 600px) {
-            .receipt-container {
-                padding: 20px;
-            }
 
-            .receipt-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .receipt-status {
-                text-align: left;
-                margin-top: 15px;
-            }
-
-            .details-section {
-                flex-direction: column;
-            }
-
-            .summary-block {
-                min-width: 100%;
-            }
-        }
     </style>
 </head>
 
@@ -192,26 +185,41 @@
 
     <div class="receipt-container">
         <!-- Header: Company Info and Status -->
-        <header class="receipt-header">
-            <div class="company-info">
-                <img src="https://portal.growthbubbles.com/images/logo.png" alt="" style="height: 50px">
-                <h1>Growth Bubbles Inc.</h1>
-                <p>86-90, Paul Street, London EC2A 4NE</p>
-                <p>hello@growthbubbles.com</p>
-            </div>
-            <div class="receipt-status">
-                <div class="status-badge">Paid</div>
-            </div>
-        </header>
+        <table class="header-table">
+            <tr>
+                <td>
+                    <div class="company-info">
+                        <img src="https://portal.growthbubbles.com/images/logo.png" alt="" style="height: 50px">
+                        <h1>Growth Bubbles Inc.</h1>
+                        <p>86-90, Paul Street, London EC2A 4NE</p>
+                        <p>hello@growthbubbles.com</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="receipt-status">
+                        @if ($payment->status == 'paid')
+                            <div class="status-badge" style="color: green;">
+                                <h1>Paid</h1>
+                            </div>
+                        @else
+                            <div class="status-badge" style="color: red;">
+                                <h2>Unpaid</h2>
+                            </div>
+                        @endif
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         <!-- Client and Payment Details -->
-         <table class="details-table">
+        <table class="details-table">
             <tr>
                 <td>
                     <div class="details-block">
                         <h3>Billed To</h3>
                         <p>&nbsp;</p>
-                        <p><strong>Name:</strong> {{ $payment->customer->last_name . ' ' . $payment->customer->other_names }}</p>
+                        <p><strong>Name:</strong>
+                            {{ $payment->customer->last_name . ' ' . $payment->customer->other_names }}</p>
                         <p>&nbsp;</p>
                         <p><strong>Email:</strong> {{ $payment->customer->email }}</p>
                         <p>&nbsp;</p>
@@ -261,9 +269,11 @@
         <!-- Financial Summary -->
         <section class="summary-section">
             <div class="summary-block">
-                <p>Subtotal: &nbsp;<span style="float: right;"> &pound;{{ number_format($payment->amount, 2) }}</span></p>
+                <p>Subtotal: &nbsp;<span style="float: right;"> &pound;{{ number_format($payment->amount, 2) }}</span>
+                </p>
                 <p>Tax: &nbsp;<span style="float: right;"> &pound;0.00</span></p>
-                <p class="total">Grand Total: &nbsp;<span style="float: right;"> &pound;{{ number_format($payment->amount, 2) }}</span></p>
+                <p class="total">Grand Total: &nbsp;<span style="float: right;">
+                        &pound;{{ number_format($payment->amount, 2) }}</span></p>
             </div>
         </section>
 
