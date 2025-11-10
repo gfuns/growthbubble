@@ -3,9 +3,11 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\CustomerCards;
+use App\Models\CustomerFiles;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
 use App\Models\CustomerTickets;
+use App\Models\Invoice;
 use App\Models\OnboardingDetails;
 use App\Models\PlatformActivities;
 use App\Models\Product;
@@ -897,25 +899,115 @@ class CustomerController extends Controller
     }
 
     /**
+     * storeFile
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeFile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file'      => 'required',
+            'file_name' => 'required',
+            'comment'   => 'required',
+            'client'    => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $file              = new CustomerFiles;
+        $file->creator     = Auth::user()->id;
+        $file->shared_with = $request->client;
+        $file->file_name   = $request->file_name;
+        $file->comment     = $request->comment;
+        if ($request->has('file')) {
+
+            $fileType = strtolower($request->file('file')->getClientOriginalExtension());
+
+            $filename = "/files/uploaded/" . time() . "." . $request->file('file')->getClientOriginalName();
+            $path     = public_path('/files/uploaded/');
+            $request->file('file')->move($path, $filename);
+            $file->uploaded_file = env('APP_URL_LOCAL') . $filename;
+            $file->local_path    = $filename;
+            $file->file_type     = $fileType;
+
+        }
+
+        if ($file->save()) {
+            toast('File Uploaded Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+
+        }
+    }
+
+    /**
+     * downloadFile
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function downloadFile($id)
+    {
+        $file     = CustomerFiles::find($id);
+        $filePath = public_path($file->local_path);
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+    }
+
+    /**
+     * deleteFile
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function deleteFile($id)
+    {
+        $file = CustomerFiles::find($id);
+        if ($file->delete()) {
+            toast('File Deleted Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+
+        }
+    }
+
+    /**
      * myFiles
      *
      * @return void
      */
     public function myFiles()
     {
+        $search = request()->search;
 
-    }
+        $query = CustomerFiles::query();
 
-    /**
-     * uploadFile
-     *
-     * @param Request request
-     *
-     * @return void
-     */
-    public function uploadFile(Request $request)
-    {
+        $query->orderBy("id", "desc")->where("creator", Auth::user()->id);
 
+        if (isset(request()->search)) {
+            $query->whereLike('file_name', $search);
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $files      = $query->paginate(50);
+
+        return view("customer.my_files", compact("files", "search", "marker", "lastRecord"));
     }
 
     /**
@@ -925,7 +1017,82 @@ class CustomerController extends Controller
      */
     public function sharedFiles()
     {
+        $search = request()->search;
+        $client = request()->client;
 
+        $query = CustomerFiles::query();
+
+        $query->orderBy("id", "desc")->where("shared_with", Auth::user()->id);
+
+        if (isset(request()->search)) {
+            $query->whereLike('file_name', $search);
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $files      = $query->paginate(50);
+
+        return view("customer.shared_files", compact("files", "search", "marker", "lastRecord"));
+    }
+
+    /**
+     * payments
+     *
+     * @return void
+     */
+    public function payments()
+    {
+        $search    = request()->search;
+        $product   = request()->product;
+        $status    = request()->status;
+        $startDate = request()->start_date;
+        $endDate   = request()->end_date;
+
+        $params = [
+            'draftCount'   => Invoice::where("status", "draft")->count(),
+            'draftSum'     => Invoice::where("status", "draft")->sum("amount"),
+            'dueCount'     => Invoice::where("status", "due")->count(),
+            'dueSum'       => Invoice::where("status", "due")->sum("amount"),
+            'overdueCount' => Invoice::where("status", "overdue")->count(),
+            'overdueSum'   => Invoice::where("status", "overdue")->sum("amount"),
+            'invCount'     => Invoice::count(),
+            'invSum'       => Invoice::sum("amount"),
+        ];
+
+        $query = Invoice::query();
+
+        if (isset(request()->search)) {
+            $query->where('invoice_number', $search)
+                ->orWhereHas('customer', fn($q) => $q->whereLike(['last_name', 'other_names'], $search));
+        }
+
+        if (isset(request()->product)) {
+            $query->where("product_id", $product);
+        }
+
+        if (isset(request()->status)) {
+            $query->where("status", $status);
+        }
+
+        if (isset(request()->start_date)) {
+            if (isset(request()->end_date)) {
+                $startDate = Carbon::parse($startDate)->startOfDay();
+                $endDate   = Carbon::parse($endDate)->endOfDay();
+                $query->whereBetween("created_at", [$startDate, $endDate]);
+            } else {
+                toast('Please select end date', 'error');
+                return back();
+            }
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $invoices   = $query->paginate(50);
+
+        $products  = Product::all();
+        $customers = User::where("role_id", 0)->get();
+
+        return view("customer.payments", compact("invoices", "customers", "products", "lastRecord", "marker", "search", "product", "status", "startDate", "endDate", "params"));
     }
 
     /**

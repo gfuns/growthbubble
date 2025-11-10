@@ -1,7 +1,7 @@
 @extends('customer.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Payment History')
+@section('title', env('APP_NAME') . ' | Subscriptions')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -12,7 +12,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        Payment History
+                        Subscriptions
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">
@@ -20,8 +20,11 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
+                             <li class="breadcrumb-item">
+                                <a href="#">Account</a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Payment History
+                                Subscriptions
                             </li>
                         </ol>
                     </nav>
@@ -56,7 +59,7 @@
                                         <th scope="col">Amount</th>
                                         <th scope="col">Date Paid</th>
                                         <th scope="col">Expiry Date</th>
-                                        <th scope="col">Receipt</th>
+                                        <th scope="col">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-dark">
@@ -71,7 +74,7 @@
                                             <td class="align-middle">
                                                 {{ date_format(new DateTime($sub->expiry_date), 'jS F, Y') }} </td>
                                             <td>
-                                                <a href=""><button class="btn btn-primary btn-xs">Download Receipt</button></a>
+                                                <a href=""> <span class="badge text-primary bg-light-primary">Download Receipt</span></a>
                                             </td>
 
                                         </tr>

@@ -18,8 +18,11 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
+                             <li class="breadcrumb-item">
+                                <a href="#">Account</a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Billing Information
+                                Billing
                             </li>
                         </ol>
                     </nav>

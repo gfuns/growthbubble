@@ -90,8 +90,14 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link " id="payments" href="{{ route('customer.payments') }}">
+                                Payments
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link " id="subscriptions" href="{{ route('customer.subscriptions') }}">
-                                Payment History
+                                Subscriptions
                             </a>
                         </li>
 
@@ -112,13 +118,13 @@
                     <ul class="nav flex-column">
 
                         <li class="nav-item">
-                            <a class="nav-link " id="projects" href="{{ route('customer.myFiles') }}">
+                            <a class="nav-link " id="myFiles" href="{{ route('customer.myFiles') }}">
                                 My Files
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link " id="tasks" href="{{ route('customer.sharedFiles') }}">
+                            <a class="nav-link " id="sharedFiles" href="{{ route('customer.sharedFiles') }}">
                                 Shared With Me
                             </a>
                         </li>

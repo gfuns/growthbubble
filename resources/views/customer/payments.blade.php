@@ -1,19 +1,20 @@
-@extends('admin.layouts.app')
+@extends('customer.layouts.app')
 
 @section('content')
 @section('title', env('APP_NAME') . ' | Payments or Transactions')
 <style type="text/css">
-    .initials{
-        border-radius:55%;
-        background:#155eef;
+    .initials {
+        border-radius: 55%;
+        background: #155eef;
         font-size: 11px;
-        color:white;
+        color: white;
         padding: 5px;
     }
-    .receipt{
+
+    .receipt {
         font-size: 15px;
-        border-radius:55%;
-        background:#c3ccdb;
+        border-radius: 55%;
+        background: #c3ccdb;
         padding: 8px;
         margin-right: 10px;
     }
@@ -27,7 +28,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        Payments or Transactions
+                        Payments
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">
@@ -36,22 +37,14 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Admin</a>
+                                <a href="#">Account</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Payments or Transactions
+                                Payments
                             </li>
                         </ol>
                     </nav>
                 </div>
-
-                @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 6) == true)
-                    <!-- button -->
-                    <div>
-                        <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasRight">New Invoice</a>
-                    </div>
-                @endif
 
             </div>
         </div>
@@ -64,9 +57,10 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["draftCount"], 0) }} Invoice(s) in Draft</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params['draftCount'], 0) }} Invoice(s) in
+                                Draft</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["draftSum"], 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params['draftSum'], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -77,9 +71,10 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["dueCount"], 0) }} Invoice(s) in Due</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params['dueCount'], 0) }} Invoice(s) in Due
+                            </h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["dueSum"], 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params['dueSum'], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -90,9 +85,10 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["invCount"], 0) }} Invoice(s) Created</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params['invCount'], 0) }} Invoice(s)
+                                Created</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["invSum"], 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params['invSum'], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -103,9 +99,10 @@
                     <!-- Card body -->
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params["overdueCount"], 0) }} Invoice(s) in Overdue</h4>
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format($params['overdueCount'], 0) }} Invoice(s) in
+                                Overdue</h4>
                         </div>
-                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params["overdueSum"], 2) }}</h4>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format($params['overdueSum'], 2) }}</h4>
                     </div>
                 </div>
             </div>
@@ -145,12 +142,13 @@
                                     <!-- form select -->
                                     <div class="input-group mb-3">
                                         <input type="text" name="start_date" class="form-control" id="startDate"
-                                            placeholder="Start Date" value="{{ $startDate }}" onfocus="this.type='date'"
-                                            onblur="if(!this.value)this.type='text'">
+                                            placeholder="Start Date" value="{{ $startDate }}"
+                                            onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
 
                                         <input type="text" name="end_date" class="form-control" id="endDate"
-                                            placeholder="End Date" value="{{ $endDate }}" onfocus="this.type='date'"
-                                            onblur="if(!this.value)this.type='text'" onChange="this.form.submit()">
+                                            placeholder="End Date" value="{{ $endDate }}"
+                                            onfocus="this.type='date'" onblur="if(!this.value)this.type='text'"
+                                            onChange="this.form.submit()">
                                     </div>
                                 </div>
 
@@ -192,7 +190,9 @@
                                 </div>
                                 <div class="col-6 col-lg-1">
                                     <!-- form select -->
-                                    <a href="{{ route("admin.downloadInvoice") }}"><button type="button" class="btn btn-primary btn-md"><i class="bi bi-cloud-download"></i></button></a>
+                                    <a href="{{ route('admin.downloadInvoice') }}"><button type="button"
+                                            class="btn btn-primary btn-md"><i
+                                                class="bi bi-cloud-download"></i></button></a>
                                 </div>
                             </div>
                         </form>
@@ -202,46 +202,26 @@
                                 style="font-size:14px">
                                 <thead class="table-light">
                                     <tr>
+                                        <th scope="col">SNo</th>
                                         <th scope="col">Invoice Name</th>
                                         <th scope="col">Invoice Number</th>
-                                        <th scope="col">Client</th>
                                         <th scope="col">Issue Date</th>
                                         <th scope="col">Amount</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-dark">
                                     @foreach ($invoices as $inv)
                                         <tr>
-                                            <td class="align-middle">
-                                                 <span class="receipt"><a href="{{ route("admin.downloadInvReceipt", [$inv->id]) }}"><i class="bi bi-receipt"></i></a></span>
-                                                {{ $inv->name() }} Invoice
-                                            </td>
+                                            <td class="align-middle"> {{ $loop->index + 1 }}. </td>
+                                            <td class="align-middle">{{ $inv->name() }} Invoice</td>
                                             <td class="align-middle"> {{ $inv->invoice_number }} </td>
-                                            <td class="align-middle">
-                                                <span class="initials">{{$inv->initials()  }}</span>
-                                                {{ $inv->customer->last_name . ', ' . $inv->customer->other_names }}
-                                            </td>
                                             <td class="align-middle">
                                                 {{ date_format(new DateTime($inv->due_date), 'jS M, Y') }} </td>
                                             <td class="align-middle"> &pound;{{ number_format($inv->amount, 2) }}
                                             </td>
                                             <td>
-                                                @if ($inv->status == 'active')
-                                                    <span
-                                                        class="badge text-primary bg-light-primary">{{ ucwords($inv->status) }}</span>
-                                                @elseif ($inv->status == 'paid')
-                                                    <span
-                                                        class="badge text-success bg-light-success">{{ ucwords($inv->status) }}</span>
-                                                @elseif($inv->status == 'due')
-                                                    <span
-                                                        class="badge text-warning bg-light-warning">{{ ucwords($inv->status) }}</span>
-                                                @elseif($inv->status == 'overdue')
-                                                    <span
-                                                        class="badge text-danger bg-light-danger">{{ ucwords($inv->status) }}</span>
-                                                @else
-                                                    <span class="badge text-info bg-light-info">{{ ucwords($inv->status) }}</span>
-                                                @endif
+                                                 <a href=""> <span class="badge text-primary bg-light-primary">Download Receipt</span></a>
                                             </td>
 
                                         </tr>
@@ -268,91 +248,12 @@
         </div>
     </div>
 
-    @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 6) == true)
-        <!-- offcanvas -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
-            <div class="offcanvas-body" data-simplebar>
-                <div class="offcanvas-header px-2 pt-0">
-                    <h3 class="offcanvas-title" id="offcanvasExampleLabel">New Invoice</h3>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-                <!-- card body -->
-                <div class="container">
-                    <!-- form -->
-                    <form class="needs-validation" novalidate method="post"
-                        action="{{ route('admin.storeInvoice') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <!-- form group -->
-
-                            <div class="mb-3 col-12">
-                                <label class="form-label">Client <span class="text-danger">*</span></label>
-                                <select id="client" name="client" class="form-control" data-width="100%"
-                                    required>
-                                    <option value="">Select Client</option>
-                                    @foreach ($customers as $client)
-                                        <option value="{{ $client->id }}">
-                                            {{ $client->last_name . ' ' . $client->other_names }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback">Please select product.</div>
-                            </div>
-
-                            <div class="mb-3 col-12">
-                                <label class="form-label">Product <span class="text-danger">*</span></label>
-                                <select id="custSelProd" name="product" class="form-control" data-width="100%"
-                                    required>
-                                    <option value="">Select Product</option>
-                                    @foreach ($products as $prod)
-                                        <option value="{{ $prod->id }}">{{ $prod->product }} Plan</option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback">Please select product.</div>
-                            </div>
-
-                            <div class="mb-3 col-12">
-                                <label class="form-label">Plan <span class="text-danger">*</span></label>
-                                <select id="custSelPlan" name="plan" class="form-control" data-width="100%"
-                                    required>
-                                    <option value="" data-amount="">Select Plan</option>
-                                </select>
-                                <div class="invalid-feedback">Please select plan.</div>
-                            </div>
-
-                            <div class="mb-3 col-12">
-                                <label class="form-label">Amount <span class="text-danger">*</span></label>
-                                <input id="amount" type="text" name="amount" class="form-control"
-                                    placeholder="Enter Amount" required readonly>
-                                <div class="invalid-feedback">Please select due date.</div>
-                            </div>
-
-                            <div class="mb-3 col-12">
-                                <label class="form-label">Due Date <span class="text-danger">*</span></label>
-                                <input id="date" type="date" name="due_date" class="form-control"
-                                    placeholder="Enter Due Date" required>
-                                <div class="invalid-feedback">Please select due date.</div>
-                            </div>
-
-                            <div class="col-md-12 border-bottom"></div>
-                            <!-- button -->
-                            <div class="col-12 mt-4">
-                                <button class="btn btn-primary" type="submit">Create Invoice</button>
-                                <button type="button" class="btn btn-outline-primary ms-2"
-                                    data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endif
 </section>
 
 
 
 <script type="text/javascript">
-    document.getElementById("navAdmin").classList.add('show');
+    document.getElementById("navSettings").classList.add('show');
     document.getElementById("payments").classList.add('active');
 </script>
 

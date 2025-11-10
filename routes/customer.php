@@ -125,4 +125,12 @@ Route::group([
 
     Route::get('/shared-files', [CustomerController::class, 'sharedFiles'])->name('customer.sharedFiles');
 
+    Route::post('/storeFile', [CustomerController::class, 'storeFile'])->name('customer.storeFile');
+
+    Route::get('/downloadFile/{id}', [CustomerController::class, 'downloadFile'])->name('customer.downloadFile');
+
+    Route::get('/deleteFile/{id}', [CustomerController::class, 'deleteFile'])->name('customer.deleteFile');
+
+    Route::get('/payments', [CustomerController::class, 'payments'])->name('customer.payments');
+
 });
