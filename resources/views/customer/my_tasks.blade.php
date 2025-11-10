@@ -20,6 +20,9 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
+                             <li class="breadcrumb-item">
+                                <a href="#">{{ $product->product }}</a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 My Tasks
                             </li>
@@ -29,7 +32,7 @@
 
                 <!-- button -->
                 <div>
-                    <a href="{{ route('customer.newCustomerTask') }}" class="btn btn-primary btn-sm me-2">Create New
+                    <a href="{{ route('customer.newCustomerTask', [Auth::user()->product_id]) }}" class="btn btn-primary btn-sm me-2">Create New
                         Task</a>
                 </div>
 
@@ -188,8 +191,9 @@
 
 
 <script type="text/javascript">
-    document.getElementById("navConcierge").classList.add('show');
-    document.getElementById("tasks").classList.add('active');
+    const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("tasks" + productId).classList.add('active');
 </script>
 
 @endsection

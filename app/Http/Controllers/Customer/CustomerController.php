@@ -43,8 +43,8 @@ class CustomerController extends Controller
             "totalTasks"     => CustomerTasks::where("user_id", Auth::user()->id)->count(),
         ];
 
-        $tasks      = CustomerTasks::where("user_id", Auth::user()->id)->get();
-        $projects   = Project::where("user_id", Auth::user()->id)->get();
+        $tasks      = CustomerTasks::where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->get();
+        $projects   = Project::where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->get();
         $activities = PlatformActivities::orderBy("id", "desc")->where("owner_id", Auth::user()->id)->get();
         return view("customer.dashboard", compact("params", "projects", "tasks", "activities"));
     }
@@ -308,7 +308,7 @@ class CustomerController extends Controller
      *
      * @return void
      */
-    public function customerProjects()
+    public function customerProjects($id)
     {
         $status = request()->status;
         $search = request()->search;
@@ -316,6 +316,7 @@ class CustomerController extends Controller
         $query = Project::query();
 
         $query->where("user_id", Auth::user()->id);
+        $query->where("product_id", $id);
 
         if (isset(request()->search)) {
             $query->where(function ($param) use ($search) {
@@ -334,8 +335,8 @@ class CustomerController extends Controller
         $marker           = $this->getMarkers($lastRecord, request()->page);
         $customerProjects = $query->paginate(50);
         $customers        = User::where("role_id", 0)->get();
-
-        return view("customer.my_projects", compact("customerProjects", "customers", "search", "status", "marker", "lastRecord"));
+        $product          = Product::find($id);
+        return view("customer.my_projects", compact("customerProjects", "customers", "product", "search", "status", "marker", "lastRecord"));
     }
 
     /**
@@ -350,6 +351,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'project_title'       => 'required',
             'project_description' => 'required',
+            'product_id'          => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -364,6 +366,7 @@ class CustomerController extends Controller
 
             $project                      = new Project;
             $project->user_id             = Auth::user()->id;
+            $project->product_id          = $request->product_id;
             $project->project_title       = $request->project_title;
             $project->project_description = $request->project_description;
             $project->creator             = Auth::user()->id;
@@ -462,12 +465,14 @@ class CustomerController extends Controller
      *
      * @return void
      */
-    public function customerTasks()
+    public function customerTasks($id)
     {
         $status = request()->status;
         $search = request()->search;
 
         $query = CustomerTasks::query();
+
+        $query->where("product_id", $id);
 
         $query->where("user_id", Auth::user()->id);
 
@@ -488,8 +493,8 @@ class CustomerController extends Controller
         $marker        = $this->getMarkers($lastRecord, request()->page);
         $customerTasks = $query->paginate(50);
         $customers     = User::where("role_id", 0)->get();
-
-        return view("customer.my_tasks", compact("customerTasks", "customers", "search", "status", "marker", "lastRecord"));
+        $product       = Product::find($id);
+        return view("customer.my_tasks", compact("customerTasks", "customers", "product", "search", "status", "marker", "lastRecord"));
     }
 
     /**
@@ -497,11 +502,12 @@ class CustomerController extends Controller
      *
      * @return void
      */
-    public function newCustomerTask()
+    public function newCustomerTask($id)
     {
-        $taskCategories = TaskCategory::all();
+        $taskCategories = TaskCategory::where("product_id", $id)->get();
         $projects       = Project::where("user_id", Auth::user()->id)->get();
-        return view("customer.new_task", compact("taskCategories", "projects"));
+        $product        = Product::find($id);
+        return view("customer.new_task", compact("taskCategories", "projects", "product"));
     }
 
     /**
@@ -524,6 +530,7 @@ class CustomerController extends Controller
             'scheduled_date'   => 'required_if: timeline, scheduledfor later',
             'shared_access'    => 'required',
             'attached_files'   => 'nullable',
+            'product_id'       => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -538,6 +545,7 @@ class CustomerController extends Controller
 
             $task                   = new CustomerTasks;
             $task->user_id          = Auth::user()->id;
+            $task->product_id       = $request->product_id;
             $task->project_id       = $request->project;
             $task->title            = $request->title;
             $task->task_description = $request->task_description;
@@ -647,7 +655,8 @@ class CustomerController extends Controller
         $staffList     = User::where("role_id", " > ", 1)->get();
         $activities    = TaskActivities::orderBy("id", "desc")->where("task_id", $id)->get();
         $conversations = TaskConversation::where("task_id", $id)->get();
-        return view("customer.task_details", compact("task", "staffList", "activities", "conversations"));
+        $product       = Product::find($task->product_id);
+        return view("customer.task_details", compact("task", "staffList", "activities", "conversations", "product"));
     }
 
     /**

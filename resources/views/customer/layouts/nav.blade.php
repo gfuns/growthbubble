@@ -8,7 +8,7 @@
             </h3>
         </a>
         <div class="mb-4" style="text-align: center">
-            <a href="{{ route('customer.newCustomerTask') }}">
+            <a href="{{ route('customer.newCustomerTask', [Auth::user()->product_id]) }}">
                 <button class="btn btn-info btn-md"><i class="bi bi-plus-circle"></i> Create New Task</button>
             </a>
         </div>
@@ -43,33 +43,40 @@
                 </li>
             @endif
 
-            <li class="nav-item">
-                <div class="nav-divider"></div>
-            </li>
+            @foreach (app('product')->products() as $prod)
+                @if (Auth::user()->product_id == $prod->id)
+                    <li class="nav-item">
+                        <div class="nav-divider"></div>
+                    </li>
 
-            <li class="nav-item">
-                <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navConcierge"
-                    aria-expanded="false" aria-controls="navConcierge">
-                    <i class="nav-icon bi bi-briefcase me-2"></i> Concierge
-                </a>
-                <div id="navConcierge" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse"
+                            data-bs-target="#navProduct{{ $prod->id }}" aria-expanded="false"
+                            aria-controls="navProduct{{ $prod->id }}">
+                            <i class="nav-icon bi bi-briefcase me-2"></i> {{ $prod->product }}
+                        </a>
+                        <div id="navProduct{{ $prod->id }}" class="collapse " data-bs-parent="#sideNavbar">
+                            <ul class="nav flex-column">
 
-                        <li class="nav-item">
-                            <a class="nav-link " id="projects" href="{{ route('customer.projects') }}">
-                                Projects
-                            </a>
-                        </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " id="projects{{ $prod->id }}"
+                                        href="{{ route('customer.projects', [$prod->id]) }}">
+                                        Projects
+                                    </a>
+                                </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link " id="tasks" href="{{ route('customer.tasks') }}">
-                                Tasks
-                            </a>
-                        </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " id="tasks{{ $prod->id }}"
+                                        href="{{ route('customer.tasks', [$prod->id]) }}">
+                                        Tasks
+                                    </a>
+                                </li>
 
-                    </ul>
-                </div>
-            </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+            @endforeach
 
             <li class="nav-item">
                 <div class="nav-divider"></div>

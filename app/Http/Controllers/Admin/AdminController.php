@@ -1660,7 +1660,7 @@ class AdminController extends Controller
         $staffList     = User::where("role_id", ">", 1)->get();
         $activities    = TaskActivities::orderBy("id", "desc")->where("task_id", $id)->get();
         $conversations = TaskConversation::where("task_id", $id)->get();
-        $product       = Product::find($id);
+        $product       = Product::find($task->product_id);
         return view("admin.task_details", compact("task", "staffList", "activities", "conversations", "product"));
     }
 

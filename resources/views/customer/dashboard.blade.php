@@ -52,7 +52,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('customer.tasks') }}?status=in progress">
+                    <a href="{{ route('customer.tasks', [Auth::user()->product_id]) }}?status=in progress">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Active Tasks</h4>
@@ -70,7 +70,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('customer.tasks') }}?status=queued">
+                    <a href="{{ route('customer.tasks', [Auth::user()->product_id]) }}?status=queued">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Queued Tasks</h4>
@@ -88,7 +88,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('customer.tasks') }}?recurring=yes">
+                    <a href="{{ route('customer.tasks', [Auth::user()->product_id]) }}?recurring=yes">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Recurring Tasks</h4>
@@ -106,7 +106,7 @@
                 <!-- Card -->
                 <div class="card mb-4">
                     <!-- Card body -->
-                    <a href="{{ route('customer.tasks') }}?status=completed">
+                    <a href="{{ route('customer.tasks', [Auth::user()->product_id]) }}?status=completed">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
                                 <h4 class="fs-6 text-uppercase fw-bold ls-md">Completed Tasks</h4>
@@ -206,7 +206,7 @@
                                                             task.
                                                         </div>
                                                         <div class="mt-4">
-                                                            <a href="{{ route('customer.newCustomerTask') }}">
+                                                            <a href="{{ route('customer.newCustomerTask', [Auth::user()->product_id]) }}">
                                                                 <button class="btn btn-primary btn-xs"><i
                                                                         class="bi bi-plus-circle"></i> Create New
                                                                     Task</button>
@@ -389,6 +389,9 @@
                                 style="resize: none" rows="5"></textarea>
                             <div class="invalid-feedback">Please provide project description.</div>
                         </div>
+
+                        <input id="myid" type="hidden" name="product_id" value="{{ Auth::user()->product_id }}"
+                            class="form-control" required>
 
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->

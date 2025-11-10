@@ -20,6 +20,9 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
+                             <li class="breadcrumb-item">
+                                <a href="#">{{ $product->product }}</a>
+                            </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 My Projects
                             </li>
@@ -263,6 +266,9 @@
                         <div class="invalid-feedback">Please provide project description.</div>
                     </div>
 
+                    <input id="myid" type="hidden" name="product_id" value="{{ $product->id }}"
+                            class="form-control" required>
+
                     <div class="col-md-12 border-bottom"></div>
                     <!-- button -->
                     <div class="col-12 mt-4">
@@ -323,8 +329,9 @@
 
 
 <script type="text/javascript">
-    document.getElementById("navConcierge").classList.add('show');
-    document.getElementById("projects").classList.add('active');
+    const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("projects" + productId).classList.add('active');
 </script>
 
 @endsection

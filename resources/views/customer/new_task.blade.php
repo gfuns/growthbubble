@@ -65,6 +65,9 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
+                             <li class="breadcrumb-item">
+                                <a href="#">{{ $product->product }}</a>
+                            </li>
                             <li class="breadcrumb-item">
                                 <a href="#">Create New Task</a>
                             </li>
@@ -249,8 +252,9 @@
 
 
 <script type="text/javascript">
-    document.getElementById("navConcierge").classList.add('show');
-    document.getElementById("tasks").classList.add('active');
+   const productId = {{ Js::from($product->id) }};
+    document.getElementById("navProduct" + productId).classList.add('show');
+    document.getElementById("tasks" + productId).classList.add('active');
 </script>
 
 @endsection

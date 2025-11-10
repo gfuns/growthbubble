@@ -77,7 +77,7 @@ Route::group([
 
     Route::post('/enableGA', [CustomerController::class, 'enableGA'])->name("customer.enableGA");
 
-    Route::get('/projects', [CustomerController::class, 'customerProjects'])->name('customer.projects');
+    Route::get('/projects/{id}', [CustomerController::class, 'customerProjects'])->name('customer.projects');
 
     Route::post('/storeProject', [CustomerController::class, 'storeProject'])->name('customer.storeProject');
 
@@ -85,9 +85,9 @@ Route::group([
 
     Route::get('/project/close/{id}', [CustomerController::class, 'closeProject'])->name('customer.closeProject');
 
-    Route::get('/tasks', [CustomerController::class, 'customerTasks'])->name('customer.tasks');
+    Route::get('/tasks/{id}', [CustomerController::class, 'customerTasks'])->name('customer.tasks');
 
-    Route::get('/task/create', [CustomerController::class, 'newCustomerTask'])->name('customer.newCustomerTask');
+    Route::get('/task/create/{id}', [CustomerController::class, 'newCustomerTask'])->name('customer.newCustomerTask');
 
     Route::get('/task/details/{id}', [CustomerController::class, 'taskDetails'])->name('customer.taskDetails');
 
