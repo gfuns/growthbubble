@@ -120,6 +120,10 @@
             dropdownParent: $('#taskAssignment')
         });
 
+        $('#client').select2({
+            dropdownParent: $('#offcanvasRight')
+        });
+
         $('#selProduct').select2({
             dropdownParent: $('#offcanvasRight')
         });

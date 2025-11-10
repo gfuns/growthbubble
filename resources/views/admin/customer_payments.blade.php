@@ -30,12 +30,11 @@
                     </nav>
                 </div>
 
-                @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 4) == true)
+                @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 6) == true)
                     <!-- button -->
                     <div>
                         <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasRight">New Invoice</a>
-
                     </div>
                 @endif
 
@@ -49,11 +48,11 @@
                 <div class="card mb-4">
                     <!-- Card body -->
                     <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                                <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Draft</h4>
-                            </div>
-                            <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Draft</h4>
                         </div>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                    </div>
                 </div>
             </div>
 
@@ -62,11 +61,11 @@
                 <div class="card mb-4">
                     <!-- Card body -->
                     <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                                <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Due</h4>
-                            </div>
-                            <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Due</h4>
                         </div>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                    </div>
                 </div>
             </div>
 
@@ -75,11 +74,11 @@
                 <div class="card mb-4">
                     <!-- Card body -->
                     <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                                <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) Created</h4>
-                            </div>
-                            <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) Created</h4>
                         </div>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                    </div>
                 </div>
             </div>
 
@@ -88,11 +87,11 @@
                 <div class="card mb-4">
                     <!-- Card body -->
                     <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                                <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Overdue</h4>
-                            </div>
-                            <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                        <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
+                            <h4 class="fs-6 fw-bold ls-md">{{ number_format(0, 0) }} Invoice(s) in Overdue</h4>
                         </div>
+                        <h4 class="fw-bold mb-1">&pound;{{ number_format(0, 2) }}</h4>
+                    </div>
                 </div>
             </div>
 
@@ -131,12 +130,12 @@
                                     <!-- form select -->
                                     <div class="input-group mb-3">
                                         <input type="text" name="start_date" class="form-control" id="startDate"
-                                            placeholder="Start Date" onfocus="this.type='date'"
+                                            placeholder="Start Date" value="{{ $startDate }}" onfocus="this.type='date'"
                                             onblur="if(!this.value)this.type='text'">
 
                                         <input type="text" name="end_date" class="form-control" id="endDate"
-                                            placeholder="End Date" onfocus="this.type='date'"
-                                            onblur="if(!this.value)this.type='text'">
+                                            placeholder="End Date" value="{{ $endDate }}" onfocus="this.type='date'"
+                                            onblur="if(!this.value)this.type='text'" onChange="this.form.submit()">
                                     </div>
                                 </div>
 
@@ -160,10 +159,19 @@
                                         onChange="this.form.submit()">
                                         <option value="">All Statuses</option>
                                         <option value="active" @if ($status == 'active') selected @endif>
-                                            Active
+                                            Active Invoices
                                         </option>
-                                        <option value="terminated" @if ($status == 'terminated') selected @endif>
-                                            Terminated
+                                        <option value="due" @if ($status == 'due') selected @endif>
+                                            Due Invoices
+                                        </option>
+                                        <option value="overdue" @if ($status == 'overdue') selected @endif>
+                                            Overdue Invoices
+                                        </option>
+                                        <option value="paid" @if ($status == 'paid') selected @endif>
+                                            Paid Invoices
+                                        </option>
+                                        <option value="draft" @if ($status == 'draft') selected @endif>
+                                            Draft Invoices
                                         </option>
                                     </select>
                                 </div>
@@ -188,24 +196,34 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-dark">
-                                    @foreach ($invoices as $sub)
+                                    @foreach ($invoices as $inv)
                                         <tr>
                                             <td class="align-middle">
-                                                {{ $sub->customer->last_name . ', ' . $sub->customer->other_names }}
+                                                {{ $inv->name() }} Invoice
                                             </td>
-                                            <td class="align-middle"> {{ $sub->product->product }} </td>
-                                            <td class="align-middle"> {{ $sub->plan->plan }} </td>
-                                            <td class="align-middle"> &pound;{{ number_format($sub->pricing, 2) }}
+                                            <td class="align-middle"> {{ $inv->invoice_number }} </td>
+                                            <td class="align-middle">
+                                                {{ $inv->customer->last_name . ', ' . $inv->customer->other_names }}
                                             </td>
                                             <td class="align-middle">
-                                                {{ date_format(new DateTime($sub->effective_date), 'jS M, Y') }} </td>
-                                            <td class="align-middle">
-                                                {{ date_format(new DateTime($sub->expiry_date), 'jS M, Y') }} </td>
+                                                {{ date_format(new DateTime($inv->due_date), 'jS M, Y') }} </td>
+                                            <td class="align-middle"> &pound;{{ number_format($inv->amount, 2) }}
+                                            </td>
                                             <td>
-                                                @if ($sub->status == 'active')
-                                                    <span class="badge text-success bg-light-success">Active</span>
+                                                @if ($inv->status == 'active')
+                                                    <span
+                                                        class="badge text-primary bg-light-primary">{{ ucwords($inv->status) }}</span>
+                                                @elseif ($inv->status == 'paid')
+                                                    <span
+                                                        class="badge text-success bg-light-success">{{ ucwords($inv->status) }}</span>
+                                                @elseif($inv->status == 'due')
+                                                    <span
+                                                        class="badge text-warning bg-light-warning">{{ ucwords($inv->status) }}</span>
+                                                @elseif($inv->status == 'overdue')
+                                                    <span
+                                                        class="badge text-danger bg-light-danger">{{ ucwords($inv->status) }}</span>
                                                 @else
-                                                    <span class="badge text-danger bg-light-danger">Terminated</span>
+                                                    <span class="badge text-info bg-light-info">{{ ucwords($inv->status) }}</span>
                                                 @endif
                                             </td>
 
@@ -232,6 +250,86 @@
             </div>
         </div>
     </div>
+
+    @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 6) == true)
+        <!-- offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
+            <div class="offcanvas-body" data-simplebar>
+                <div class="offcanvas-header px-2 pt-0">
+                    <h3 class="offcanvas-title" id="offcanvasExampleLabel">New Invoice</h3>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <!-- card body -->
+                <div class="container">
+                    <!-- form -->
+                    <form class="needs-validation" novalidate method="post"
+                        action="{{ route('admin.storeInvoice') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <!-- form group -->
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Client <span class="text-danger">*</span></label>
+                                <select id="client" name="client" class="form-control" data-width="100%"
+                                    required>
+                                    <option value="">Select Client</option>
+                                    @foreach ($customers as $client)
+                                        <option value="{{ $client->id }}">
+                                            {{ $client->last_name . ' ' . $client->other_names }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">Please select product.</div>
+                            </div>
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Product <span class="text-danger">*</span></label>
+                                <select id="custSelProd" name="product" class="form-control" data-width="100%"
+                                    required>
+                                    <option value="">Select Product</option>
+                                    @foreach ($products as $prod)
+                                        <option value="{{ $prod->id }}">{{ $prod->product }} Plan</option>
+                                    @endforeach
+                                </select>
+                                <div class="invalid-feedback">Please select product.</div>
+                            </div>
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Plan <span class="text-danger">*</span></label>
+                                <select id="custSelPlan" name="plan" class="form-control" data-width="100%"
+                                    required>
+                                    <option value="" data-amount="">Select Plan</option>
+                                </select>
+                                <div class="invalid-feedback">Please select plan.</div>
+                            </div>
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Amount <span class="text-danger">*</span></label>
+                                <input id="amount" type="text" name="amount" class="form-control"
+                                    placeholder="Enter Amount" required readonly>
+                                <div class="invalid-feedback">Please select due date.</div>
+                            </div>
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Due Date <span class="text-danger">*</span></label>
+                                <input id="date" type="date" name="due_date" class="form-control"
+                                    placeholder="Enter Due Date" required>
+                                <div class="invalid-feedback">Please select due date.</div>
+                            </div>
+
+                            <div class="col-md-12 border-bottom"></div>
+                            <!-- button -->
+                            <div class="col-12 mt-4">
+                                <button class="btn btn-primary" type="submit">Create Invoice</button>
+                                <button type="button" class="btn btn-outline-primary ms-2"
+                                    data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
 </section>
 
 
@@ -241,4 +339,39 @@
     document.getElementById("payments").classList.add('active');
 </script>
 
+@endsection
+
+
+@section('customjs')
+<script type="text/javascript">
+    $('#custSelProd').change(function() {
+        var productId = $(this).val();
+        $('#custSelPlan').html(
+            '<option value="">Fetching data, please wait...</option>'); // Show "Fetching data" message
+        $.ajax({
+            url: "/ajax/fetch-plans/" + productId,
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                var options = "<option value=''>Select Product Plans</option>";
+                $.each(data, function(index, plan) {
+                    options += "<option value='" + plan.id + "' data-amount='" + plan
+                        .pricing + "'>" + plan.plan + " " + toCamelCase(plan.frequency) +
+                        "</option>";
+                });
+                $('#custSelPlan').html(options);
+            }
+        });
+    });
+
+    $('#custSelPlan').change(function() {
+        var selectedOption = $(this).find(':selected');
+        var amount = selectedOption.data('amount');
+        $('#amount').val(amount ? amount : '');
+    });
+
+    function toCamelCase(str) {
+        return str.toLowerCase().replace(/(^|\s)\S/g, letter => letter.toUpperCase());
+    }
+</script>
 @endsection

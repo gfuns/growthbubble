@@ -1996,16 +1996,17 @@ class AdminController extends Controller
      */
     public function payments()
     {
-        $search  = request()->search;
-        $product = request()->product;
-        $status  = request()->status;
+        $search    = request()->search;
+        $product   = request()->product;
+        $status    = request()->status;
+        $startDate = request()->start_date;
+        $endDate   = request()->end_date;
 
         $query = Invoice::query();
 
         if (isset(request()->search)) {
-            $query->whereHas('customer', function ($query) use ($search) {
-                $query->whereLike(["last_name", "other_names"], $search);
-            });
+            $query->where('invoice_number', $search)
+                ->orWhereHas('customer', fn($q) => $q->whereLike(['last_name', 'other_names'], $search));
         }
 
         if (isset(request()->product)) {
@@ -2016,13 +2017,63 @@ class AdminController extends Controller
             $query->where("status", $status);
         }
 
+        if (isset(request()->start_date)) {
+            if (isset(request()->end_date)) {
+                $startDate = Carbon::parse($startDate)->startOfDay();
+                $endDate   = Carbon::parse($endDate)->endOfDay();
+                $query->whereBetween("created_at", [$startDate, $endDate]);
+            } else {
+                toast('Please select end date', 'error');
+                return back();
+            }
+        }
+
         $lastRecord = $query->count();
         $marker     = $this->getMarkers($lastRecord, request()->page);
         $invoices   = $query->paginate(50);
 
-        $products = Product::all();
+        $products  = Product::all();
+        $customers = User::where("role_id", 0)->get();
+        return view("admin.customer_payments", compact("invoices", "customers", "products", "lastRecord", "marker", "search", "product", "status", "startDate", "endDate"));
+    }
 
-        return view("admin.customer_payments", compact("invoices", "products", "lastRecord", "marker", "search", "product", "status"));
+    /**
+     * storeInvoice
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function storeInvoice(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'client'   => 'required',
+            'product'  => 'required',
+            'plan'     => 'required',
+            'due_date' => 'required',
+            'amount'   => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $invoice             = new Invoice;
+        $invoice->user_id    = $request->client;
+        $invoice->product_id = $request->product;
+        $invoice->plan_id    = $request->plan;
+        $invoice->due_date   = $request->due_date;
+        $invoice->amount     = $request->amount;
+        if ($invoice->save()) {
+            toast('Invoice Generated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
     }
 
     /**

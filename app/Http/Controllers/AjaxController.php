@@ -28,4 +28,13 @@ class AjaxController extends Controller
         return response()->json($plans);
     }
 
+    public function fetchProductPlans($productId)
+    {
+
+        $plans = SubscriptionPlan::where('product_id', $productId)
+            ->get();
+
+        return response()->json($plans);
+    }
+
 }

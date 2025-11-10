@@ -162,6 +162,8 @@ Route::group([
 
     Route::get('/payments', [AdminController::class, 'payments'])->name('admin.payments');
 
+    Route::post('/storeInvoice', [AdminController::class, 'storeInvoice'])->name('admin.storeInvoice');
+
     Route::get('/tickets', [AdminController::class, 'customerTickets'])->name('admin.customerTickets');
 
     Route::get('/ticket/details/{id}', [AdminController::class, 'ticketDetails'])->name('admin.ticketDetails');
@@ -174,5 +176,7 @@ Route::group([
 Route::get('/ajax/get-projects/{customer}', [App\Http\Controllers\AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
 
 Route::get('/ajax/get-plans/{product}', [App\Http\Controllers\AjaxController::class, 'getProductPlans'])->name('ajax.getProductPlans');
+
+Route::get('/ajax/fetch-plans/{product}', [App\Http\Controllers\AjaxController::class, 'fetchProductPlans'])->name('ajax.fetchProductPlans');
 
 require __DIR__ . '/customer.php';

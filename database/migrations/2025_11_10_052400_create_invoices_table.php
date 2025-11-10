@@ -16,10 +16,10 @@ return new class extends Migration
             $table->integer("user_id")->unsigned();
             $table->integer("product_id")->unsigned();
             $table->integer("plan_id")->unsigned();
-            $table->string("invoice_number");
+            $table->string("invoice_number")->nullable();
             $table->date("due_date");
             $table->double("amount", 12, 2);
-            $table->enum("status", ["paid", "due", "overdue", "draft"])->default("due");
+            $table->enum("status", ["active", "paid", "due", "overdue", "draft"])->default("active");
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
