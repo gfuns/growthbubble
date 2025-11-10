@@ -40,6 +40,7 @@ class CustomerController extends Controller
             "queuedTasks"    => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "queued")->count(),
             "recurringTasks" => CustomerTasks::where("user_id", Auth::user()->id)->where("recurring", "yes")->count(),
             "completedTasks" => CustomerTasks::where("user_id", Auth::user()->id)->where("status", "completed")->count(),
+            "totalTasks"     => CustomerTasks::where("user_id", Auth::user()->id)->count(),
         ];
 
         $tasks      = CustomerTasks::where("user_id", Auth::user()->id)->get();

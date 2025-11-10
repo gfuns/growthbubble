@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('task_categories', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->integer("product_id")->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('task_categories', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('product_id');
         });
     }

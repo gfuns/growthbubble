@@ -7,6 +7,12 @@
                     Bubble</span>
             </h3>
         </a>
+        <div class="mb-4" style="text-align: center">
+            <a href="{{ route('customer.newCustomerTask') }}">
+                <button class="btn btn-info btn-md"><i class="bi bi-plus-circle"></i> Create New Task</button>
+            </a>
+        </div>
+        <hr />
         <!-- Navbar nav -->
         <ul class="navbar-nav flex-column" id="sideNavbar">
 

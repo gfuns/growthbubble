@@ -43,7 +43,8 @@
         @if (Auth::user()->onboarding_status != 'onboarded')
             <div class="alert alert-primary d-flex justify-content-between align-items-center">
                 <div>Please take some time to complete your onboarding.</div>
-                <div><a href="{{ route('onboarding.instructions') }}"><button class="btn btn-primary btn-xs">Complete Onboarding</button></a></div>
+                <div><a href="{{ route('onboarding.instructions') }}"><button class="btn btn-primary btn-xs">Complete
+                            Onboarding</button></a></div>
             </div>
         @endif
         <div class="row">
@@ -54,12 +55,12 @@
                     <a href="{{ route('customer.tasks') }}?status=in progress">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mb-2 lh-1">
-                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Ongoing Tasks</h4>
+                                <h4 class="fs-6 text-uppercase fw-bold ls-md">Active Tasks</h4>
                                 <div>
                                     <span class="bi bi-lightbulb fs-3 text-primary"></span>
                                 </div>
                             </div>
-                            <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }}</h4>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }} / 5</h4>
                         </div>
                     </a>
                 </div>
@@ -77,7 +78,7 @@
                                     <span class="bi bi-list-ol fs-3 text-primary"></span>
                                 </div>
                             </div>
-                            <h4 class="fw-bold mb-1">{{ number_format($params['queuedTasks'], 0) }}</h4>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['queuedTasks'], 0) }} / Unlimited</h4>
                         </div>
                     </a>
                 </div>
@@ -95,7 +96,7 @@
                                     <span class="bi bi-arrow-clockwise fs-3 text-primary"></span>
                                 </div>
                             </div>
-                            <h4 class="fw-bold mb-1">{{ number_format($params['recurringTasks'], 0) }}</h4>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['recurringTasks'], 0) }} / Unlimited</h4>
                         </div>
                     </a>
                 </div>
@@ -113,7 +114,7 @@
                                     <span class="bi bi-check2-circle fs-3 text-primary"></span>
                                 </div>
                             </div>
-                            <h4 class="fw-bold mb-1">{{ number_format($params['completedTasks'], 0) }}</h4>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['completedTasks'], 0) }} / Unlimited</h4>
                         </div>
                     </a>
                 </div>
@@ -155,8 +156,8 @@
                                         aria-labelledby="tab-tasks">
                                         <!-- Table -->
                                         <div class="table-responsive">
-                                            <table id="prodTable1" class="table mb-0 table-hover"
-                                                style="font-size: 13px">
+                                            <table @if (count($tasks) > 0) id="prodTable1" @endif
+                                                class="table mb-0 table-hover" style="font-size: 13px">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>#</th>
@@ -195,6 +196,25 @@
                                                     @endforeach
                                                 </tbody>
                                             </table>
+
+                                            @if (count($tasks) < 1)
+                                                <div class="col-xl-12 col-12 job-items job-empty">
+                                                    <div class="text-center mt-4"><i class="bi bi-dropbox"
+                                                            style="font-size: 48px"></i>
+                                                        <h3 class="mt-2">No Active Tasks Available</h3>
+                                                        <div class="mt-2 text-muted"> Click "Create New Task" to add a
+                                                            task.
+                                                        </div>
+                                                        <div class="mt-4">
+                                                            <a href="{{ route('customer.newCustomerTask') }}">
+                                                                <button class="btn btn-primary btn-xs"><i
+                                                                        class="bi bi-plus-circle"></i> Create New
+                                                                    Task</button>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -202,8 +222,8 @@
                                         aria-labelledby="tab-project">
                                         <!-- Table -->
                                         <div class="table-responsive">
-                                            <table id="prodTable2" class="table mb-0 table-hover"
-                                                style="font-size: 13px">
+                                            <table @if (count($projects) > 0) id="prodTable2" @endif
+                                                class="table mb-0 table-hover" style="font-size: 13px">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>#</th>
@@ -235,6 +255,26 @@
 
                                                 </tbody>
                                             </table>
+
+                                            @if (count($projects) < 1)
+                                                <div class="col-xl-12 col-12 job-items job-empty">
+                                                    <div class="text-center mt-4"><i class="bi bi-dropbox"
+                                                            style="font-size: 48px"></i>
+                                                        <h3 class="mt-2">No Projects Available</h3>
+                                                        <div class="mt-2 text-muted"> Click "Create New Project" to add
+                                                            a
+                                                            project.
+                                                        </div>
+                                                        <div class="mt-4">
+                                                            <button class="btn btn-primary btn-xs"
+                                                                data-bs-toggle="offcanvas"
+                                                                data-bs-target="#offcanvasRight"><i
+                                                                    class="bi bi-plus-circle"></i> Create New
+                                                                Project</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -319,6 +359,50 @@
             </div>
         </div>
     </div>
+
+    <!-- offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
+        <div class="offcanvas-body" data-simplebar>
+            <div class="offcanvas-header px-2 pt-0">
+                <h3 class="offcanvas-title" id="offcanvasExampleLabel">Create New Project</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <!-- card body -->
+            <div class="container">
+                <!-- form -->
+                <form class="needs-validation" novalidate method="post"
+                    action="{{ route('customer.storeProject') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <!-- form group -->
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Project Title <span class="text-danger">*</span></label>
+                            <input type="text" name="project_title" class="form-control"
+                                placeholder="Enter Project Title" required>
+                            <div class="invalid-feedback">Please provide project title.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Project Description <span class="text-danger">*</span></label>
+                            <textarea name="project_description" class="form-control" placeholder="Enter Project Description" required
+                                style="resize: none" rows="5"></textarea>
+                            <div class="invalid-feedback">Please provide project description.</div>
+                        </div>
+
+                        <div class="col-md-12 border-bottom"></div>
+                        <!-- button -->
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary" type="submit">Create Project</button>
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
+                                aria-label="Close">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 <script>

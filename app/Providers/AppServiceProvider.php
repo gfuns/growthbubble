@@ -37,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('product', function ($app) {
             return new AdminController();
         });
+
     }
 }
