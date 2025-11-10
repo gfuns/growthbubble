@@ -234,6 +234,9 @@
                         </div>
 
 
+                        <input id="myid" type="hidden" name="product_id" value="{{ $product->id }}"
+                            class="form-control" required>
+
                         <!-- button -->
                         <div class="col-md-8"></div>
                         <!-- button -->

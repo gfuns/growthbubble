@@ -20,6 +20,8 @@ return new class extends Migration
             $table->date("due_date");
             $table->double("amount", 12, 2);
             $table->enum("status", ["active", "paid", "due", "overdue", "draft"])->default("active");
+            $table->string("payment_method")->nullable();
+            $table->string("txn_id")->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

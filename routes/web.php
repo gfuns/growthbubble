@@ -174,7 +174,7 @@ Route::group([
 
     Route::post('/replyTicket', [AdminController::class, 'replyTicket'])->name('admin.replyTicket');
 
-    Route::get('/downloadInvoice', [AdminController::class, 'downloadInvoice'])->name('admin.downloadInvoice');
+    Route::get('/export-payments', [AdminController::class, 'downloadInvoice'])->name('admin.downloadInvoice');
 
     Route::get('/files', [AdminController::class, 'files'])->name('admin.files');
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Customer;
 
+use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerCards;
 use App\Models\CustomerFiles;
@@ -23,6 +24,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 use Session;
 
 class CustomerController extends Controller
@@ -571,7 +574,7 @@ class CustomerController extends Controller
             DB::commit();
 
             toast('Task Created Successfully.', 'success');
-            return redirect()->route("customer.tasks");
+            return redirect()->route("customer.tasks", [$task->product_id]);
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
@@ -1104,6 +1107,59 @@ class CustomerController extends Controller
         $customers = User::where("role_id", 0)->get();
 
         return view("customer.payments", compact("invoices", "customers", "products", "lastRecord", "marker", "search", "product", "status", "startDate", "endDate", "params"));
+    }
+
+    /**
+     * downloadInvoice
+     *
+     * @return void
+     */
+    public function downloadInvoice()
+    {
+        $filename = "Payments_" . strtotime(now()) . ".xlsx";
+        return Excel::download(new ExportInvoice(), $filename);
+    }
+
+    /**
+     * subscriptionReceipt
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function subscriptionReceipt($id)
+    {
+        $subscription = CustomerSubscription::find($id);
+
+        view()->share(['subscription' => $subscription]);
+
+        $pdf      = PDF::loadView('customer.receipts.subscription');
+        $fileName = "Receipt_" . $subscription->invoice_number . ".pdf";
+
+        return $pdf->download($fileName);
+
+        return view("customer.receipts.subscription", compact("subscription"));
+    }
+
+    /**
+     * paymentReceipt
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function paymentReceipt($id)
+    {
+        $payment = Invoice::find($id);
+
+        view()->share(['payment' => $payment]);
+
+        $pdf      = PDF::loadView('customer.receipts.payment');
+        $fileName = "Receipt_" . $payment->invoice_number . ".pdf";
+
+        return $pdf->download($fileName);
+
+        return view("customer.receipts.payment", compact("payment"));
     }
 
     /**

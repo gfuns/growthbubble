@@ -133,4 +133,10 @@ Route::group([
 
     Route::get('/payments', [CustomerController::class, 'payments'])->name('customer.payments');
 
+    Route::get('/subscription/receipt/{id}', [CustomerController::class, 'subscriptionReceipt'])->name('customer.subscriptionReceipt');
+
+    Route::get('/payment/receipt/{id}', [CustomerController::class, 'paymentReceipt'])->name('customer.paymentReceipt');
+
+    Route::get('/export-payments', [CustomerController::class, 'downloadInvoice'])->name('customer.downloadInvoice');
+
 });

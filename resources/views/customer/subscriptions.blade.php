@@ -74,7 +74,7 @@
                                             <td class="align-middle">
                                                 {{ date_format(new DateTime($sub->expiry_date), 'jS F, Y') }} </td>
                                             <td>
-                                                <a href=""> <span class="badge text-primary bg-light-primary">Download Receipt</span></a>
+                                                <a href="{{ route("customer.subscriptionReceipt", [$sub->id]) }}"> <span class="badge text-primary bg-light-primary">Download Receipt</span></a>
                                             </td>
 
                                         </tr>

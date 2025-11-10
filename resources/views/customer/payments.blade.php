@@ -190,7 +190,7 @@
                                 </div>
                                 <div class="col-6 col-lg-1">
                                     <!-- form select -->
-                                    <a href="{{ route('admin.downloadInvoice') }}"><button type="button"
+                                    <a href="{{ route('customer.downloadInvoice') }}"><button type="button"
                                             class="btn btn-primary btn-md"><i
                                                 class="bi bi-cloud-download"></i></button></a>
                                 </div>
@@ -221,7 +221,7 @@
                                             <td class="align-middle"> &pound;{{ number_format($inv->amount, 2) }}
                                             </td>
                                             <td>
-                                                 <a href=""> <span class="badge text-primary bg-light-primary">Download Receipt</span></a>
+                                                 <a href="{{ route("customer.paymentReceipt", [$inv->id]) }}"> <span class="badge text-primary bg-light-primary">Download Receipt</span></a>
                                             </td>
 
                                         </tr>
