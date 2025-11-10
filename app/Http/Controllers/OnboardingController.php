@@ -309,8 +309,8 @@ class OnboardingController extends Controller
 
                 DB::beginTransaction();
 
-                $user->stripe_customer_id    = $customer->id;
-                $user->stripe_payment_method = $paymentMethodId;
+                $user->stripe_customer_id = $customer->id;
+                // $user->stripe_payment_method = $paymentMethodId;
                 $user->save();
 
                 $card                     = new CustomerCards;
@@ -320,7 +320,7 @@ class OnboardingController extends Controller
                 $card->expiry_month       = $paymentMethod->card->exp_month;
                 $card->expiry_year        = $paymentMethod->card->exp_year;
                 $card->card_brand         = $paymentMethod->card->brand;
-                $card->default_card       = 1;
+                // $card->default_card       = 1;
                 $card->save();
 
                 DB::commit();
