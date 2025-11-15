@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RenewalConfirmation as RenewalConfirmation;
 use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
 use App\Models\SubscriptionPlan;
@@ -10,6 +11,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mail;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\CardException;
@@ -150,36 +152,68 @@ class StripeController extends Controller
             ]);
 
             if (isset($paymentIntent->status) && $paymentIntent->status == "succeeded") {
+
+                DB::beginTransaction();
+
+                $pm = "Credit Card (" . ucwords($card->card_brand) . " ****-****-****-" . $card->last_four_digits . ")";
+
+                $invoice                 = new Invoice;
+                $invoice->user_id        = $user->id;
+                $invoice->product_id     = $plan->product_id;
+                $invoice->plan_id        = $plan->plan_id;
+                $invoice->due_date       = Carbon::now()->addDays(5);
+                $invoice->amount         = $plan->pricing;
+                $invoice->payment_method = $pm;
+                $invoice->txn_id         = "TXN" . preg_replace("/pi/", "", $paymentIntent->id);
+                $invoice->status         = "paid";
+                $invoice->save();
+
                 $subscription                 = new CustomerSubscription;
                 $subscription->user_id        = $user->id;
                 $subscription->product_id     = $plan->product_id;
-                $subscription->plan_id        = $plan->id;
+                $subscription->plan_id        = $plan->plan_id;
                 $subscription->pricing        = $plan->pricing;
                 $subscription->effective_date = now();
                 $subscription->expiry_date    = Carbon::now()->addMonths($duration);
                 $subscription->save();
 
+                $plan->status == "terminated";
+                $plan->save();
+
+                DB::commit();
+
+                try {
+                    Mail::to($user)->send(new RenewalConfirmation($user, $subscription));
+                } catch (\Exception $e) {
+                    report($e);
+                }
+
                 toast('Your Plan has been successfully renewed.', 'success');
                 return back();
             } else {
+                DB::rollback();
                 toast('We are unable to charge this payment method at this time. Please try again later.', 'error');
                 return back();
             }
         } catch (CardException $e) {
+            DB::rollback();
             // Card was declined
             toast($e->getMessage(), 'error');
             return back();
 
         } catch (InvalidRequestException $e) {
+            DB::rollback();
             // Wrong params (e.g., wrong payment method ID)
             toast("There appears to be an issue with the selected payment method.", 'error');
             return back();
 
         } catch (ApiErrorException $e) {
+            DB::rollback();
             // Any other Stripe API error
             toast($e->getMessage(), 'error');
             return back();
         } catch (\Throwable $e) {
+            DB::rollback();
             // Any Code Related Error That is not Stripe Generated
             toast($e->getMessage(), 'error');
             return back();

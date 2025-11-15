@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\CronController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\TwofactorController;
 use Illuminate\Support\Facades\Route;
@@ -185,10 +187,18 @@ Route::group([
     Route::get('/deleteFile/{id}', [AdminController::class, 'deleteFile'])->name('admin.deleteFile');
 });
 
-Route::get('/ajax/get-projects/{customer}', [App\Http\Controllers\AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
+Route::get('/ajax/get-projects/{customer}', [AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
 
-Route::get('/ajax/get-plans/{product}', [App\Http\Controllers\AjaxController::class, 'getProductPlans'])->name('ajax.getProductPlans');
+Route::get('/ajax/get-plans/{product}', [AjaxController::class, 'getProductPlans'])->name('ajax.getProductPlans');
 
-Route::get('/ajax/fetch-plans/{product}', [App\Http\Controllers\AjaxController::class, 'fetchProductPlans'])->name('ajax.fetchProductPlans');
+Route::get('/ajax/fetch-plans/{product}', [AjaxController::class, 'fetchProductPlans'])->name('ajax.fetchProductPlans');
+
+Route::group([
+    'prefix' => 'cron',
+], function ($router) {
+    Route::get('/renew-subscription', [CronController::class, 'renewSubscription'])->name('cron.renewSubscription');
+    Route::get('/expiring-subscription', [CronController::class, 'expiringSubscription'])->name('cron.expiringSubscription');
+
+});
 
 require __DIR__ . '/customer.php';
