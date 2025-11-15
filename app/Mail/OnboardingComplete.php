@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegistrationMail extends Mailable
+class OnboardingComplete extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -28,7 +28,7 @@ class RegistrationMail extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: 'Welcome to Growth Bubbles Concierge 🎉',
+            subject: 'Onboarding complete – you’re all set to start submitting tasks!',
         );
     }
 
@@ -38,7 +38,7 @@ class RegistrationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.registration_mail',
+            view: 'emails.onboarding_complete',
             with: [
                 'user' => $this->user,
             ],

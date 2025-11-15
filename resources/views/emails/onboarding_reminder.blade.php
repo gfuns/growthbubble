@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Growth Bubbles Concierge 🎉</title>
+    <title>We’re ready when you are – complete your onboarding</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,22 +69,18 @@
         </div>
         <p>Hi {{ $user->last_name . ', ' . $user->other_names }}</p>
 
-        <p>Welcome aboard! Your Growth Bubbles Concierge account has been created successfully.</p>
+        <p>We noticed you haven’t completed your onboarding yet. Once that’s done, our team can start working on your marketing tasks.</p>
 
-        <p>You’re just one step away from getting expert marketing support on demand.</p>
-
-        <p>To get started, please complete your first payment so we can activate your account.</p>
-
-        <div class="code">
-            <a href="{{ route("onboarding.payment") }}">
+         <div class="code">
+            <a href="{{ route('onboarding.instructions') }}">
                 <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Complete Your Payment</button>
+                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Complete Onboarding</button>
             </a>
         </div>
 
-        <p>Once your payment is confirmed, we’ll guide you through onboarding so our team can get to work.</p>
+        <p>It only takes a few minutes — and it ensures we have everything we need to hit the ground running.</p>
 
-        <p>Let’s make marketing easier, together.</p>
+        <p>If you have any questions, just reply to this email.</p>
 
         <p>— The Growth Bubbles Team</p>
     </div>

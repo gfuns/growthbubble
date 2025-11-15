@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Growth Bubbles Concierge 🎉</title>
+    <title>Onboarding complete – you’re all set to start submitting tasks!</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,22 +69,27 @@
         </div>
         <p>Hi {{ $user->last_name . ', ' . $user->other_names }}</p>
 
-        <p>Welcome aboard! Your Growth Bubbles Concierge account has been created successfully.</p>
+        <p>We’ve received your onboarding details — thank you! Your account setup is now complete.</p>
 
-        <p>You’re just one step away from getting expert marketing support on demand.</p>
-
-        <p>To get started, please complete your first payment so we can activate your account.</p>
+        <p>You can now start submitting tasks directly through your client portal.</p>
 
         <div class="code">
-            <a href="{{ route("onboarding.payment") }}">
+            <a href="{{ route('customer.newCustomerTask', [1]) }}">
                 <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Complete Your Payment</button>
+                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Submit
+                    Your First Task</button>
             </a>
         </div>
 
-        <p>Once your payment is confirmed, we’ll guide you through onboarding so our team can get to work.</p>
+        <p>If you need inspiration, here are some examples of what you can request:</p>
+        <ul>
+            <li>Email design and setup</li>
+            <li>Social media post design</li>
+            <li>Marketing tool integration</li>
+            <li>Website updates or new pages</li>
+        </ul>
 
-        <p>Let’s make marketing easier, together.</p>
+        <p>We can’t wait to get started.</p>
 
         <p>— The Growth Bubbles Team</p>
     </div>

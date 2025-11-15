@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\OnboardingComplete as OnboardingComplete;
+use App\Mail\PaymentConfirmation as PaymentConfirmation;
 use App\Mail\RegistrationMail as RegistrationMail;
 use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
@@ -240,6 +242,13 @@ class OnboardingController extends Controller
                 DB::commit();
 
                 $tempData->delete();
+
+                try {
+                    $user = User::find(Auth::user()->id);
+                    Mail::to($user)->send(new PaymentConfirmation($user, $subscription));
+                } catch (\Exception $e) {
+                    report($e);
+                }
 
                 return response()->json(['success' => true]);
 
@@ -504,9 +513,16 @@ class OnboardingController extends Controller
         );
 
         if ($onboardingData) {
-            $user                    = Auth::user();
+            $user                    = User::find(Auth::user()->id);
             $user->onboarding_status = "onboarded";
             $user->save();
+
+            try {
+                Mail::to($user)->send(new OnboardingComplete($user));
+            } catch (\Exception $e) {
+                report($e);
+            }
+
             toast('Onboarding Completed Successfully.', 'success');
             return redirect()->route("customer.dashboard");
         } else {
