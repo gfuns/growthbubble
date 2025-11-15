@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('attached_file')->nullable();
             $table->integer('creator')->unsigned();
             $table->enum('priority', ["normal", "medium", "high"])->default("normal");
-            $table->enum('status', ["queued", "in progress", "completed", "on hold", "cancelled"])->default("queued");
+            $table->enum('status', ["queued", "in progress", "quality assurance", "completed", "on hold", "cancelled"])->default("queued");
             $table->date('date_assigned')->nullable();
             $table->integer('assigned_by')->unsigned()->nullable();
             $table->integer('assigned_to')->unsigned()->nullable();

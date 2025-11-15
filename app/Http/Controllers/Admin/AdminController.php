@@ -5,6 +5,11 @@ use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountCreationMail as AccountCreationMail;
 use App\Mail\CustomerCreationMail as CustomerCreationMail;
+use App\Mail\InternalTaskCompletion as InternalTaskCompletion;
+use App\Mail\TaskAssigned as TaskAssigned;
+use App\Mail\TaskCompletion as TaskCompletion;
+use App\Mail\TaskInProgress as TaskInProgress;
+use App\Mail\TaskRevision as TaskRevision;
 use App\Models\CustomerFiles;
 use App\Models\CustomerSubscription;
 use App\Models\CustomerTasks;
@@ -1676,6 +1681,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'task_id'     => 'required',
             'team_member' => 'required',
+            'due_date'    => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -1707,6 +1713,17 @@ class AdminController extends Controller
             $activity->save();
 
             DB::commit();
+
+            try {
+                $staff    = User::find($request->team_member);
+                $customer = User::find($task->user_id);
+                // $dueDate  = $request->due_date;
+                Mail::to($staff)->send(new TaskAssigned($staff, $task));
+                Mail::to($customer)->send(new TaskInProgress($customer, $task));
+            } catch (\Exception $e) {
+                report($e);
+            }
+
             toast('Task Successfully Assigned To Team Member.', 'success');
             return back();
 
@@ -1781,6 +1798,23 @@ class AdminController extends Controller
             }
 
             DB::commit();
+
+            try {
+                if ($task->status == "quality assurance") {
+                    $qa    = env("QA_MAIL");
+                    $staff = User::find(Auth::user()->id);
+                    Mail::to($qa)->send(new InternalTaskCompletion($staff, $task));
+                } else if ($task->status == "completed") {
+                    $customer = User::find($task->user_id);
+                    Mail::to($customer)->send(new TaskCompletion($customer, $task));
+                } else {
+                    $customer = User::find($task->user_id);
+                    Mail::to($customer)->send(new TaskRevision($customer, $task, $request->comment));
+                }
+            } catch (\Exception $e) {
+                report($e);
+            }
+
             toast('Task Successfully Updated.', 'success');
             return back();
         } catch (\Throwable $e) {

@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
+use App\Mail\TaskSubmitted as TaskSubmitted;
 use App\Models\CustomerCards;
 use App\Models\CustomerFiles;
 use App\Models\CustomerSubscription;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Mail;
 use PDF;
 use Session;
 
@@ -572,6 +574,13 @@ class CustomerController extends Controller
             $activity->save();
 
             DB::commit();
+
+            try {
+                $user = User::find(Auth::user()->id);
+                Mail::to($user)->send(new TaskSubmitted($user, $task));
+            } catch (\Exception $e) {
+                report($e);
+            }
 
             toast('Task Created Successfully.', 'success');
             return redirect()->route("customer.tasks", [$task->product_id]);

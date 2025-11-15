@@ -144,7 +144,7 @@
                                         @if ($task->status == 'queued' || $task->status == 'on hold')
                                             <span
                                                 class="badge text-primary bg-light-primary">{{ ucwords($task->status) }}</span>
-                                        @elseif ($task->status == 'in progress')
+                                        @elseif ($task->status == 'in progress' || $task->status == 'quality assurance')
                                             <span
                                                 class="badge text-warning bg-light-warning">{{ ucwords($task->status) }}</span>
                                         @elseif ($task->status == 'completed')
@@ -421,6 +421,7 @@
                                     <option value="">Select Task Priority</option>
                                     <option value="queued">Queued</option>
                                     <option value="in progress">In Progress</option>
+                                    <option value="quality assurance">Undergoing QA</option>
                                     <option value="completed">Completed</option>
                                     <option value="on hold">On Hold</option>
                                     <option value="cancelled">Cancelled</option>

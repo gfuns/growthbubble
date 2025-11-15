@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment received – let’s start your onboarding 🚀</title>
+    <title>Your task has been updated</title>
     <style>
         /* CSS Styles */
         body {
@@ -85,7 +85,7 @@
         }
 
 
-         .code {
+        .code {
             margin-top: 30px;
             padding: 15px;
             background-color: #f9f9f9;
@@ -106,39 +106,20 @@
 
         <p>Hi {{ $user->last_name . ' ' . $user->other_names }},</p>
 
-        <p>Thanks for your payment! Your {{ucwords($sub->plan->frequency)}} {{$sub->plan->plan}} {{$sub->product->product}} plan is now active.</p>
+        <p>We’ve made updates to your task{{ $task->title }}.</p>
 
-        <p><strong>Payment Summary:</strong></p>
-
-        <table>
-            <tbody>
-                <tr>
-                    <th>Amount</th>
-                    <td>&pound;{{ number_format($sub->pricing, 2) }}</td>
-                </tr>
-                <tr>
-                    <th>Date</th>
-                    <td>{{ date_format($sub->created_at, 'jS M, Y') }}</td>
-                </tr>
-                <tr>
-                    <th>Next Renewal</th>
-                    <td>{{ date_format(new DateTime($sub->expiry_date), 'jS M, Y') }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p>Now it’s time to complete your onboarding. We’ll need your website URL, brand assets, and any login details
-            that will help us get to work.</p>
-
-
-            <div class="code">
-            <a href="{{ route("onboarding.instructions") }}">
+       <div class="code">
+            <a href="{{ route('customer.taskDetails', [$task->id]) }}">
                 <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Start Onboarding</button>
+                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">View Updated Task</button>
             </a>
         </div>
 
-        <p>Once you’re done, you’ll be ready to submit your first task.</p>
+         <p>Here’s a quick summary of what’s changed:</p>
+
+         <p>@php echo $summary; @endphp</p>
+
+         <p>Let us know if there’s anything else you’d like us to adjust.</p>
 
         <div class="">
             <p>— The Growth Bubbles Team</p>
