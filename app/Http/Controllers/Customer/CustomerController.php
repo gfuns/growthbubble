@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
+use App\Mail\PriorityPaymentConfirmation as PriorityPaymentConfirmation;
 use App\Mail\RevisionRequest as RevisionRequest;
 use App\Mail\TaskSubmitted as TaskSubmitted;
 use App\Models\CustomerCards;
@@ -30,6 +31,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Mail;
 use PDF;
 use Session;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class CustomerController extends Controller
 {
@@ -546,46 +549,95 @@ class CustomerController extends Controller
         }
 
         try {
-            DB::beginTransaction();
 
-            $task                   = new CustomerTasks;
-            $task->user_id          = Auth::user()->id;
-            $task->product_id       = $request->product_id;
-            $task->title            = $request->task_summary;
-            $task->task_description = $request->explanation;
-            $task->task_category    = $request->task_category;
-            $task->priority         = $request->priority ?? "no";
-            $task->website          = $request->website;
-            $task->provided_access  = $request->shared_access;
-            $task->creator          = Auth::user()->id;
-            if ($request->has('attached_files')) {
-                $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
-                $task->attached_file = $uploadedFileUrl;
-            }
-            $task->save();
+            $priorityCharged = true;
 
-            $activity           = new PlatformActivities;
-            $activity->user_id  = Auth::user()->id;
-            $activity->owner_id = Auth::user()->id;
-            $activity->activity = 'Created a new task "' . $task->title . '"';
-            $activity->save();
+            if (isset($request->priority)) {
+                $priorityCharged = false;
 
-            DB::commit();
-
-            try {
-                $user = User::find(Auth::user()->id);
-                Mail::to($user)->send(new TaskSubmitted($user, $task));
-            } catch (\Exception $e) {
-                report($e);
+                $priorityCharged = self::chargePriorityFee();
             }
 
-            toast('Task Created Successfully.', 'success');
-            return redirect()->route("customer.tasks", [$task->product_id]);
+            if ($priorityCharged === true) {
+
+                DB::beginTransaction();
+
+                $task                   = new CustomerTasks;
+                $task->user_id          = Auth::user()->id;
+                $task->product_id       = $request->product_id;
+                $task->title            = $request->task_summary;
+                $task->task_description = $request->explanation;
+                $task->task_category    = $request->task_category;
+                $task->priority         = $request->priority ?? "no";
+                $task->website          = $request->website;
+                $task->provided_access  = $request->shared_access;
+                $task->creator          = Auth::user()->id;
+                if ($request->has('attached_files')) {
+                    $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                    $task->attached_file = $uploadedFileUrl;
+                }
+                $task->save();
+
+                $activity           = new PlatformActivities;
+                $activity->user_id  = Auth::user()->id;
+                $activity->owner_id = Auth::user()->id;
+                $activity->activity = 'Created a new task "' . $task->title . '"';
+                $activity->save();
+
+                DB::commit();
+
+                try {
+                    $user = User::find(Auth::user()->id);
+                    Mail::to($user)->send(new TaskSubmitted($user, $task));
+
+                    if ($priorityCharged === true) {
+                        Mail::to($user)->send(new PriorityPaymentConfirmation($user, $task));
+                    }
+
+                } catch (\Exception $e) {
+                    report($e);
+                }
+
+                toast('Task Created Successfully.', 'success');
+                return redirect()->route("customer.tasks", [$task->product_id]);
+            } else {
+                toast('We could not charge your card on file for priority fee.', 'error');
+                return back();
+            }
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();
             toast('Something went wrong. Please try again', 'error');
             return back();
+        }
+    }
+
+    /**
+     * chargePriorityFee
+     *
+     * @return void
+     */
+    public static function chargePriorityFee()
+    {
+        $card = CustomerCards::where("user_id", Auth::user()->id)->where("default_card", 1)->first();
+
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+        $paymentIntent = PaymentIntent::create([
+            'customer'       => Auth::user()->stripe_customer_id,
+            'amount'         => (39 * 100),
+            'currency'       => 'gbp',
+            'payment_method' => $card->authorization_code,
+            'off_session'    => true,
+            'confirm'        => true,
+        ]);
+
+        // \Log::info($paymentIntent);
+
+        if (isset($paymentIntent->status) && $paymentIntent->status == "succeeded") {
+            return true;
+        } else {
+            return false;
         }
     }
 
