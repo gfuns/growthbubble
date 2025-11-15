@@ -50,6 +50,126 @@
         background: #0d6efd;
         color: #fff;
     }
+
+    .task-tags {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        font-family: Arial, sans-serif;
+    }
+
+    .tag-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 14px;
+        cursor: pointer;
+        background: #f8f8f8;
+        border: 1px solid #eee;
+        transition: 0.2s ease-in-out;
+        position: relative;
+    }
+
+    .tag-item input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        accent-color: #333;
+    }
+
+    .tag-item:hover {
+        background: #f0f0f0;
+    }
+
+    /* COLORS */
+    .design {
+        background: #e9f5ff;
+        border-color: #cde9ff;
+    }
+
+    .design .tag-text {
+        color: #007bff;
+    }
+
+    .web {
+        background: #fff2e8;
+        border-color: #ffd9c4;
+    }
+
+    .web .tag-text {
+        color: #e66a00;
+    }
+
+    .automation {
+        background: #e8f7ed;
+        border-color: #c9e8d2;
+    }
+
+    .automation .tag-text {
+        color: #199647;
+    }
+
+    .video {
+        background: #e8eeff;
+        border-color: #cbd7ff;
+    }
+
+    .video .tag-text {
+        color: #3054ff;
+    }
+
+    .copywriting {
+        background: #f3f0ff;
+        border-color: #d8d3fa;
+    }
+
+    .copywriting .tag-text {
+        color: #2d2179;
+    }
+
+    .copywriting .beta {
+        background: #ffb57a;
+        padding: 1px 5px;
+        font-size: 10px;
+        border-radius: 8px;
+        color: white;
+        margin-left: 4px;
+    }
+
+    .security {
+        background: #ffe8e8;
+        border-color: #ffcdcd;
+    }
+
+    .security .tag-text {
+        color: #ff2f2f;
+    }
+
+    .unsure {
+        background: #f1f1f1;
+        border-color: #dcdcdc;
+    }
+
+    .unsure .tag-text {
+        color: #555;
+    }
+
+    /* SPECIAL Styling for "Not a Task?" */
+    .not-task {
+        padding: 6px 12px;
+        background: #e2f3ff;
+        color: #00a6ff;
+        border-radius: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid #bde7ff;
+        transition: 0.2s;
+    }
+
+    .not-task:hover {
+        background: #d7eeff;
+    }
 </style>
 
 <section class="container-fluid p-4">
@@ -65,7 +185,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
-                             <li class="breadcrumb-item">
+                            <li class="breadcrumb-item">
                                 <a href="#">{{ $product->product }}</a>
                             </li>
                             <li class="breadcrumb-item">
@@ -81,11 +201,61 @@
         enctype="multipart/form-data">
         @csrf
         <div class="row">
-            <div class="offset-xl-1 col-xl-10 col-lg-10 col-md-12 col-12">
+            <div class="col-12">
                 <!-- Card -->
                 <div class="card border-0 mb-4">
                     <!-- Card body -->
                     <div class="card-body">
+
+                        <div class="mb-5 col-md-12">
+                            <div class="task-tags">
+
+                                <label class="tag-item design">
+                                    <input type="radio"  name="fake_category" class="form-check-input">
+                                    <span class="tag-icon">🎨</span>
+                                    <span class="tag-text">Design</span>
+                                </label>
+
+                                <label class="tag-item web">
+                                    <input type="radio"  name="fake_category" class="form-check-input">
+                                    <span class="tag-icon">🌐</span>
+                                    <span class="tag-text">Web</span>
+                                </label>
+
+                                <label class="tag-item automation">
+                                    <input type="radio"  name="fake_category" class="form-check-input">
+                                    <span class="tag-icon">⚙️</span>
+                                    <span class="tag-text">Automation</span>
+                                </label>
+
+                                <label class="tag-item video">
+                                    <input type="radio"  name="fake_category" class="form-check-input">
+                                    <span class="tag-icon">📹</span>
+                                    <span class="tag-text">Video</span>
+                                </label>
+
+                                <label class="tag-item copywriting">
+                                    <input type="radio"  name="fake_category" class="form-check-input">
+                                    <span class="tag-icon">✍️</span>
+                                    <span class="tag-text">Copywriting</span>
+                                    <span class="beta">Beta</span>
+                                </label>
+
+                                <label class="tag-item security">
+                                    <input type="radio"  name="fake_category" class="form-check-input">
+                                    <span class="tag-icon">🛑</span>
+                                    <span class="tag-text">Security</span>
+                                </label>
+
+                                <label class="tag-item unsure">
+                                    <input type="radio"  name="fake_category" class="form-check-input">
+                                    <span class="tag-icon">❓</span>
+                                    <span class="tag-text">Unsure</span>
+                                </label>
+
+                            </div>
+                        </div>
+
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
@@ -104,7 +274,7 @@
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
-                         <div class="mb-3 col-md-12">
+                        <div class="mb-3 col-md-12">
                             <!-- Title -->
                             <label class="form-label">Summary <span class="text-danger">*</span></label>
                             <input type="text" name="task_summary" id="summary" class="form-control text-dark"
@@ -136,8 +306,8 @@
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label d-block">Have you given us the required access to complete this Task? <span
-                                    class="text-danger">*</span></label>
+                            <label class="form-label d-block">Have you given us the required access to complete this
+                                Task? <span class="text-danger">*</span></label>
                             <div class="d-inline-flex">
                                 <div class="form-check me-3">
                                     <input type="radio" id="sharedAccessYes" name="shared_access"
@@ -167,7 +337,9 @@
                                 <div class="form-check me-3" style="color: black">
                                     <input type="checkbox" id="regularTimeline" name="priority"
                                         class="form-check-input" value="yes" />
-                                    <label class="form-check-label" for="regularTimeline"><span class="form-label">Upgrade this task to priority for only &pound;{{ number_format(39, 2)}}</span></label>
+                                    <label class="form-check-label" for="regularTimeline"><span
+                                            class="form-label">Upgrade this task to priority for only
+                                            &pound;{{ number_format(39, 2) }}</span></label>
                                 </div>
                             </div>
                             <div class="invalid-feedback">Please provide a response.</div>
@@ -195,7 +367,7 @@
 
 
 <script type="text/javascript">
-   const productId = {{ Js::from($product->id) }};
+    const productId = {{ Js::from($product->id) }};
     document.getElementById("navProduct" + productId).classList.add('show');
     document.getElementById("tasks" + productId).classList.add('active');
 </script>
