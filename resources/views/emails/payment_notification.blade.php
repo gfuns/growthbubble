@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task completed</title>
+    <title>Payment received from {{$customer->last_name." ".$customer->other_names}}</title>
     <style>
         /* CSS Styles */
         body {
@@ -104,33 +104,35 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi QA Team,</p>
+        <p>Hi Team,</p>
 
-        <p>The following task has been marked complete by {{ $user->last_name." ".$user->other_names }}:</p>
+        <p>A payment has been received from {{$customer->last_name." ".$customer->other_names}}.</p>
 
         <table>
             <tbody>
-                <tr>
-                    <th>Client</th>
-                    <td>{{ $task->user->last_name." ".$task->user->other_names }}</td>
+               <tr>
+                    <th>Plan</th>
+                    <td>{{ucwords($sub->plan->frequency)}} {{$sub->plan->plan}} {{$sub->product->product}}</td>
                 </tr>
                 <tr>
-                    <th>Task</th>
-                    <td>{{ $task->title }}</td>
+                    <th>Amount</th>
+                    <td>&pound;{{ number_format($sub->pricing, 2) }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ date_format($sub->created_at, 'jS M, Y') }}</td>
                 </tr>
             </tbody>
         </table>
 
 
-
-       <div class="code">
-            <a href="{{ route('admin.taskDetails', [$task->id]) }}">
+        <div class="code">
+            <a href="{{ route('admin.customers') }}">
                 <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Review Task for QA</button>
+                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">View Client Account</button>
             </a>
         </div>
 
-         <p>Please review for quality before sending to the client.</p>
 
         <div class="">
             <p>— Growth Bubbles System</p>

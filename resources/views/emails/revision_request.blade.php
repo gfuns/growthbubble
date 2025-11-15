@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task completed</title>
+    <title>Revision requested by {{ $task->user->last_name . ' ' . $task->user->other_names }}</title>
     <style>
         /* CSS Styles */
         body {
@@ -104,16 +104,12 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi QA Team,</p>
+        <p>Hi {{ $user->last_name . ', ' . $user->other_names }},</p>
 
-        <p>The following task has been marked complete by {{ $user->last_name." ".$user->other_names }}:</p>
+        <p>{{ $task->user->last_name . ' ' . $task->user->other_names }} has requested revisions for the following task:</p>
 
         <table>
             <tbody>
-                <tr>
-                    <th>Client</th>
-                    <td>{{ $task->user->last_name." ".$task->user->other_names }}</td>
-                </tr>
                 <tr>
                     <th>Task</th>
                     <td>{{ $task->title }}</td>
@@ -121,16 +117,20 @@
             </tbody>
         </table>
 
+        <p>Here’s their feedback:</p>
+
+        <p>@php echo $summary; @endphp</p>
 
 
-       <div class="code">
+        <div class="code">
             <a href="{{ route('admin.taskDetails', [$task->id]) }}">
                 <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Review Task for QA</button>
+                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">
+                    Review and Update Task</button>
             </a>
         </div>
 
-         <p>Please review for quality before sending to the client.</p>
+        <p>Please address the changes and update the task status when complete.</p>
 
         <div class="">
             <p>— Growth Bubbles System</p>

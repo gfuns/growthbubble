@@ -137,7 +137,7 @@
          <p>Please confirm receipt and begin work as soon as possible.</p>
 
         <div class="">
-            <p>— The Growth Bubbles Team</p>
+            <p>— Growth Bubbles System</p>
         </div>
 
 

@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
+use App\Mail\RevisionRequest as RevisionRequest;
 use App\Mail\TaskSubmitted as TaskSubmitted;
 use App\Models\CustomerCards;
 use App\Models\CustomerFiles;
@@ -642,6 +643,14 @@ class CustomerController extends Controller
             }
 
             DB::commit();
+
+            try {
+                $staff = User::find($task->assigned_to);
+                Mail::to($staff)->send(new RevisionRequest($staff, $task, $request->comment));
+            } catch (\Exception $e) {
+                report($e);
+            }
+
             toast('Task Successfully Updated.', 'success');
             return back();
         } catch (\Throwable $e) {

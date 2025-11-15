@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task completed</title>
+    <title>New client ready for tasks: {{$customer->last_name." ".$customer->other_names}}</title>
     <style>
         /* CSS Styles */
         body {
@@ -104,33 +104,28 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi QA Team,</p>
+        <p>Hi Team,</p>
 
-        <p>The following task has been marked complete by {{ $user->last_name." ".$user->other_names }}:</p>
+        <p>{{$customer->last_name." ".$customer->other_names}} has completed onboarding and is ready to start submitting tasks.</p>
 
         <table>
             <tbody>
                 <tr>
-                    <th>Client</th>
-                    <td>{{ $task->user->last_name." ".$task->user->other_names }}</td>
-                </tr>
-                <tr>
-                    <th>Task</th>
-                    <td>{{ $task->title }}</td>
+                    <th>Website:</th>
+                    <td>{{ $website }}</td>
                 </tr>
             </tbody>
         </table>
 
 
-
-       <div class="code">
-            <a href="{{ route('admin.taskDetails', [$task->id]) }}">
+        <div class="code">
+            <a href="{{ route('admin.customers') }}">
                 <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Review Task for QA</button>
+                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">View Client Profile</button>
             </a>
         </div>
 
-         <p>Please review for quality before sending to the client.</p>
+        <p>Let’s ensure they have a great start!</p>
 
         <div class="">
             <p>— Growth Bubbles System</p>

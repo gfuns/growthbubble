@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\ClientOnboarded as ClientOnboarded;
 use App\Mail\OnboardingComplete as OnboardingComplete;
 use App\Mail\PaymentConfirmation as PaymentConfirmation;
+use App\Mail\PaymentNotification as PaymentNotification;
 use App\Mail\RegistrationMail as RegistrationMail;
 use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
@@ -241,14 +243,16 @@ class OnboardingController extends Controller
 
                 DB::commit();
 
-                $tempData->delete();
-
                 try {
-                    $user = User::find(Auth::user()->id);
+                    $staff = env("ADMIN_MAIL");
+                    $user  = User::find(Auth::user()->id);
                     Mail::to($user)->send(new PaymentConfirmation($user, $subscription));
+                    Mail::to($staff)->send(new PaymentNotification($user, $subscription));
                 } catch (\Exception $e) {
                     report($e);
                 }
+
+                $tempData->delete();
 
                 return response()->json(['success' => true]);
 
@@ -518,7 +522,10 @@ class OnboardingController extends Controller
             $user->save();
 
             try {
+                $staff   = env("ADMIN_MAIL");
+                $website = OnboardingDetails::where("user_id", $user->id)->where("operation", "website 1")->first();
                 Mail::to($user)->send(new OnboardingComplete($user));
+                Mail::to($staff)->send(new ClientOnboarded($user, $website->website_url));
             } catch (\Exception $e) {
                 report($e);
             }
