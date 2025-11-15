@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\ClientInactivity as ClientInactivity;
+use App\Mail\InactivityReminder as InactivityReminder;
 use App\Mail\RenewalConfirmation as RenewalConfirmation;
 use App\Mail\SubscriptionReminder as SubscriptionReminder;
 use App\Models\CustomerCards;
@@ -138,6 +140,39 @@ class CronController extends Controller
             try {
                 $user = User::find($subscription->user_id);
                 Mail::to($user)->send(new SubscriptionReminder($user, $subscription));
+            } catch (\Exception $e) {
+                report($e);
+            }
+
+        }
+    }
+
+    /**
+     * inactiveClients
+     *
+     * @return void
+     */
+    public function inactiveClients()
+    {
+        $inactiveClients = User::where("role_id", 0)
+            ->whereHas('tasks') // must have at least 1 task ever
+            ->whereHas('latestTask', function ($q) {
+                $q->where('created_at', '<', now()->subDays(30)); // last task older than 30 days
+            })
+            ->with('latestTask')
+            ->get();
+
+        foreach ($inactiveClients as $user) {
+
+            $lastTaskDate = $user->latestTask ? $user->latestTask->created_at : null;
+            $inactiveDays = $lastTaskDate
+                ? now()->diffInDays($lastTaskDate)
+                : 30;
+
+            try {
+                $admin = env("ADMIN_MAIL");
+                Mail::to($admin)->send(new ClientInactivity($user, $inactiveDays));
+                Mail::to($user)->send(new InactivityReminder($user));
             } catch (\Exception $e) {
                 report($e);
             }

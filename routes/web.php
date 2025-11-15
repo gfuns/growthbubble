@@ -198,6 +198,7 @@ Route::group([
 ], function ($router) {
     Route::get('/renew-subscription', [CronController::class, 'renewSubscription'])->name('cron.renewSubscription');
     Route::get('/expiring-subscription', [CronController::class, 'expiringSubscription'])->name('cron.expiringSubscription');
+    Route::get('/inactive-clients', [CronController::class, 'inactiveClients'])->name('cron.inactiveClients');
 
 });
 

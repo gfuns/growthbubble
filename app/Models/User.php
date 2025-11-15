@@ -59,6 +59,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\CustomerSubscription', "user_id");
     }
 
+    public function tasks()
+    {
+        return $this->hasMany('App\Models\CustomerTasks', "user_id");
+    }
+
+    public function latestTask()
+    {
+        return $this->hasOne('App\Models\CustomerTasks', "user_id")->latestOfMany();
+    }
+
     public function selectedProduct()
     {
         $subscription = CustomerSubscription::orderBy("id", "desc")->where("user_id", $this->id)->first();
