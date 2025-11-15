@@ -89,36 +89,6 @@
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label">Customer <span class="text-danger">*</span></label>
-                            <select id="customer" name="customer" class="form-control" data-width="100%" required>
-                                <option value="">Select Customer</option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">
-                                        {{ $customer->last_name . ' ' . $customer->other_names }}</option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback">Please select a customer.</div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
-                            <label class="form-label">Project</label>
-                            <select id="project" name="project" class="form-control" data-width="100%">
-                                <option value="">Select Project</option>
-                            </select>
-                            <div class="invalid-feedback">Please select a project.</div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
-                            <label class="form-label">Task Title <span class="text-danger">*</span></label>
-                            <input type="text" name="title" id="title" class="form-control text-dark"
-                                placeholder="Task Title" required>
-                            <div class="invalid-feedback">Please provide a title.</div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
                             <label class="form-label d-block">What Type of Task is this? <span
                                     class="text-danger">*</span></label>
                             <div class="d-inline-flex">
@@ -136,88 +106,47 @@
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label">Task Description <span class="text-danger">*</span></label>
+                            <label class="form-label">Customer <span class="text-danger">*</span></label>
+                            <select id="customer" name="customer" class="form-control" data-width="100%" required>
+                                <option value="">Select Customer</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">
+                                        {{ $customer->last_name . ' ' . $customer->other_names }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select a customer.</div>
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <!-- Title -->
+                            <label class="form-label">Summary <span class="text-danger">*</span></label>
+                            <input type="text" name="task_summary" id="title" class="form-control text-dark"
+                                placeholder="Enter 1 sentence of task..." required>
+                            <div class="invalid-feedback">Please enter 1 sentence of task...</div>
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <!-- Title -->
+                            <label class="form-label">Select Website</label>
+                            <select id="project" name="website" class="form-control" data-width="100%">
+                                <option value="">Select Customer Website</option>
+                            </select>
+                            <div class="invalid-feedback">Please select website.</div>
+                        </div>
+
+                        <div class="mb-3 col-md-12">
+                            <!-- Title -->
+                            <label class="form-label">Explanation <span class="text-danger">*</span></label>
                             <div id="editor" style="min-height: 250px">
                                 <p>&nbsp;</p>
                             </div>
-                            <input type="hidden" name="task_description" id="hiddenContent">
+                            <input type="hidden" name="explanation" id="hiddenContent">
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
                         <div class="mb-3 col-md-12">
                             <!-- Title -->
-                            <label class="form-label d-block">Is this a Recurring Task? <span
-                                    class="text-danger">*</span></label>
-                            <div class="d-inline-flex">
-                                <div class="form-check me-3">
-                                    <input type="radio" id="recurringYes" name="recurring" class="form-check-input"
-                                        value="yes" />
-                                    <label class="form-check-label" for="recurringYes">Yes</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" id="recurringNo" name="recurring" class="form-check-input"
-                                        value="no" />
-                                    <label class="form-check-label" for="recurringNo">No</label>
-                                </div>
-                            </div>
-                            <div class="invalid-feedback">Please provide a response.</div>
-                        </div>
-
-                        <div id="autopt1" class="mb-3 col-md-12" style="display: none">
-                            <!-- Title -->
-                            <label class="form-label">Specify which day of the week/month you want this task to be
-                                recurring <span class="text-danger">*</span></label>
-
-                            <input type="text" name="recurring_date" id="recurringDate"
-                                class="form-control text-dark"
-                                placeholder="Specify which day of the week/month you want this task to be recurring">
-
-                            {{-- <div class="day-picker-container">
-                                <input id="dayInput" type="text" name="recurring_date" id="recurringDate"
-                                    class="form-control text-dark" placeholder="Select Recurring Task Date">
-
-                                <div class="day-picker" id="dayPicker">
-                                    <div class="day-grid" id="dayGrid"></div>
-                                </div>
-                            </div> --}}
-
-                            <div class="invalid-feedback">Please provide a response.</div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
-                            <label class="form-label d-block">When should we execute? <span
-                                    class="text-danger">*</span></label>
-                            <div class="d-inline-flex">
-                                <div class="form-check me-3">
-                                    <input type="radio" id="regularTimeline" name="timeline"
-                                        class="form-check-input" value="immediately" checked />
-                                    <label class="form-check-label" for="regularTimeline">Immediately</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" id="laterSchedule" name="timeline"
-                                        class="form-check-input" value="scheduled for later" />
-                                    <label class="form-check-label" for="laterSchedule">Schedule For Later</label>
-                                </div>
-                            </div>
-                            <div class="invalid-feedback">Please provide a response.</div>
-                        </div>
-
-                        <div id="autopt2" style="display: none">
-                            <div class="mb-3 col-md-12">
-                                <!-- Title -->
-                                <label class="form-label">Specify a schedule date <span
-                                        class="text-danger">*</span></label>
-                                <input type="date" name="scheduled_date" id="scheduledDate"
-                                    class="form-control text-dark" placeholder="">
-                                <div class="invalid-feedback">Please provide a response.</div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
-                            <label class="form-label d-block">Have you given us the required access (username,
-                                password, account share, or shared logins via LastPass) to complete this Task? <span
+                            <label class="form-label d-block">Have you given us the required access to complete this Task? <span
                                     class="text-danger">*</span></label>
                             <div class="d-inline-flex">
                                 <div class="form-check me-3">
@@ -239,6 +168,19 @@
                             <label class="form-label">Attached Files</label>
                             <input type="file" name="attached_files" id=""
                                 class="form-control text-dark" placeholder="Attached Files">
+                            <div class="invalid-feedback">Please provide a response.</div>
+                        </div>
+
+
+                        <div class="mb-4 mt-4 col-md-12">
+                            <!-- Title -->
+                            <div class="d-inline-flex">
+                                <div class="form-check me-3" style="color: black">
+                                    <input type="checkbox" id="regularTimeline" name="priority"
+                                        class="form-check-input" value="yes" />
+                                    <label class="form-check-label" for="regularTimeline"><span class="form-label">Upgrade this task to priority for only &pound;{{ number_format(39, 2)}}</span></label>
+                                </div>
+                            </div>
                             <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
@@ -277,13 +219,13 @@
         $('#project').html(
             '<option value="">Fetching data, please wait...</option>'); // Show "Fetching data" message
         $.ajax({
-            url: "/ajax/get-projects/" + customerId,
+            url: "/ajax/get-websites/" + customerId,
             type: "GET",
             dataType: "json",
             success: function(data) {
-                var options = "<option value=''>Select Customer Projects</option>";
+                var options = "<option value=''>Select Customer Website</option>";
                 $.each(data, function(key, value) {
-                    options += "<option value='" + key + "'>" + value + "</option>";
+                    options += "<option value='" + value + "'>" + value + "</option>";
                 });
                 $('#project').html(options);
             }

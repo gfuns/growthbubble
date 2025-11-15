@@ -1591,18 +1591,15 @@ class AdminController extends Controller
     public function storeTask(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'project'          => 'nullable',
-            'customer'         => 'required',
-            'title'            => 'required',
-            'product_id'       => 'required',
-            'task_description' => 'required',
-            'task_category'    => 'required',
-            'recurring'        => 'required',
-            'recurring_date'   => 'required_if: recurring, yes',
-            'timeline'         => 'required',
-            'scheduled_date'   => 'required_if: timeline, scheduledfor later',
-            'shared_access'    => 'required',
-            'attached_files'   => 'nullable',
+            'customer'       => 'required',
+            'task_summary'   => 'required',
+            'product_id'     => 'required',
+            'explanation'    => 'required',
+            'task_category'  => 'required',
+            'priority'       => 'nullable',
+            'website'        => 'nullable',
+            'shared_access'  => 'required',
+            'attached_files' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -1618,14 +1615,11 @@ class AdminController extends Controller
             $task                   = new CustomerTasks;
             $task->product_id       = $request->product_id;
             $task->user_id          = $request->customer;
-            $task->project_id       = $request->project;
-            $task->title            = $request->title;
-            $task->task_description = $request->task_description;
+            $task->title            = $request->task_summary;
+            $task->task_description = $request->explanation;
             $task->task_category    = $request->task_category;
-            $task->recurring        = $request->recurring;
-            $task->recurring_date   = preg_replace("/Day /", "", $request->recurring_date);
-            $task->timeline         = $request->timeline;
-            $task->date_scheduled   = $request->scheduled_date;
+            $task->priority         = $request->priority ?? "no";
+            $task->website          = $request->website;
             $task->provided_access  = $request->shared_access;
             $task->creator          = Auth::user()->id;
             if ($request->has('attached_files')) {

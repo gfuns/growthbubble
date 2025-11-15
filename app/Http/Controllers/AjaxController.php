@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\OnboardingDetails;
 use App\Models\Project;
 use App\Models\SubscriptionPlan;
 
@@ -10,6 +11,14 @@ class AjaxController extends Controller
     {
 
         $projects = Project::where('user_id', $customerId)->pluck('project_title', 'id');
+
+        return response()->json($projects);
+    }
+
+    public function getCustomerWebsites($customerId)
+    {
+
+        $projects = OnboardingDetails::where('user_id', $customerId)->whereIn("operation", ["website 1", "website 2", "website 3"])->pluck('website_url', 'id');
 
         return response()->json($projects);
     }

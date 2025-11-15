@@ -100,9 +100,9 @@
                                     <tr>
                                         <th scope="col">S/No</th>
                                         <th scope="col">Task Title</th>
+                                        <th scope="col">Category</th>
                                         <th scope="col">Priority</th>
-                                        <th scope="col">Recurring</th>
-                                        <th scope="col">Timeline</th>
+                                        <th scope="col">Date</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -112,9 +112,9 @@
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
                                             <td class="align-middle">{{ $cTask->title }} </td>
+                                            <td class="align-middle">{{ ucwords($cTask->category->category) }}</td>
                                             <td class="align-middle">{{ ucwords($cTask->priority) }}</td>
-                                            <td class="align-middle">{{ ucwords($cTask->recurring) }}</td>
-                                            <td class="align-middle">{{ ucwords($cTask->timeline) }}</td>
+                                            <td class="align-middle">{{ date_format($cTask->created_at, "jS F, Y") }}</td>
                                             <td>
                                                 @if ($cTask->status == 'queued' || $cTask->status == 'on hold')
                                                     <span

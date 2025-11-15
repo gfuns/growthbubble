@@ -62,40 +62,7 @@
                                 </div>
 
                                 <div class="row mb-2">
-                                    <div class="mb-3 col-md-7">
-                                        <label class="form-label d-block">Recurring Task?</label>
-                                        <span class="text-dark">{{ ucwords($task->recurring) }}</span>
-                                    </div>
-
-                                    <div class="mb-3 col-md-5">
-                                        <label class="form-label d-block">Recurring Task Date:</label>
-                                        @if (isset($task->date_scheduled))
-                                            <span class="text-dark">Every {{ $task->recurringDate() }} Day of the
-                                                Month</span>
-                                        @else
-                                            <span class="text-dark">NIL</span>
-                                        @endif
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-2">
-                                    <div class="mb-3 col-md-7">
-                                        <label class="form-label d-block">Implementation Timeline?</label>
-                                        <span class="text-dark">{{ ucwords($task->timeline) }}</span>
-                                    </div>
-
-                                    <div class="mb-3 col-md-5">
-                                        <label class="form-label d-block">Scheduled Date:</label>
-                                        <span
-                                            class="text-dark">{{ isset($task->date_scheduled) ? date_format(new DateTime($task->date_scheduled), 'jS F, Y') : 'NIL' }}</span>
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-2">
-
-                                    <div class="mb-3 col-md-7">
+                                   <div class="mb-3 col-md-7">
                                         <label class="form-label d-block">Priority:</label>
                                         <span class="text-dark">{{ ucwords($task->priority) }}</span>
                                     </div>
@@ -103,6 +70,20 @@
                                     <div class="mb-3 col-md-5">
                                         <label class="form-label d-block">All Necessary Access Provided?</label>
                                         <span class="text-dark">{{ ucwords($task->provided_access) }}</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="mb-3 col-md-7">
+                                        <label class="form-label d-block">Website</label>
+                                        <span class="text-dark">{{$task->website }}</span>
+                                    </div>
+
+                                    <div class="mb-3 col-md-5">
+                                        <label class="form-label d-block">Date Created:</label>
+                                        <span
+                                            class="text-dark">{{ date_format(new $task->created_at, 'jS F, Y') }}</span>
                                     </div>
 
                                 </div>

@@ -511,9 +511,9 @@ class CustomerController extends Controller
     public function newCustomerTask($id)
     {
         $taskCategories = TaskCategory::where("product_id", $id)->get();
-        $projects       = Project::where("user_id", Auth::user()->id)->get();
+        $websites       = OnboardingDetails::where("user_id", Auth::user()->id)->whereIn("operation", ["website 1", "website 2", "website 3"])->get();
         $product        = Product::find($id);
-        return view("customer.new_task", compact("taskCategories", "projects", "product"));
+        return view("customer.new_task", compact("taskCategories", "websites", "product"));
     }
 
     /**
@@ -526,18 +526,17 @@ class CustomerController extends Controller
     public function storeTask(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'project'          => 'nullable',
-            'title'            => 'required',
-            'task_description' => 'required',
-            'task_category'    => 'required',
-            'recurring'        => 'required',
-            'recurring_date'   => 'required_if: recurring, yes',
-            'timeline'         => 'required',
-            'scheduled_date'   => 'required_if: timeline, scheduledfor later',
-            'shared_access'    => 'required',
-            'attached_files'   => 'nullable',
-            'product_id'       => 'required',
+            'task_summary'   => 'required',
+            'explanation'    => 'required',
+            'task_category'  => 'required',
+            'priority'       => 'nullable',
+            'website'        => 'nullable',
+            'shared_access'  => 'required',
+            'attached_files' => 'nullable',
+            'product_id'     => 'required',
         ]);
+
+        // dd($request->all());
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
@@ -552,14 +551,11 @@ class CustomerController extends Controller
             $task                   = new CustomerTasks;
             $task->user_id          = Auth::user()->id;
             $task->product_id       = $request->product_id;
-            $task->project_id       = $request->project;
-            $task->title            = $request->title;
-            $task->task_description = $request->task_description;
+            $task->title            = $request->task_summary;
+            $task->task_description = $request->explanation;
             $task->task_category    = $request->task_category;
-            $task->recurring        = $request->recurring;
-            $task->recurring_date   = preg_replace("/Day /", "", $request->recurring_date);
-            $task->timeline         = $request->timeline;
-            $task->date_scheduled   = $request->scheduled_date;
+            $task->priority         = $request->priority ?? "no";
+            $task->website          = $request->website;
             $task->provided_access  = $request->shared_access;
             $task->creator          = Auth::user()->id;
             if ($request->has('attached_files')) {

@@ -153,7 +153,6 @@
                                                 <th>Task</th>
                                                 <th>Client</th>
                                                 <th>Priority</th>
-                                                <th class="no-wrap">Due Date</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -170,7 +169,6 @@
                                                         {{ $tsk->user->last_name . ', ' . $tsk->user->other_names }}
                                                     </td>
                                                     <td>{{ ucwords($tsk->priority) }}</td>
-                                                    <td>{{ $tsk->due_date ?? 'NIL' }}</td>
                                                     <td>
                                                         @if ($tsk->status == 'queued' || $tsk->status == 'on hold')
                                                             <span

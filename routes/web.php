@@ -189,6 +189,8 @@ Route::group([
 
 Route::get('/ajax/get-projects/{customer}', [AjaxController::class, 'getCustomerProjects'])->name('ajax.getCustomerProjects');
 
+Route::get('/ajax/get-websites/{customer}', [AjaxController::class, 'getCustomerWebsites'])->name('ajax.getCustomerWebsites');
+
 Route::get('/ajax/get-plans/{product}', [AjaxController::class, 'getProductPlans'])->name('ajax.getProductPlans');
 
 Route::get('/ajax/fetch-plans/{product}', [AjaxController::class, 'fetchProductPlans'])->name('ajax.fetchProductPlans');
