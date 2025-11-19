@@ -151,7 +151,7 @@
 
 
 <script type="text/javascript">
-    document.getElementById("platSettings").classList.add('show');
+    document.getElementById("navTeam").classList.add('show');
     document.getElementById("roles").classList.add('active');
 </script>
 
