@@ -631,6 +631,17 @@ class CustomerController extends Controller
             'confirm'        => true,
         ]);
 
+        $pm = "Credit Card (" . ucwords($card->card_brand) . " ****-****-****-" . $card->last_four_digits . ")";
+
+        $invoice                 = new Invoice;
+        $invoice->user_id        = Auth::user()->id;
+        $invoice->due_date       = now();
+        $invoice->amount         = 39.00;
+        $invoice->payment_method = $pm;
+        $invoice->txn_id         = "TXN" . preg_replace("/pi/", "", $paymentIntent->id);
+        $invoice->status         = "paid";
+        $invoice->save();
+
         // \Log::info($paymentIntent);
 
         if (isset($paymentIntent->status) && $paymentIntent->status == "succeeded") {
