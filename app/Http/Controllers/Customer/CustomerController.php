@@ -550,60 +550,59 @@ class CustomerController extends Controller
 
         try {
 
-            $priorityCharged = true;
+            $priorityCharged = false;
 
             if (isset($request->priority)) {
-                $priorityCharged = false;
 
                 $priorityCharged = self::chargePriorityFee();
+
+                if ($priorityCharged === false) {
+                    toast('We could not charge your card on file for priority fee.', 'error');
+                    return back();
+                }
             }
 
-            if ($priorityCharged === true) {
+            DB::beginTransaction();
 
-                DB::beginTransaction();
-
-                $task                   = new CustomerTasks;
-                $task->user_id          = Auth::user()->id;
-                $task->product_id       = $request->product_id;
-                $task->title            = $request->task_summary;
-                $task->task_description = $request->explanation;
-                $task->task_category    = $request->task_category;
-                $task->priority         = $request->priority ?? "no";
-                $task->website          = $request->website;
-                $task->provided_access  = $request->shared_access;
-                $task->creator          = Auth::user()->id;
-                if ($request->has('attached_files')) {
-                    $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
-                    $task->attached_file = $uploadedFileUrl;
-                }
-                $task->save();
-
-                $activity           = new PlatformActivities;
-                $activity->user_id  = Auth::user()->id;
-                $activity->owner_id = Auth::user()->id;
-                $activity->activity = 'Created a new task "' . $task->title . '"';
-                $activity->save();
-
-                DB::commit();
-
-                try {
-                    $user = User::find(Auth::user()->id);
-                    Mail::to($user)->send(new TaskSubmitted($user, $task));
-
-                    if ($priorityCharged === true) {
-                        Mail::to($user)->send(new PriorityPaymentConfirmation($user, $task));
-                    }
-
-                } catch (\Exception $e) {
-                    report($e);
-                }
-
-                toast('Task Created Successfully.', 'success');
-                return redirect()->route("customer.tasks", [$task->product_id]);
-            } else {
-                toast('We could not charge your card on file for priority fee.', 'error');
-                return back();
+            $task                   = new CustomerTasks;
+            $task->user_id          = Auth::user()->id;
+            $task->product_id       = $request->product_id;
+            $task->title            = $request->task_summary;
+            $task->task_description = $request->explanation;
+            $task->task_category    = $request->task_category;
+            $task->priority         = $request->priority ?? "no";
+            $task->website          = $request->website;
+            $task->provided_access  = $request->shared_access;
+            $task->creator          = Auth::user()->id;
+            if ($request->has('attached_files')) {
+                $uploadedFileUrl     = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                $task->attached_file = $uploadedFileUrl;
             }
+            $task->save();
+
+            $activity           = new PlatformActivities;
+            $activity->user_id  = Auth::user()->id;
+            $activity->owner_id = Auth::user()->id;
+            $activity->activity = 'Created a new task "' . $task->title . '"';
+            $activity->save();
+
+            DB::commit();
+
+            try {
+                $user = User::find(Auth::user()->id);
+                Mail::to($user)->send(new TaskSubmitted($user, $task));
+
+                if ($priorityCharged === true) {
+                    Mail::to($user)->send(new PriorityPaymentConfirmation($user, $task));
+                }
+
+            } catch (\Exception $e) {
+                report($e);
+            }
+
+            toast('Task Created Successfully.', 'success');
+            return redirect()->route("customer.tasks", [$task->product_id]);
+
         } catch (\Throwable $e) {
             report($e);
             DB::rollback();

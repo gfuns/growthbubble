@@ -364,7 +364,32 @@
     </form>
 </section>
 
+<div class="modal fade" id="priorityModal" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                    Priority Upgrade Confirmation
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    By upgrading, your task will be marked as priority and processed faster and your default card on file will be charged &pound;{{ number_format(39, 2) }}
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="acceptPriority">Accept and Continue</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Reject Offer</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     const productId = {{ Js::from($product->id) }};
@@ -378,6 +403,28 @@
 
 
 <script>
+
+     $(document).ready(function() {
+        let allowCheck = false;
+
+        $("#regularTimeline").on("click", function(e) {
+            // If the click is not allowed yet, prevent checking
+            if (!allowCheck) {
+                e.preventDefault();
+                $("#priorityModal").modal("show");
+            }
+        });
+
+        $("#acceptPriority").on("click", function() {
+            allowCheck = true; // allow checking once accepted
+            $("#regularTimeline").prop("checked", true); // check it
+            $("#priorityModal").modal("hide"); // close modal
+
+            // reset allowCheck after a small delay (optional)
+            setTimeout(() => allowCheck = false, 300);
+        });
+    });
+
     var quill = new Quill('#editor', {
         theme: 'snow'
     });
