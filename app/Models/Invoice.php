@@ -26,8 +26,13 @@ class Invoice extends Model
     public function name()
     {
         $date = (new \DateTime($this->due_date))->format('M, Y');
-        $name = $this->product->product . " (" . $this->plan->plan . " " . ucwords($this->plan->frequency) . ") " . $date;
-        return $name;
+        if (isset($this->product)) {
+            $name = $this->product->product . " (" . $this->plan->plan . " " . ucwords($this->plan->frequency) . ") " . $date;
+            return $name;
+        } else {
+            $name = "Task Priority Fee Payment " . $date;
+            return $name;
+        }
     }
 
     public function initials()
