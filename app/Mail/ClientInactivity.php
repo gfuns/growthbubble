@@ -18,7 +18,7 @@ class ClientInactivity extends Mailable
      */
     public function __construct(protected User $customer, $inactiveDays)
     {
-        $this->client       = $customer->last_name . " " . $customer->other_names;
+        $this->client       = $customer->other_names;
         $this->inactiveDays = $inactiveDays;
     }
 

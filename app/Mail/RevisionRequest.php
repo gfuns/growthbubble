@@ -20,7 +20,7 @@ class RevisionRequest extends Mailable
     public function __construct(protected User $user, protected CustomerTasks $task, $summary)
     {
         $this->summary = $summary;
-        $this->client  = $task->user->last_name . " " . $task->user->other_names;
+        $this->client  = $task->user->other_names;
     }
 
     /**

@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <p class="text-black">Hello
-                                <strong>{{ Auth::user()->last_name . ' ' . Auth::user()->other_names }}</strong>,
+                                <strong>{{ Auth::user()->other_names }}</strong>,
                                 <br>Enter the Two Factor Authentication Code Sent To Your {{ Auth::user()->auth_2fa }}.
                             </p>
                             @if (Session::has('error'))

@@ -18,7 +18,7 @@ class ClientOnboarded extends Mailable
      */
     public function __construct(protected User $customer, $websiteUrl)
     {
-        $this->client  = $customer->last_name . " " . $customer->other_names;
+        $this->client  = $customer->other_names;
         $this->website = $websiteUrl;
     }
 
