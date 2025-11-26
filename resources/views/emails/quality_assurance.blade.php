@@ -106,13 +106,13 @@
 
         <p>Hi QA Team,</p>
 
-        <p>The following task has been marked complete by {{ $user->last_name." ".$user->other_names }}:</p>
+        <p>The following task has been marked complete by {{ $user->other_names }}:</p>
 
         <table>
             <tbody>
                 <tr>
                     <th>Client</th>
-                    <td>{{ $task->user->last_name." ".$task->user->other_names }}</td>
+                    <td>{{ $task->user->other_names }}</td>
                 </tr>
                 <tr>
                     <th>Task</th>

@@ -63,7 +63,7 @@
 
         <h2>Two Factor Authentication</h2>
 
-        <p>Dear {{ $user->last_name . ' ' . $user->other_names }},</p>
+        <p>Dear {{ $user->other_names }},</p>
 
         <p>To confirm your authentication attempt, please use the code below:</p>
 

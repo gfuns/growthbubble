@@ -67,7 +67,7 @@
         <div class="logo">
             <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="BPP Logo">
         </div>
-        <p>Hi {{ $user->last_name . ', ' . $user->other_names }}</p>
+        <p>Hi {{ $user->other_names }}</p>
 
         <p>Welcome aboard! Your Growth Bubbles Concierge account has been created successfully.</p>
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revision requested by {{ $task->user->last_name . ' ' . $task->user->other_names }}</title>
+    <title>Revision requested by {{ $task->user->other_names }}</title>
     <style>
         /* CSS Styles */
         body {
@@ -104,9 +104,9 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi {{ $user->last_name . ', ' . $user->other_names }},</p>
+        <p>Hi {{ $user->other_names }},</p>
 
-        <p>{{ $task->user->last_name . ' ' . $task->user->other_names }} has requested revisions for the following task:</p>
+        <p>{{ $task->user->other_names }} has requested revisions for the following task:</p>
 
         <table>
             <tbody>

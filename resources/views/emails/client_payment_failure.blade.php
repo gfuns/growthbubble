@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment failed for {{ $customer->last_name . " " . $customer->other_names }}</title>
+    <title>Payment failed for {{ $customer->other_names }}</title>
     <style>
         /* CSS Styles */
         body {

@@ -67,7 +67,7 @@
         <div class="logo">
             <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="BPP Logo">
         </div>
-        <p>Hi {{ $user->last_name . ', ' . $user->other_names }}</p>
+        <p>Hi {{ $user->other_names }}</p>
 
         <p>We’ve received your onboarding details — thank you! Your account setup is now complete.</p>
 

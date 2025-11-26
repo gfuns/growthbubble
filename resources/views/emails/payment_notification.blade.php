@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment received from {{$customer->last_name." ".$customer->other_names}}</title>
+    <title>Payment received from {{$customer->other_names}}</title>
     <style>
         /* CSS Styles */
         body {
@@ -106,7 +106,7 @@
 
         <p>Hi Team,</p>
 
-        <p>A payment has been received from {{$customer->last_name." ".$customer->other_names}}.</p>
+        <p>A payment has been received from {{$customer->other_names}}.</p>
 
         <table>
             <tbody>

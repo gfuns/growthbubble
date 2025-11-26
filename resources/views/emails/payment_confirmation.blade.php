@@ -104,7 +104,7 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi {{ $user->last_name . ' ' . $user->other_names }},</p>
+        <p>Hi {{ $user->other_names }},</p>
 
         <p>Thanks for your payment! Your {{ucwords($sub->plan->frequency)}} {{$sub->plan->plan}} {{$sub->product->product}} plan is now active.</p>
 

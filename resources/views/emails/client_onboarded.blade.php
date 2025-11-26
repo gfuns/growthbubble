@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New client ready for tasks: {{$customer->last_name." ".$customer->other_names}}</title>
+    <title>New client ready for tasks: {{$customer->other_names}}</title>
     <style>
         /* CSS Styles */
         body {
@@ -106,7 +106,7 @@
 
         <p>Hi Team,</p>
 
-        <p>{{$customer->last_name." ".$customer->other_names}} has completed onboarding and is ready to start submitting tasks.</p>
+        <p>{{$customer->other_names}} has completed onboarding and is ready to start submitting tasks.</p>
 
         <table>
             <tbody>

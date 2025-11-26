@@ -104,7 +104,7 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi {{ $user->last_name . ' ' . $user->other_names }},</p>
+        <p>Hi {{ $user->other_names }},</p>
 
         <p>Good news — we’ve started working on your task:</p>
 

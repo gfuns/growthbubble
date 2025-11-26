@@ -104,7 +104,7 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi {{ $user->last_name . ' ' . $user->other_names }},</p>
+        <p>Hi {{ $user->other_names }},</p>
 
         <p>A new task has been assigned to you.</p>
 
@@ -112,7 +112,7 @@
             <tbody>
                 <tr>
                     <th>Client</th>
-                    <td>{{ $task->user->last_name." ".$task->user->other_names }}</td>
+                    <td>{{ $task->user->other_names }}</td>
                 </tr>
                 <tr>
                     <th>Task</th>

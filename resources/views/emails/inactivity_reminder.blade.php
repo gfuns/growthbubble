@@ -104,7 +104,7 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi {{ $user->last_name . ' ' . $user->other_names }},</p>
+        <p>Hi {{ $user->other_names }},</p>
 
         <p>We noticed you haven’t submitted a task in a while — is there anything we can help you with? Remember, your
             Growth Bubbles Concierge plan gives you access to our full marketing concierge team.</p>
