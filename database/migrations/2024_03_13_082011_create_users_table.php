@@ -33,6 +33,7 @@ return new class extends Migration
             $table->enum('onboarding_status', ['onboarded', 'pending', 'awaiting payment'])->default('awaiting payment');
             $table->string('stripe_customer_id')->nullable();
             $table->string('stripe_payment_method')->nullable();
+            $table->string('fpu')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('role_id')->references('id')->on('user_roles')->onDelete('cascade');
