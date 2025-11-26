@@ -224,6 +224,11 @@
                             <div class="mb-2">
                                 This task is yet to have any conversation.
                             </div>
+                             <div class="col-12 mb-4">
+                                <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#viewConversations">Start A Conversation</button>
+
+                            </div>
                         @endif
 
 

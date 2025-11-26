@@ -46,7 +46,7 @@ Route::group([
 
 ], function ($router) {
 
-    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware(["fpu"]);
 
     Route::get('/view-profile', [AdminController::class, 'viewProfile'])->name("admin.viewProfile");
 

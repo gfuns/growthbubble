@@ -54,6 +54,10 @@ class Kernel extends HttpKernel
         'isActive'         => [
             \App\Http\Middleware\EnsureActiveness::class,
         ],
+
+        'fpu'              => [
+            \App\Http\Middleware\ForcePasswordUpdate::class,
+        ],
     ];
 
     /**
