@@ -454,18 +454,20 @@ class AdminController extends Controller
             return back();
         }
 
+        $password = Str::random(10);
+
         $user               = new User;
         $user->last_name    = $request->last_name;
         $user->other_names  = $request->first_name;
         $user->email        = $request->email;
         $user->phone_number = $request->phone_number;
-        $user->password     = Hash::make($request->phone_number);
+        $user->password     = Hash::make($password);
         $user->role_id      = $request->role;
         $user->token        = Str::random(60);
         $user->fpu          = 1;
         if ($user->save()) {
             try {
-                Mail::to($user)->send(new AccountCreationMail($user, $user->phone_number));
+                Mail::to($user)->send(new AccountCreationMail($user, $password));
             } catch (\Exception $e) {
                 report($e);
             }
