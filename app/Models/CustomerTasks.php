@@ -20,12 +20,10 @@ class CustomerTasks extends Model
 
     public function creator()
     {
-        if ($this->user_id == $this->creator) {
-            return "Client";
-        } else {
-            $user = User::find($this->creator);
-            return $user->last_name . " " . $user->other_names;
-        }
+
+        $user = User::find($this->creator);
+        return $user->last_name . " " . $user->other_names;
+
     }
 
     public function recurringDate()

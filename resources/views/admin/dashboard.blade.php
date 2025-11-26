@@ -167,7 +167,7 @@
                                                         </a>
                                                     </td>
                                                     <td class="no-wrap">
-                                                        {{ $tsk->user->last_name . ', ' . $tsk->user->other_names }}
+                                                        {{ $tsk->user->organization }}
                                                     </td>
                                                     <td>{{ ucwords($tsk->priority) }}</td>
                                                     <td>
@@ -246,11 +246,10 @@
                                                             <tr class="text-dark" data-bs-toggle="modal"
                                                                 data-bs-target="#viewCustomer"
                                                                 data-myid="{{ $cust->customer->id }}"
-                                                                data-othernames="{{ $cust->customer->other_names }}"
-                                                                data-lastname="{{ $cust->customer->last_name }}"
+                                                                data-representative="{{ $cust->customer->other_names.' '.$cust->customer->last_name }}"
                                                                 data-email="{{ $cust->customer->email }}"
                                                                 data-phone="{{ $cust->customer->phone_number }}"
-                                                                data-organization="{{ $cust->customer->organization }}"
+                                                                data-client="{{ $cust->customer->organization }}"
                                                                 data-photo="{{ $cust->customer->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
                                                                 data-product="{{ $cust->customer->selectedProduct() }}"
                                                                 data-plan="{{ $cust->customer->selectedPlan() }}"
@@ -260,7 +259,7 @@
                                                                 data-address="{{ $cust->customer->contact_address ?? 'NIL' }}"
                                                                 style="cursor: pointer">
                                                                 <td>{{ $sno++ }}.</td>
-                                                                <td>{{ $cust->customer->last_name . ', ' . $cust->customer->other_names }}
+                                                                <td>{{ $cust->customer->organization }}
                                                                 </td>
                                                                 <td>{{ $cust->customer->email }}</td>
                                                                 <td>{{ $cust->customer->phone_number }}</td>
@@ -390,17 +389,17 @@
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
-                                <td class="">Last Name</td>
-                                <td class=""><span id="vlastname"></span></td>
-                                <td class="" rowspan="11" align="right" style="text-align: center"><img
+                                <td class="">Client</td>
+                                <td class=""><span id="vclient"></span></td>
+                                <td class="" rowspan="10" align="right" style="text-align: center"><img
                                         src="" id="vphoto" class="img-responsive"
                                         style="max-width: 100px" />
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="">First Name</td>
-                                <td class=""><span id="vothernames"></span></td>
+                                <td class="">Representative</td>
+                                <td class=""><span id="vrepresentative"></span></td>
                             </tr>
 
                             <tr>
@@ -411,11 +410,6 @@
                             <tr>
                                 <td class="">Phone Number</td>
                                 <td class=""><span id="vphone"></span></td>
-                            </tr>
-
-                            <tr>
-                                <td class="">Organization</td>
-                                <td class=""><span id="vorganization"></span></td>
                             </tr>
 
                             <tr>

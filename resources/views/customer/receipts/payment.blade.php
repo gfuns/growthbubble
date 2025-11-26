@@ -190,7 +190,7 @@
                 <td>
                     <div class="company-info">
                         <img src="https://portal.growthbubbles.com/images/logo.png" alt="" style="height: 50px">
-                        <h1>Growth Bubbles Inc.</h1>
+                        <h1>Growth Bubbles Ltd.</h1>
                         <p>86-90, Paul Street, London EC2A 4NE</p>
                         <p>hello@growthbubbles.com</p>
                     </div>
@@ -279,7 +279,7 @@
 
         <!-- Footer -->
         <footer class="receipt-footer">
-            <p>&copy; Growth Bubbles Inc.</p>
+            <p>&copy; Growth Bubbles Ltd.</p>
         </footer>
     </div>
 

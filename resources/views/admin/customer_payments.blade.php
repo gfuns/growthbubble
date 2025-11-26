@@ -214,7 +214,7 @@
                                             <td class="align-middle"> {{ $inv->invoice_number }} </td>
                                             <td class="align-middle">
                                                 <span class="initials">{{$inv->initials()  }}</span>
-                                                {{ $inv->customer->last_name . ', ' . $inv->customer->other_names }}
+                                                {{ $inv->customer->organization}}
                                             </td>
                                             <td class="align-middle">
                                                 {{ date_format(new DateTime($inv->due_date), 'jS M, Y') }} </td>

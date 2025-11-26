@@ -32,8 +32,16 @@ class Invoice extends Model
 
     public function initials()
     {
-        $initials = substr($this->customer->last_name, 0, 1) . "" . substr($this->customer->other_names, 0, 1);
-        return $initials;
+        $text     = $this->customer->organization;
+        $words    = 2;
+        $parts    = preg_split('/ /', trim($text));
+        $parts    = array_filter($parts); // remove empty pieces
+        $parts    = array_values($parts);
+        $initials = '';
+        for ($i = 0; $i < min($words, count($parts)); $i++) {
+            $initials .= mb_substr($parts[$i], 0, 1);
+        }
+        return mb_strtoupper($initials);
     }
 
     public static function booted()

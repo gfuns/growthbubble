@@ -71,7 +71,7 @@
                                                 <td style="vertical-align: top !important">{{ $loop->index + 1 }}.</td>
                                                 <td style="vertical-align: top !important">{{ $plan->product->product }}
                                                 </td>
-                                                <td style="vertical-align: top !important">{{ $plan->plan }} Plan</td>
+                                                <td style="vertical-align: top !important">{{ $plan->plan }}</td>
                                                 <td style="vertical-align: top !important">
                                                     {{ ucwords($plan->frequency) }}</td>
                                                 <td class="wrap-text"> &pound;{{ number_format($plan->pricing, 2) }}

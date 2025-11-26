@@ -121,11 +121,12 @@
                                             </td>
                                             <td class="align-middle" data-bs-toggle="modal"
                                                 data-bs-target="#viewCustomer" data-myid="{{ $cTask->user->id }}"
-                                                data-othernames="{{ $cTask->user->other_names }}"
-                                                data-lastname="{{ $cTask->user->last_name }}"
+                                                data-representative="{{ $cTask->user->other_names.' '.$cTask->user->last_name }}"
                                                 data-email="{{ $cTask->user->email }}"
+                                                data-lastname="{{ $cTask->user->last_name }}"
+                                                data-othernames="{{ $cTask->user->other_names }}"
                                                 data-phone="{{ $cTask->user->phone_number }}"
-                                                data-organization="{{ $cTask->user->organization }}"
+                                                data-client="{{ $cTask->user->organization }}"
                                                 data-photo="{{ $cTask->user->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
                                                 data-product="{{ $cTask->user->selectedProduct() }}"
                                                 data-plan="{{ $cTask->user->selectedPlan() }}"
@@ -134,7 +135,7 @@
                                                 data-status="{{ $cTask->user->subStatus() }}"
                                                 data-address="{{ $cTask->user->contact_address ?? 'NIL' }}"
                                                 style="cursor: pointer">
-                                                {{ $cTask->user->last_name . ', ' . $cTask->user->other_names }}
+                                                {{ $cTask->user->organization }}
                                             </td>
                                             <td class="align-middle">{{ $cTask->creator() }}</td>
                                             <td>
@@ -226,16 +227,16 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <td class="">Last Name</td>
-                            <td class=""><span id="vlastname"></span></td>
-                            <td class="" rowspan="11" align="right" style="text-align: center"><img
+                            <td class="">Client</td>
+                            <td class=""><span id="vclient"></span></td>
+                            <td class="" rowspan="10" align="right" style="text-align: center"><img
                                     src="" id="vphoto" class="img-responsive" style="max-width: 100px" />
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="">First Name</td>
-                            <td class=""><span id="vothernames"></span></td>
+                            <td class="">Representative</td>
+                            <td class=""><span id="vrepresentative"></span></td>
                         </tr>
 
                         <tr>
@@ -246,11 +247,6 @@
                         <tr>
                             <td class="">Phone Number</td>
                             <td class=""><span id="vphone"></span></td>
-                        </tr>
-
-                        <tr>
-                            <td class="">Organization</td>
-                            <td class=""><span id="vorganization"></span></td>
                         </tr>
 
                         <tr>

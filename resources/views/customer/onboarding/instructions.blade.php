@@ -134,7 +134,7 @@
                         </div>
                         <div class="col-md-9 card mb-4 p-6 pt-3 text-dark">
                             <h4 class="text-dark mb-3"><strong>Welcome Onboard
-                                {{ Auth::user()->last_name . ' ' . Auth::user()->other_names }}</strong></h4>
+                                {{ Auth::user()->other_names }}</strong></h4>
 
                             <div class="mb-3">Now let's get you set up!</div>
 

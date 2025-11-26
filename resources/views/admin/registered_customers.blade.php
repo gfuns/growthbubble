@@ -109,9 +109,9 @@
                                     <tr>
                                         <th scope="col">S/No</th>
                                         <th scope="col">Client</th>
+                                        <th scope="col">Representative</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Phone Number</th>
-                                        <th scope="col">Organization</th>
                                         <th scope="col">Status</th>
                                         {{-- <th scope="col">Action</th> --}}
                                     </tr>
@@ -120,10 +120,10 @@
                                     @foreach ($customers as $cust)
                                         <tr style="cursor: pointer" data-bs-toggle="modal"
                                             data-bs-target="#viewCustomer" data-myid="{{ $cust->id }}"
-                                            data-othernames="{{ $cust->other_names }}"
-                                            data-lastname="{{ $cust->last_name }}" data-email="{{ $cust->email }}"
+                                            data-representative="{{ $cust->other_names.' '.$cust->last_name }}"
+                                           data-email="{{ $cust->email }}"
                                             data-phone="{{ $cust->phone_number }}"
-                                            data-organization="{{ $cust->organization }}"
+                                            data-client="{{ $cust->organization }}"
                                             data-photo="{{ $cust->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
                                             data-product="{{ $cust->selectedProduct() }}"
                                             data-plan="{{ $cust->selectedPlan() }}"
@@ -132,12 +132,12 @@
                                             data-status="{{ $cust->subStatus() }}"
                                             data-address="{{ $cust->contact_address ?? 'NIL' }}">
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
+                                            <td class="align-middle"> {{ $cust->organization }} </td>
                                             <td class="align-middle">
                                                 {{ $cust->last_name . ', ' . $cust->other_names }}
                                             </td>
                                             <td class="align-middle"> {{ $cust->email }} </td>
                                             <td class="align-middle"> {{ $cust->phone_number }} </td>
-                                            <td class="align-middle"> {{ $cust->organization }} </td>
                                             <td>
                                                 @if ($cust->status == 'active')
                                                     <span class="badge text-success bg-light-success">Active</span>
@@ -261,16 +261,16 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <td class="">Last Name</td>
-                            <td class=""><span id="vlastname"></span></td>
-                            <td class="" rowspan="11" align="right" style="text-align: center"><img
+                            <td class="">Client</td>
+                            <td class=""><span id="vclient"></span></td>
+                            <td class="" rowspan="10" align="right" style="text-align: center"><img
                                     src="" id="vphoto" class="img-responsive" style="max-width: 150px" />
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="">First Name</td>
-                            <td class=""><span id="vothernames"></span></td>
+                            <td class="">Representative</td>
+                            <td class=""><span id="vrepresentative"></span></td>
                         </tr>
 
                         <tr>
@@ -281,11 +281,6 @@
                         <tr>
                             <td class="">Phone Number</td>
                             <td class=""><span id="vphone"></span></td>
-                        </tr>
-
-                        <tr>
-                            <td class="">Organization</td>
-                            <td class=""><span id="vorganization"></span></td>
                         </tr>
 
                         <tr>

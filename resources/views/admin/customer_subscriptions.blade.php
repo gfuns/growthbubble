@@ -100,7 +100,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">S/No</th>
-                                        <th scope="col">Support</th>
+                                        <th scope="col">Client</th>
                                         <th scope="col">Product</th>
                                         <th scope="col">Plan</th>
                                         <th scope="col">Amount</th>
@@ -114,7 +114,7 @@
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
                                             <td class="align-middle">
-                                                {{ $sub->customer->last_name . ', ' . $sub->customer->other_names }}
+                                                {{ $sub->customer->organization }}
                                             </td>
                                             <td class="align-middle"> {{ $sub->product->product }} </td>
                                             <td class="align-middle"> {{ $sub->plan->plan }} </td>

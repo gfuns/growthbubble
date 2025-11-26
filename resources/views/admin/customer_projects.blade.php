@@ -107,7 +107,8 @@
                                             <td class="align-middle" data-bs-toggle="modal"
                                                 data-bs-target="#viewProject" data-myid="{{ $cProj->id }}"
                                                 data-customerid="{{ $cProj->user_id }}"
-                                                data-customer="{{ $cProj->user->last_name . ', ' . $cProj->user->other_names }}"
+                                                data-client="{{ $cProj->user->organization }}"
+                                                data-creator="{{ $cProj->creator() }}"
                                                 data-title="{{ $cProj->project_title }}"
                                                 data-description="{{ $cProj->project_description }}"
                                                 data-date="{{ date_format($cProj->created_at, 'jS F, Y g:ia') }}"
@@ -128,7 +129,7 @@
                                                 data-status="{{ $cProj->user->subStatus() }}"
                                                 data-address="{{ $cProj->user->contact_address ?? 'NIL' }}"
                                                 style="cursor: pointer">
-                                                {{ $cProj->user->last_name . ', ' . $cProj->user->other_names }}
+                                                {{ $cProj->user->organization }}
                                             </td>
                                             <td class="align-middle"> {{ $cProj->creator() }} </td>
                                             <td>
@@ -243,12 +244,17 @@
 
                         <tr>
                             <td class=""><b>Client</b></td>
-                            <td class=""><span id="vcustomer"></span></td>
+                            <td class=""><span id="vclient"></span></td>
                         </tr>
 
                         <tr>
                             <td class=""><b>Description</b></td>
                             <td class=""><span id="vdescription"></span></td>
+                        </tr>
+
+                        <tr>
+                            <td class=""><b>Creator</b></td>
+                            <td class=""><span id="vcreator"></span></td>
                         </tr>
 
                         <tr>
@@ -396,7 +402,7 @@
                                 <option value="">Select Customer</option>
                                 @foreach ($customers as $cust)
                                     <option value="{{ $cust->id }}">
-                                        {{ $cust->last_name . ' ' . $cust->other_names }}
+                                        {{ $cust->organization}}
                                     </option>
                                 @endforeach
                             </select>
@@ -457,7 +463,7 @@
                                 <option value="">Select Customer</option>
                                 @foreach ($customers as $cust)
                                     <option value="{{ $cust->id }}">
-                                        {{ $cust->last_name . ' ' . $cust->other_names }}
+                                        {{ $cust->organization }}
                                     </option>
                                 @endforeach
                             </select>

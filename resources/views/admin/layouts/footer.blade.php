@@ -274,11 +274,12 @@
         $('#viewCustomer').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var model = button.data('model') // Extract info from data-* attributes
+            var representative = button.data('representative') // Extract info from data-* attributes
             var lastname = button.data('lastname') // Extract info from data-* attributes
             var othernames = button.data('othernames') // Extract info from data-* attributes
             var email = button.data('email') // Extract info from data-* attributes
             var phone = button.data('phone') // Extract info from data-* attributes
-            var organization = button.data('organization') // Extract info from data-* attributes
+            var client = button.data('client') // Extract info from data-* attributes
             var address = button.data('address') // Extract info from data-* attributes
             var photo = button.data('photo') // Extract info from data-* attributes
             var product = button.data('product') // Extract info from data-* attributes
@@ -292,11 +293,10 @@
 
 
             var modal = $(this)
-            document.getElementById("vlastname").innerHTML = lastname;
-            document.getElementById("vothernames").innerHTML = othernames;
+            document.getElementById("vrepresentative").innerHTML = representative;
             document.getElementById("vemail").innerHTML = email;
             document.getElementById("vphone").innerHTML = phone;
-            document.getElementById("vorganization").innerHTML = organization;
+            document.getElementById("vclient").innerHTML = client;
             document.getElementById("vaddress").innerHTML = address;
             document.getElementById("vphoto").src = photo;
             document.getElementById("vproduct").innerHTML = product;
@@ -319,7 +319,7 @@
                 othernames: othernames,
                 email: email,
                 phone: phone,
-                organization: organization,
+                organization: client,
                 address: address
             });
 
@@ -357,7 +357,8 @@
         $('#viewProject').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var model = button.data('model') // Extract info from data-* attributes
-            var customer = button.data('customer') // Extract info from data-* attributes
+            var client = button.data('client') // Extract info from data-* attributes
+            var creator = button.data('creator') // Extract info from data-* attributes
             var title = button.data('title') // Extract info from data-* attributes
             var description = button.data('description') // Extract info from data-* attributes
             var date = button.data('date') // Extract info from data-* attributes
@@ -368,7 +369,8 @@
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
             var modal = $(this)
-            document.getElementById("vcustomer").innerHTML = customer;
+            document.getElementById("vclient").innerHTML = client;
+            document.getElementById("vcreator").innerHTML = creator;
             document.getElementById("vtitle").innerHTML = title;
             document.getElementById("vdescription").innerHTML = description;
             document.getElementById("vdate").innerHTML = date;
