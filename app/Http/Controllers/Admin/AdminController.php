@@ -2265,7 +2265,7 @@ class AdminController extends Controller
             $filename = "/files/uploaded/" . time() . "." . $request->file('file')->getClientOriginalName();
             $path     = public_path('/files/uploaded/');
             $request->file('file')->move($path, $filename);
-            $file->uploaded_file = env('APP_URL_LOCAL') . $filename;
+            $file->uploaded_file = env('APP_URL') . $filename;
             $file->local_path    = $filename;
             $file->file_type     = $fileType;
 
