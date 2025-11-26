@@ -106,7 +106,7 @@
 
         <p>Hi {{ $user->other_names }},</p>
 
-        <p>Thanks for your payment! Your {{ucwords($sub->plan->frequency)}} {{$sub->plan->plan}} {{$sub->product->product}} plan is now active.</p>
+        <p>Thanks for your payment! Your {{ucwords($sub->plan->frequency)}} {{$sub->plan->plan}} {{$sub->product->product}} is now active.</p>
 
         <p><strong>Payment Summary:</strong></p>
 

@@ -106,7 +106,7 @@
 
         <p>Hi Admin</p>
 
-        <p>A payment attempt for {{ $customer->last_name . " " . $customer->other_names }} has failed.</p>
+        <p>A payment attempt for {{ $customer->other_names }} has failed.</p>
 
         <table>
             <tbody>

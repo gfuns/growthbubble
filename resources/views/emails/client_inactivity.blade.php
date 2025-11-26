@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inactive client: {{$customer->last_name." ".$customer->other_names}}</title>
+    <title>Inactive client: {{$customer->other_names}}</title>
     <style>
         /* CSS Styles */
         body {
@@ -106,7 +106,7 @@
 
         <p>Hi Admin,</p>
 
-        <p>{{$customer->last_name." ".$customer->other_names}} has been inactive for {{ $inactiveDays }} days and has not submitted any new tasks.</p>
+        <p>{{$customer->other_names}} has been inactive for {{ $inactiveDays }} days and has not submitted any new tasks.</p>
 
 
         <div class="code">
