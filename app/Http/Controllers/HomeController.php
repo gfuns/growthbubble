@@ -6,6 +6,9 @@ use App\Models\CustomerOtp;
 use App\Models\User;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Mail;
 
 class HomeController extends Controller
@@ -68,6 +71,46 @@ class HomeController extends Controller
         }
 
         return $otp;
+    }
+
+    public function changeDefaultPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'default_password'          => 'required',
+            'new_password'              => 'required',
+            'new_password_confirmation' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $user = Auth::user();
+
+        if (! Hash::check($request->default_password, $user->password)) {
+            toast('Invalid default password provided.', 'error');
+            return back();
+        } else {
+            if ($request->new_password != $request->new_password_confirmation) {
+                toast('Your seleted passwords do not match.', 'error');
+                return back();
+            } else {
+                $user->password = Hash::make($request->new_password);
+                $user->fpu      = null;
+                $user->save();
+            }
+        }
+
+        if ($user->save()) {
+            toast('Password Successfully Updated.', 'success');
+            return redirect()->route("admin.dashboard");
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
     }
 
 }

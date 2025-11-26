@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\TwofactorController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,7 @@ Route::get('/register', function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/forgot-password', [App\Http\Controllers\HelperController::class, 'forgotPassword'])->name('password.forgot');
+Route::get('/forgot-password', [App\Http\Controllers\HomeController::class, 'forgotPassword'])->name('password.forgot');
 
 Route::post('/login/validate2fa', [TwofactorController::class, 'validate2fa'])->name('login.validate2fa');
 
@@ -40,13 +41,15 @@ Route::post('/login/2fa', [TwofactorController::class, 'verify2FA'])->name('logi
 
 Route::get('/account/email/verify/{token}', [OnboardingController::class, 'verifyWithLink']);
 
+Route::post('/changeDefaultPassword', [HomeController::class, 'changeDefaultPassword'])->name("changeDefaultPassword");
+
 Route::group([
     'prefix'     => 'portal/admin',
-    'middleware' => ['webauthenticated', 'g2fa'],
+    'middleware' => ['webauthenticated', 'g2fa', 'fpu'],
 
 ], function ($router) {
 
-    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware(["fpu"]);
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/view-profile', [AdminController::class, 'viewProfile'])->name("admin.viewProfile");
 
