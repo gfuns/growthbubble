@@ -61,6 +61,7 @@
                                             <th>Plan</th>
                                             <th>Payment Frequency</th>
                                             <th>Pricing</th>
+                                            <th>Active Tasks</th>
                                             <th><i class="nav-icon bi bi-three-dots me-2"></i></th>
                                         </tr>
                                     </thead>
@@ -75,6 +76,7 @@
                                                 <td style="vertical-align: top !important">
                                                     {{ ucwords($plan->frequency) }}</td>
                                                 <td class="wrap-text"> &pound;{{ number_format($plan->pricing, 2) }}
+                                                <td class="wrap-text"> {{ $plan->active_tasks }}
                                                 </td>
 
                                                 <td class="align-middle">
@@ -94,7 +96,8 @@
                                                                         data-product="{{ $plan->product_id }}"
                                                                         data-plan="{{ $plan->plan }}"
                                                                         data-frequency="{{ $plan->frequency }}"
-                                                                        data-pricing="{{ $plan->pricing }}"><i
+                                                                        data-pricing="{{ $plan->pricing }}"
+                                                                        data-tasks="{{ $plan->active_tasks }}"><i
                                                                             class="fe fe-edit dropdown-item-icon"></i>Update
                                                                         Details</a>
                                                                 @endif
@@ -220,6 +223,14 @@
                             <div class="invalid-feedback">Please provide pricing.</div>
                         </div>
 
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Active Tasks <span class="text-danger">*</span></label>
+                            <input type="text" name="active_tasks" class="form-control"
+                                placeholder="Enter Number Of Allowed Active Tasks" oninput="validateInput(event)"
+                                required>
+                            <div class="invalid-feedback">Please provide number of allowed active tasks.</div>
+                        </div>
+
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->
                         <div class="col-12 mt-4">
@@ -286,6 +297,14 @@
                             <div class="invalid-feedback">Please provide pricing.</div>
                         </div>
 
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Active Tasks <span class="text-danger">*</span></label>
+                            <input id="tasks" type="text" name="active_tasks" class="form-control"
+                                placeholder="Enter Number Of Allowed Active Tasks" oninput="validateInput(event)"
+                                required>
+                            <div class="invalid-feedback">Please provide number of allowed active tasks.</div>
+                        </div>
+
                         <input id="myid" type="hidden" name="plan_id" class="form-control" required>
 
                         <div class="col-md-12 border-bottom"></div>
@@ -316,9 +335,9 @@
         // Modern Clipboard API
         if (navigator.clipboard && window.isSecureContext) {
             // Use navigator.clipboard
-            navigator.clipboard.writeText(textToCopy).then(function () {
+            navigator.clipboard.writeText(textToCopy).then(function() {
                 alert("Plan URL copied successfully to clipboard");
-            }).catch(function (err) {
+            }).catch(function(err) {
                 alert("Failed to copy text: " + err);
             });
         } else {

@@ -190,6 +190,7 @@
             var plan = button.data('plan') // Extract info from data-* attributes
             var frequency = button.data('frequency') // Extract info from data-* attributes
             var pricing = button.data('pricing') // Extract info from data-* attributes
+            var tasks = button.data('tasks') // Extract info from data-* attributes
 
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
@@ -199,6 +200,7 @@
             offcanvas.find('.offcanvas-body #myid').val(myid)
             offcanvas.find('.offcanvas-body #plan').val(plan)
             offcanvas.find('.offcanvas-body #pricing').val(pricing)
+            offcanvas.find('.offcanvas-body #tasks').val(tasks)
             $("#freq").select2({
                     dropdownParent: $("#editProductPlan"),
                 }).val(frequency)

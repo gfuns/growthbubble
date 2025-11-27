@@ -160,4 +160,14 @@ class User extends Authenticatable
         }
     }
 
+    public function allowedActiveTasks()
+    {
+        $subscription = CustomerSubscription::orderBy("id", "desc")->where("user_id", $this->id)->first();
+        if (isset($subscription)) {
+            return $subscription->plan->active_tasks;
+        } else {
+            return 0;
+        }
+    }
+
 }

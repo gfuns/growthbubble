@@ -60,7 +60,8 @@
                                     <span class="bi bi-lightbulb fs-3 text-primary"></span>
                                 </div>
                             </div>
-                            <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }} / 5</h4>
+                            <h4 class="fw-bold mb-1">{{ number_format($params['activeTasks'], 0) }} /
+                                {{ Auth::user()->allowedActiveTasks() }}</h4>
                         </div>
                     </a>
                 </div>
@@ -206,7 +207,8 @@
                                                             task.
                                                         </div>
                                                         <div class="mt-4">
-                                                            <a href="{{ route('customer.newCustomerTask', [Auth::user()->product_id]) }}">
+                                                            <a
+                                                                href="{{ route('customer.newCustomerTask', [Auth::user()->product_id]) }}">
                                                                 <button class="btn btn-primary btn-xs"><i
                                                                         class="bi bi-plus-circle"></i> Create New
                                                                     Task</button>
@@ -390,8 +392,8 @@
                             <div class="invalid-feedback">Please provide project description.</div>
                         </div>
 
-                        <input id="myid" type="hidden" name="product_id" value="{{ Auth::user()->product_id }}"
-                            class="form-control" required>
+                        <input id="myid" type="hidden" name="product_id"
+                            value="{{ Auth::user()->product_id }}" class="form-control" required>
 
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->

@@ -936,10 +936,11 @@ class AdminController extends Controller
     public function storeProductPlan(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product'   => 'required',
-            'plan'      => 'required',
-            'frequency' => 'required',
-            'pricing'   => 'required|numeric',
+            'product'      => 'required',
+            'plan'         => 'required',
+            'frequency'    => 'required',
+            'pricing'      => 'required|numeric',
+            'active_tasks' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -949,11 +950,12 @@ class AdminController extends Controller
             return back();
         }
 
-        $plan             = new SubscriptionPlan;
-        $plan->product_id = $request->product;
-        $plan->plan       = $request->plan;
-        $plan->frequency  = $request->frequency;
-        $plan->pricing    = $request->pricing;
+        $plan               = new SubscriptionPlan;
+        $plan->product_id   = $request->product;
+        $plan->plan         = $request->plan;
+        $plan->frequency    = $request->frequency;
+        $plan->pricing      = $request->pricing;
+        $plan->active_tasks = $request->active_tasks;
         if ($plan->save()) {
             toast('Product Plan Added Successfully.', 'success');
             return back();
@@ -988,11 +990,12 @@ class AdminController extends Controller
             return back();
         }
 
-        $plan             = SubscriptionPlan::find($request->plan_id);
-        $plan->product_id = $request->product;
-        $plan->plan       = $request->plan;
-        $plan->frequency  = $request->frequency;
-        $plan->pricing    = $request->pricing;
+        $plan               = SubscriptionPlan::find($request->plan_id);
+        $plan->product_id   = $request->product;
+        $plan->plan         = $request->plan;
+        $plan->frequency    = $request->frequency;
+        $plan->pricing      = $request->pricing;
+        $plan->active_tasks = $request->active_tasks;
         if ($plan->save()) {
             toast('Product Plan Updated Successfully.', 'success');
             return back();
