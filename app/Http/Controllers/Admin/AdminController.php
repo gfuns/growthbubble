@@ -1837,9 +1837,24 @@ class AdminController extends Controller
             return back();
         }
         try {
+            $task = CustomerTasks::find($request->task_id);
+            if ($task->status == "queued") {
+                if ($request->task_status == "queued") {
+                    toast('Task is already in queue.', "info");
+                    return back();
+                }
+
+                $activeTasks    = CustomerTasks::where("user_id", $task->user_id)->whereIn("status", ["in progress", "quality assurance", "client feedback"])->count();
+                $maxActiveTasks = User::find($task->user_id)->allowedActiveTasks();
+
+                if ($activeTasks >= $maxActiveTasks) {
+                    toast('You cannot update this task as the client has reached maximum number of active tasks for the selected plan.', "error");
+                    return back();
+                }
+            }
+
             DB::beginTransaction();
 
-            $task           = CustomerTasks::find($request->task_id);
             $task->priority = $request->task_priority;
             $task->status   = $request->task_status;
             $task->save();
