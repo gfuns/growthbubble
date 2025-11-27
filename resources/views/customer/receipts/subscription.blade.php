@@ -217,7 +217,10 @@
                         <h3>Billed To</h3>
                         <p>&nbsp;</p>
                         <p><strong>Name:</strong>
-                            {{ $subscription->customer->last_name . ' ' . $subscription->customer->other_names }}</p>
+                            {{ $subscription->customer->other_names . ' ' . $subscription->customer->last_name }}</p>
+                        <p>&nbsp;</p>
+                        <p><strong>Organization:</strong>
+                            {{ $subscription->customer->organization }}</p>
                         <p>&nbsp;</p>
                         <p><strong>Email:</strong> {{ $subscription->customer->email }}</p>
                         <p>&nbsp;</p>

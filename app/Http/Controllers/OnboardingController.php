@@ -11,8 +11,8 @@ use App\Models\CustomerCards;
 use App\Models\CustomerSubscription;
 use App\Models\Invoice;
 use App\Models\OnboardingDetails;
+use App\Models\PlanFeatures;
 use App\Models\Product;
-use App\Models\ProductFeatures;
 use App\Models\SubscriptionInfo;
 use App\Models\SubscriptionPlan;
 use App\Models\User;
@@ -143,7 +143,7 @@ class OnboardingController extends Controller
     public function subscriptionPayment()
     {
         $subscription = SubscriptionInfo::where("user_id", Auth::user()->id)->first();
-        $features     = ProductFeatures::where("product_id", $subscription->product_id)->get();
+        $features     = PlanFeatures::where("plan_id", $subscription->plan_id)->get();
         return view("payment", compact("subscription", "features"));
     }
 

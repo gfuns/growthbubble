@@ -171,7 +171,7 @@
                     </div>
                     <div class="mb-3">
                         <div>
-                            <strong><span style="font-size:17px; color:black; font-weight:bold"><u>Plan Summary: {{ $subscription->product->product }}  {{ $subscription->plan->plan }}.</span></strong>
+                            <strong><span style="font-size:17px; color:black; font-weight:bold"><u>Plan Summary: {{ $subscription->product->product }}  {{ $subscription->plan->plan }}</u></span></strong>
                         </div>
                     </div>
 

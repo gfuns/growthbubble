@@ -219,7 +219,10 @@
                         <h3>Billed To</h3>
                         <p>&nbsp;</p>
                         <p><strong>Name:</strong>
-                            {{ $payment->customer->last_name . ' ' . $payment->customer->other_names }}</p>
+                            {{ $payment->customer->other_names . ' ' . $payment->customer->last_name }}</p>
+                        <p>&nbsp;</p>
+                        <p><strong>Organization:</strong>
+                            {{ $payment->customer->organization }}</p>
                         <p>&nbsp;</p>
                         <p><strong>Email:</strong> {{ $payment->customer->email }}</p>
                         <p>&nbsp;</p>
