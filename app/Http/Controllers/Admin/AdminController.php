@@ -20,10 +20,10 @@ use App\Models\CustomerTasks;
 use App\Models\CustomerTickets;
 use App\Models\Invoice;
 use App\Models\OnboardingDetails;
+use App\Models\PlanFeatures;
 use App\Models\PlatformActivities;
 use App\Models\PlatformFeature;
 use App\Models\Product;
-use App\Models\ProductFeatures;
 use App\Models\Project;
 use App\Models\SubscriptionPlan;
 use App\Models\TaskActivities;
@@ -836,29 +836,29 @@ class AdminController extends Controller
     }
 
     /**
-     * productFeatures
+     * planFeatures
      *
      * @return void
      */
-    public function productFeatures($id)
+    public function planFeatures($id)
     {
-        $product  = Product::find($id);
-        $features = ProductFeatures::where("product_id", $id)->get();
-        return view("admin.product_features", compact("product", "features"));
+        $plan     = SubscriptionPlan::find($id);
+        $features = PlanFeatures::where("plan_id", $id)->get();
+        return view("admin.plan_features", compact("plan", "features"));
     }
 
     /**
-     * storeProductFeature
+     * storePlanFeature
      *
      * @param Request request
      *
      * @return void
      */
-    public function storeProductFeature(Request $request)
+    public function storePlanFeature(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_id'      => 'required',
-            'product_feature' => 'required',
+            'plan_id'      => 'required',
+            'plan_feature' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -868,11 +868,11 @@ class AdminController extends Controller
             return back();
         }
 
-        $feature             = new ProductFeatures;
-        $feature->product_id = $request->product_id;
-        $feature->feature    = $request->product_feature;
+        $feature          = new PlanFeatures;
+        $feature->plan_id = $request->plan_id;
+        $feature->feature = $request->plan_feature;
         if ($feature->save()) {
-            toast('Product Feature Added Successfully.', 'success');
+            toast('Plan Feature Added Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');
@@ -882,17 +882,17 @@ class AdminController extends Controller
     }
 
     /**
-     * updateProductFeature
+     * updatePlanFeature
      *
      * @param Request request
      *
      * @return void
      */
-    public function updateProductFeature(Request $request)
+    public function updatePlanFeature(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'feature_id'      => 'required',
-            'product_feature' => 'required',
+            'feature_id'   => 'required',
+            'plan_feature' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -902,10 +902,10 @@ class AdminController extends Controller
             return back();
         }
 
-        $feature          = ProductFeatures::find($request->feature_id);
-        $feature->feature = $request->product_feature;
+        $feature          = PlanFeatures::find($request->feature_id);
+        $feature->feature = $request->plan_feature;
         if ($feature->save()) {
-            toast('Product Feature Updated Successfully.', 'success');
+            toast('Plan Feature Updated Successfully.', 'success');
             return back();
         } else {
             toast('Something went wrong. Please try again', 'error');

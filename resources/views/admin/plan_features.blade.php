@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Product Features')
+@section('title', env('APP_NAME') . ' | Plan Features')
 
 
 <!-- Container fluid -->
@@ -11,7 +11,7 @@
             <!-- Page header -->
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
-                    <h1 class="mb-0 h3 fw-bold">Product Features</h1>
+                    <h1 class="mb-0 h3 fw-bold">Plan Features</h1>
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -22,7 +22,7 @@
                                 <a href="#">Settings</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Product Features
+                                Plan Features
                             </li>
                         </ol>
                     </nav>
@@ -31,7 +31,7 @@
                 @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 1) == true)
                     <div>
                         <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasRight">Add New Product Feature</a>
+                            data-bs-target="#offcanvasRight">Add New Plan Feature</a>
 
                     </div>
                 @endif
@@ -43,7 +43,7 @@
             <!-- Card -->
             <div class="card rounded-3">
                 <!-- Card Header -->
-              <h4 class="ms-4 mt-3 mb-3">Product Features for {{ $product->product }}</h4>
+                <h4 class="ms-4 mt-3 mb-3">Features for {{ $plan->plan }} {{ ucwords($plan->frequency) }}</h4>
                 <div>
                     <div class="tab-content" id="tabContent">
                         <!-- Tab -->
@@ -69,7 +69,7 @@
                                                 <td style="vertical-align: top !important">{{ $feat->feature }}
                                                 </td>
 
-                                                <td class="align-middle" >
+                                                <td class="align-middle">
                                                     <div class="hstack gap-4">
                                                         <span class="dropdown dropstart">
                                                             <a class="btn btn-primary bg-light-primary text-primary btn-sm"
@@ -87,6 +87,8 @@
                                                                             class="fe fe-edit dropdown-item-icon"></i>Update
                                                                         Details</a>
                                                                 @endif
+
+
 
                                                             </span>
                                                         </span>
@@ -133,24 +135,25 @@
             <!-- card body -->
             <div class="container">
                 <!-- form -->
-                <form class="needs-validation" novalidate method="post"
-                    action="{{ route('admin.storeProductFeature') }}" enctype="multipart/form-data">
+                <form class="needs-validation" novalidate method="post" action="{{ route('admin.storePlanFeature') }}"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <!-- form group -->
                         <div class="mb-3 col-12">
                             <label class="form-label">Product Feature <span class="text-danger">*</span></label>
-                            <textarea name="product_feature" class="form-control" placeholder="Enter Product Feature" rows="5" required
+                            <textarea name="plan_feature" class="form-control" placeholder="Enter Product Feature" rows="5" required
                                 style="resize: none"></textarea>
                             <div class="invalid-feedback">Please provide product feature.</div>
                         </div>
 
-                        <input id="myid" type="hidden" name="product_id" value="{{ $product->id }}" class="form-control" required>
+                        <input id="myid" type="hidden" name="plan_id" value="{{ $plan->id }}"
+                            class="form-control" required>
 
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->
                         <div class="col-12 mt-4">
-                            <button class="btn btn-primary" type="submit">Save Product Feature</button>
+                            <button class="btn btn-primary" type="submit">Save Plan Feature</button>
                             <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
                                 aria-label="Close">Cancel</button>
                         </div>
@@ -173,14 +176,14 @@
             <div class="container">
                 <!-- form -->
                 <form class="needs-validation" novalidate method="post"
-                    action="{{ route('admin.updateProductFeature') }}" enctype="multipart/form-data">
+                    action="{{ route('admin.updatePlanFeature') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <!-- form group -->
                         <div class="mb-3 col-12">
                             <label class="form-label">Product Feature <span class="text-danger">*</span></label>
-                            <textarea id="feature" name="product_feature" class="form-control" placeholder="Enter Product Feature" rows="5" required
-                                style="resize: none"></textarea>
+                            <textarea id="feature" name="plan_feature" class="form-control" placeholder="Enter Product Feature"
+                                rows="5" required style="resize: none"></textarea>
                             <div class="invalid-feedback">Please provide product feature.</div>
                         </div>
 
@@ -201,7 +204,7 @@
 @endif
 <script type="text/javascript">
     document.getElementById("platSettings").classList.add('show');
-    document.getElementById("product").classList.add('active');
+    document.getElementById("plans").classList.add('active');
 </script>
 
 @endsection

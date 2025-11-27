@@ -119,11 +119,11 @@ Route::group([
 
     Route::post('/updateProductPlan', [AdminController::class, 'updateProductPlan'])->name('admin.updateProductPlan');
 
-    Route::get('/product-features/{id}', [AdminController::class, 'productFeatures'])->name('admin.productFeatures');
+    Route::get('/plan-features/{id}', [AdminController::class, 'planFeatures'])->name('admin.planFeatures');
 
-    Route::post('/storeProductFeature', [AdminController::class, 'storeProductFeature'])->name('admin.storeProductFeature');
+    Route::post('/storePlanFeature', [AdminController::class, 'storePlanFeature'])->name('admin.storePlanFeature');
 
-    Route::post('/updateProductFeature', [AdminController::class, 'updateProductFeature'])->name('admin.updateProductFeature');
+    Route::post('/updatePlanFeature', [AdminController::class, 'updatePlanFeature'])->name('admin.updatePlanFeature');
 
     Route::get('/registered-customers', [AdminController::class, 'registeredCustomers'])->name('admin.customers');
 

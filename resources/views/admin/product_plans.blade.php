@@ -102,6 +102,11 @@
                                                                         Details</a>
                                                                 @endif
 
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('admin.planFeatures', [$plan->id]) }}"><i
+                                                                        class="fe fe-edit dropdown-item-icon"></i>Plan
+                                                                    Features</a>
+
                                                                 <a class="dropdown-item" href="#"
                                                                     data-bs-toggle="modal" data-bs-target="#copyPlanURL"
                                                                     data-url="{{ env('APP_URL') }}/checkout?product={{ $plan->product->product }}&plan={{ $plan->plan }}&duration={{ $plan->frequency }}"><i

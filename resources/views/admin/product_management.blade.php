@@ -91,11 +91,6 @@
                                                                             class="fe fe-edit dropdown-item-icon"></i>Update
                                                                         Details</a>
 
-                                                                    <a class="dropdown-item"
-                                                                        href="{{ route('admin.productFeatures', [$prod->id]) }}"><i
-                                                                            class="fe fe-edit dropdown-item-icon"></i>Product
-                                                                        Features</a>
-
                                                                 </span>
                                                             </span>
 
