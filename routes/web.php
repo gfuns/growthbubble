@@ -43,6 +43,10 @@ Route::get('/account/email/verify/{token}', [OnboardingController::class, 'verif
 
 Route::post('/changeDefaultPassword', [HomeController::class, 'changeDefaultPassword'])->name("changeDefaultPassword");
 
+Route::post('/initiatePasswordReset', [OnboardingController::class, 'initiatePasswordReset'])->name("initiatePasswordReset");
+
+Route::get('/reset/password/{token}', [OnboardingController::class, 'verifyPasswordReset'])->name("verifyPasswordReset");
+
 Route::group([
     'prefix'     => 'portal/admin',
     'middleware' => ['webauthenticated', 'g2fa', 'fpu'],

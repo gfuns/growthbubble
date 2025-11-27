@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ClientOnboarded as ClientOnboarded;
 use App\Mail\OnboardingComplete as OnboardingComplete;
+use App\Mail\PasswordReset as PasswordReset;
 use App\Mail\PaymentConfirmation as PaymentConfirmation;
 use App\Mail\PaymentNotification as PaymentNotification;
 use App\Mail\RegistrationMail as RegistrationMail;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Mail;
+use Session;
 use Stripe\Customer;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
@@ -560,6 +562,59 @@ class OnboardingController extends Controller
             $status = "Failed";
             return view("verification_status", compact("status"));
         }
+    }
+
+    /**
+     * Initiate User Password Reset
+     *
+     * @param Request request
+     *
+     */
+    public function initiatePasswordReset(Request $request)
+    {
+        $validator = $this->validate($request, [
+            'email' => 'required|',
+        ]);
+
+        $user = User::where("email", $request->email)->where("status", "!=", "deleted")->first();
+
+        if (! $user) {
+            return back()->with(['error' => "We could not find an account for the provided email"]);
+        }
+
+        $user->token = Str::random(60);
+
+        if ($user->save()) {
+            try {
+                Mail::to($user)->send(new PasswordReset($user));
+                return back()->with(['success' => "Password Reset Mail Sent Successfully"]);
+            } catch (\Exception $e) {
+                report($e);
+                return back()->with(['error' => "Something went wrong. We could not process your request"]);
+            }
+        } else {
+            return back()->with(['error' => "Something went wrong. We could not process your request"]);
+        }
+
+    }
+
+    /**
+     * verifyPasswordReset
+     *
+     * @param mixed token
+     *
+     * @return void
+     */
+    public function verifyPasswordReset($token)
+    {
+
+        $user = User::where("token", $token)->first();
+        if (! $user) {
+            Session::put("passwordResetFailed", "We could not verify the token for this request.");
+            return view("auth.passwords.email", compact("user"));
+        }
+
+        return view("auth.passwords.reset", compact("user"));
     }
 
 }
