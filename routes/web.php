@@ -163,6 +163,8 @@ Route::group([
 
     Route::post('/updateTask', [AdminController::class, 'updateTask'])->name('admin.updateTask');
 
+    Route::post('/addComment', [AdminController::class, 'addComment'])->name('admin.addComment');
+
     Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
 
     Route::get('/payments', [AdminController::class, 'payments'])->name('admin.payments');

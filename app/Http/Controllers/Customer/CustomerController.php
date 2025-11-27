@@ -659,6 +659,7 @@ class CustomerController extends Controller
     public function updateTask(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'task_id'        => 'required',
             'comment'        => 'required',
             'attached_files' => 'nullable',
         ]);
@@ -704,12 +705,14 @@ class CustomerController extends Controller
 
             try {
                 $staff = User::find($task->assigned_to);
-                Mail::to($staff)->send(new RevisionRequest($staff, $task, $request->comment));
+                if (isset($staff)) {
+                    Mail::to($staff)->send(new RevisionRequest($staff, $task, $request->comment));
+                }
             } catch (\Exception $e) {
                 report($e);
             }
 
-            toast('Task Successfully Updated.', 'success');
+            toast('Comment Added Successfully.', 'success');
             return back();
         } catch (\Throwable $e) {
             report($e);

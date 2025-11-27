@@ -159,7 +159,7 @@
                             </div>
                              <div class="col-12 mb-4">
                                 <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#viewConversations">Start A Conversation</button>
+                                    data-bs-target="#updateTask">Start A Conversation</button>
 
                             </div>
                         @endif
@@ -290,8 +290,7 @@
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->
                         <div class="col-12 mt-4">
-                            <button id="submitbutton2" class="btn btn-success" type="submit">Submit Task
-                                Update</button>
+                            <button id="submitbutton2" class="btn btn-success" type="submit">Add Comment</button>
                             <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
                                 aria-label="Close">Cancel</button>
                         </div>
@@ -317,6 +316,7 @@
                 <div class="scrollable-card-body">
 
                     @foreach ($conversations as $chat)
+
                         @if (Auth::user()->id == $chat->user_id)
                             <!-- My message -->
                             <div class="d-flex justify-content-end mb-3">
@@ -328,7 +328,7 @@
                             @if (isset($chat->uploaded_file))
                                 <div class="d-flex justify-content-end mb-3">
                                     <div class="rounded border" style="max-width: 20%;">
-                                        <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
+                                        <img src="{{ $chat->uploaded_file }}"
                                             class="img-fluid rounded" alt="Shared Image">
                                     </div>
                                 </div>
@@ -336,7 +336,7 @@
                         @else
                             <!-- Other person's message -->
                             <div class="d-flex mb-3">
-                                <img src="{{ $chat->user->profile_photo ?? 'https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg' }}"
+                                <img src="{{ $chat->user->profile_photo ?? 'https://res.cloudinary.com/dcmbdezwa/image/upload/v1764230347/xxpowm6thkd4treba6a2.webp' }}"
                                     class="rounded-circle me-2" alt="User" style="height: 35px; width:35px">
                                 <div>
                                     <h6 class="mb-1 small fw-bold">
@@ -350,7 +350,7 @@
                             @if (isset($chat->uploaded_file))
                                 <div class="d-flex mb-3">
                                     <div class="rounded border" style="margin-left: 45px; max-width: 20%;">
-                                        <img src="https://res.cloudinary.com/bdicprod/image/upload/v1757083276/lg2qyfithgnjbqw0pdnp.jpg"
+                                        <img src="{{ $chat->uploaded_file }}"
                                             class="img-fluid rounded" alt="Shared Image">
                                     </div>
                                 </div>

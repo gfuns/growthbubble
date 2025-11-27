@@ -1907,6 +1907,77 @@ class AdminController extends Controller
     }
 
     /**
+     * addComment
+     *
+     * @return void
+     */
+    public function addComment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'task_id'        => 'required',
+            'comment'        => 'required',
+            'attached_files' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+        try {
+            DB::beginTransaction();
+
+            $task = CustomerTasks::find($request->task_id);
+
+            if (isset($request->comment)) {
+                $activity           = new TaskActivities;
+                $activity->task_id  = $task->id;
+                $activity->user_id  = Auth::user()->id;
+                $activity->activity = "Added comment: <p>" . $request->comment . "</p>";
+                $activity->save();
+
+                $platformActivity           = new PlatformActivities;
+                $platformActivity->user_id  = Auth::user()->id;
+                $platformActivity->owner_id = $task->user_id;
+                $platformActivity->activity = 'Commented on the task "' . $task->title . '" saying: <p>' . $request->comment . '</p>';
+                $platformActivity->save();
+            }
+
+            if (isset($request->comment) || isset($request->uploaded_file)) {
+                $conversation          = new TaskConversation;
+                $conversation->task_id = $task->id;
+                $conversation->user_id = Auth::user()->id;
+                $conversation->comment = $request->comment;
+                if ($request->has('attached_files')) {
+                    $uploadedFileUrl             = Cloudinary::upload($request->file('attached_files')->getRealPath())->getSecurePath();
+                    $conversation->uploaded_file = $uploadedFileUrl;
+                }
+                $conversation->save();
+            }
+
+            DB::commit();
+
+            try {
+                $customer = User::find($task->user_id);
+                Mail::to($customer)->send(new TaskRevision($customer, $task, $request->comment));
+            } catch (\Exception $e) {
+                report($e);
+            }
+
+            toast('Comment Added Successfully.', 'success');
+            return back();
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+
+    }
+
+    /**
      * subscriptions
      *
      * @return void
