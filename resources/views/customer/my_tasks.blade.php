@@ -111,7 +111,7 @@
                                     @foreach ($customerTasks as $cTask)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
-                                            <td class="align-middle">{{ $cTask->title }} </td>
+                                            <td class="align-middle">{{ Str::limit($cTask->title, 40) }} </td>
                                             <td class="align-middle">{{ ucwords($cTask->category->category) }}</td>
                                             <td class="align-middle">{{ ucwords($cTask->priority) }}</td>
                                             <td class="align-middle">{{ date_format($cTask->created_at, "jS F, Y") }}</td>

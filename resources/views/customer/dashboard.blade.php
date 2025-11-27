@@ -174,7 +174,7 @@
                                                             <td class="no-wrap">
                                                                 <a href="{{ route('customer.taskDetails', [$tsk->id]) }}"
                                                                     class="text-dark">
-                                                                    {{ $tsk->title }}
+                                                                    {{ Str::limit($tsk->title, 50) }}
                                                                 </a>
                                                             </td>
                                                             <td>{{ ucwords($tsk->priority) }}</td>

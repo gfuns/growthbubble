@@ -112,7 +112,7 @@
             <tbody>
                 <tr>
                     <th>Client</th>
-                    <td>{{ $task->user->other_names }}</td>
+                    <td>{{ $task->user->organization }}</td>
                 </tr>
                 <tr>
                     <th>Task</th>

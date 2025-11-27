@@ -105,10 +105,27 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " id="files" href="{{ route("admin.files") }}">
-                        <i class="nav-icon bi bi-folder me-2"></i>
-                        Files
+                    <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navFolder"
+                        aria-expanded="false" aria-controls="navFolder">
+                        <i class="nav-icon bi bi-folder me-2"></i> Files
                     </a>
+                    <div id="navFolder" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+
+                            <li class="nav-item">
+                                <a class="nav-link " id="myFiles" href="{{ route('admin.myFiles') }}">
+                                    My Files
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link " id="sharedFiles" href="{{ route('admin.sharedFiles') }}">
+                                    Shared With Me
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
                 </li>
             @endif
 
@@ -133,8 +150,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navAdmin"
-                        aria-expanded="false" aria-controls="navAdmin">
+                    <a class="nav-link  collapsed " href="#" data-bs-toggle="collapse"
+                        data-bs-target="#navAdmin" aria-expanded="false" aria-controls="navAdmin">
                         <i class="nav-icon fe fe-dollar-sign me-2"></i> Admin
                     </a>
                     <div id="navAdmin" class="collapse " data-bs-parent="#sideNavbar">
@@ -142,7 +159,7 @@
 
 
                             <li class="nav-item">
-                                <a class="nav-link " id="payments" href="{{ route("admin.payments") }}">
+                                <a class="nav-link " id="payments" href="{{ route('admin.payments') }}">
                                     Payments
                                 </a>
                             </li>

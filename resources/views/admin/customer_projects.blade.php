@@ -113,7 +113,7 @@
                                                 data-description="{{ $cProj->project_description }}"
                                                 data-date="{{ date_format($cProj->created_at, 'jS F, Y g:ia') }}"
                                                 data-status="{{ ucwords($cProj->status) }}" style="cursor: pointer">
-                                                {{ $cProj->project_title }} </td>
+                                                {{ Str::limit($cProj->project_title, 50) }} </td>
                                             <td class="align-middle" data-bs-toggle="modal"
                                                 data-bs-target="#viewCustomer" data-myid="{{ $cProj->user->id }}"
                                                 data-othernames="{{ $cProj->user->other_names }}"

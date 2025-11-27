@@ -116,7 +116,7 @@
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
                                             <td class="align-middle">
                                                 <a href="{{ route('admin.taskDetails', [$cTask->id]) }}">
-                                                    {{ $cTask->title }}
+                                                    {{ Str::limit($cTask->title, 50) }}
                                                 </a>
                                             </td>
                                             <td class="align-middle" data-bs-toggle="modal"

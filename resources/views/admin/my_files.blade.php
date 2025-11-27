@@ -1,7 +1,7 @@
-@extends('customer.layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Tasks')
+@section('title', env('APP_NAME') . ' | My Files')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -20,21 +20,22 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
-                             <li class="breadcrumb-item">
-                                <a href="#">Files</a>
-                            </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                My Files
+                                Files
                             </li>
                         </ol>
                     </nav>
                 </div>
 
-                <!-- button -->
-                <div>
-                    <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasRight">Upload File</a>
-                </div>
+
+                @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 8) == true)
+                    <!-- button -->
+                    <div>
+                        <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight">Upload File</a>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>
@@ -53,7 +54,7 @@
                         <form id="form" name="form" method="GET">
                             <div class="p-4 row gx-3">
                                 <!-- Form -->
-                                <div class="col-12 mb-3 mb-lg-0">
+                                <div class="col-12 col-lg-9 mb-3 mb-lg-0">
                                     <!-- search -->
 
                                     <div class="d-flex align-items-center">
@@ -67,6 +68,20 @@
 
                                 </div>
 
+                                <div class="col-6 col-lg-3">
+                                    <!-- form select -->
+                                    <select id="prod" name="client" class="form-select"
+                                        onChange="this.form.submit()">
+                                        <option value="">All Clients</option>
+                                        @foreach ($customers as $cust)
+                                            <option value="{{ $cust->id }}"
+                                                @if ($client == $cust->id) selected @endif>
+                                                {{ $cust->organization }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
                         </form>
                         <!-- table -->
@@ -77,6 +92,8 @@
                                     <tr>
                                         <th scope="col">S/No</th>
                                         <th scope="col">File</th>
+                                        <th scope="col">Uploaded By</th>
+                                        <th scope="col">Shared With</th>
                                         <th scope="col">Comment</th>
                                         <th scope="col">Date</th>
                                         {{-- <th scope="col">Action</th> --}}
@@ -91,6 +108,11 @@
                                                 data-uploadedfile="{{ $file->uploaded_file }}"
                                                 data-filetype="{{ $file->file_type }}" style="cursor: pointer">
                                                 {{ $file->file_name }}</td>
+                                            <td class="align-middle">
+                                                {{ $file->user->last_name . ' ' . $file->user->other_names }}</td>
+                                            <td class="align-middle">
+                                                {{ isset($file->client) ? $file->client->last_name . ' ' . $file->client->other_names : 'Nil' }}
+                                            </td>
                                             <td class="align-middle">
                                                 <span class="badge text-primary bg-light-primary"
                                                     style="cursor: pointer" data-bs-toggle="modal"
@@ -138,56 +160,74 @@
 </section>
 
 
-<!-- offcanvas -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
-    <div class="offcanvas-body" data-simplebar>
-        <div class="offcanvas-header px-2 pt-0">
-            <h3 class="offcanvas-title" id="offcanvasExampleLabel">Upload File</h3>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <!-- card body -->
-        <div class="container">
-            <!-- form -->
-            <form class="needs-validation" novalidate method="post" action="{{ route('admin.storeFile') }}"
-                enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <!-- form group -->
 
-                    <div class="mb-3 col-12">
-                        <label class="form-label">File <span class="text-danger">*</span></label>
-                        <input type="file" name="file" class="form-control" placeholder="Select File" required>
-                        <div class="invalid-feedback">Please select file.</div>
+@if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 8) == true)
+    <!-- offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
+        <div class="offcanvas-body" data-simplebar>
+            <div class="offcanvas-header px-2 pt-0">
+                <h3 class="offcanvas-title" id="offcanvasExampleLabel">Upload File</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <!-- card body -->
+            <div class="container">
+                <!-- form -->
+                <form class="needs-validation" novalidate method="post" action="{{ route('admin.storeFile') }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <!-- form group -->
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">File <span class="text-danger">*</span></label>
+                            <input type="file" name="file" class="form-control" placeholder="Select File"
+                                required>
+                            <div class="invalid-feedback">Please select file.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Share With </label>
+                            <select id="userrole" name="client" class="form-control" data-width="100%">
+                                <option value="">Select Account</option>
+                                @foreach ($customers as $cust)
+                                    <option value="{{ $cust->id }}">
+                                        {{ $cust->organization }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">Please select customer.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Name Your File <span class="text-danger">*</span></label>
+                            <input type="text" name="file_name" class="form-control" placeholder="Name Your File"
+                                required>
+                            <div class="invalid-feedback">Please provide a name for the file.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Comment </label>
+                            <textarea name="comment" class="form-control" placeholder="Enter Comment" style="resize: none"
+                                rows="5"></textarea>
+                            <div class="invalid-feedback">Please provide comment.</div>
+                        </div>
+
+
+
+                        <div class="col-md-12 border-bottom"></div>
+                        <!-- button -->
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-primary" type="submit">Upload File</button>
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
+                                aria-label="Close">Cancel</button>
+                        </div>
                     </div>
-
-                    <div class="mb-3 col-12">
-                        <label class="form-label">Name Your File <span class="text-danger">*</span></label>
-                        <input type="text" name="file_name" class="form-control" placeholder="Name Your File"
-                            required>
-                        <div class="invalid-feedback">Please provide a name for the file.</div>
-                    </div>
-
-                    <div class="mb-3 col-12">
-                        <label class="form-label">Comment </label>
-                        <textarea name="comment" class="form-control" placeholder="Enter Comment" style="resize: none"
-                            rows="5"></textarea>
-                        <div class="invalid-feedback">Please provide comment.</div>
-                    </div>
-
-
-
-                    <div class="col-md-12 border-bottom"></div>
-                    <!-- button -->
-                    <div class="col-12 mt-4">
-                        <button class="btn btn-primary" type="submit">Upload File</button>
-                        <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
-                            aria-label="Close">Cancel</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+@endif
 
 <div class="modal fade" id="uploadedFileModal" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
     aria-hidden="true">

@@ -163,11 +163,11 @@
                                                     <td class="no-wrap">
                                                         <a href="{{ route('admin.taskDetails', [$tsk->id]) }}"
                                                             class="text-dark">
-                                                            {{ $tsk->title }}
+                                                           {{ Str::limit($tsk->title, 30) }}
                                                         </a>
                                                     </td>
                                                     <td class="no-wrap">
-                                                        {{ $tsk->user->organization }}
+                                                        {{ Str::limit($tsk->user->organization, 25) }}
                                                     </td>
                                                     <td>{{ ucwords($tsk->priority) }}</td>
                                                     <td>

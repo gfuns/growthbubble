@@ -69,18 +69,14 @@
                             </div>
 
                             @if (Session::has('error'))
-                                <div class="alert alert-danger">Provided email does not exist on our records.</div>
-                            @endif
-
-                            @if (Session::has('success'))
-                                <div class="alert alert-success">Password Reset Mail Sent Successfully.</div>
+                                <div class="alert alert-danger">{{ Session::get("error") }}</div>
                             @endif
 
                             <p class="text-black"><strong>Hi {{ $user->other_names }},</strong>
                                 <br>Please select a new password for your account.
                             </p>
                             <!-- Form -->
-                            <form class="needs-validation" novalidate method="post" action="#">
+                            <form class="needs-validation" novalidate method="post" action="{{ route("resetPassword") }}">
                                 @csrf
                                 <!-- Username -->
                                 <div class="mb-3">
@@ -93,11 +89,15 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Password Confirmation</label>
-                                    <input type="password" id="password_cofirmation" name="password_cofirmation" class="form-control"
+                                    <input type="password" id="password_confirmation" name="password_confirmation" class="form-control"
                                         placeholder="Re-enter your new password"
                                         value="{{ old('email') }}" required>
                                     <div class="invalid-feedback">Please re-enter your new password.</div>
                                 </div>
+
+                                <input type="hidden" id="email" name="email" class="form-control"
+                                        placeholder="Enter your email"
+                                        value="{{ $user->email }}" required>
 
                                 <div>
                                     <!-- Button -->

@@ -66,6 +66,10 @@
                                     <small style="font-weight: bolder;">SIGN INTO YOUR ACCOUNT</small>
                                 </div>
                             </div>
+
+                            @if (Session::has('success'))
+                                <div class="alert alert-success">{{ Session::get("success") }}</div>
+                            @endif
                             <!-- Form -->
                             <form class="needs-validation" novalidate method="post" action="{{ route('login') }}">
                                 @csrf

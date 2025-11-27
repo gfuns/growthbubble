@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-@section('title', env('APP_NAME') . ' | Tasks')
+@section('title', env('APP_NAME') . ' | Shared Files')
 
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -12,7 +12,7 @@
             <div class="border-bottom pb-3 mb-3 d-lg-flex align-items-center justify-content-between">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="mb-1 h3 fw-bold">
-                        Files
+                        Shared With Me
                     </h1>
                     <!-- Breadcrumb  -->
                     <nav aria-label="breadcrumb">
@@ -21,20 +21,11 @@
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                Files
+                                Shared With Me
                             </li>
                         </ol>
                     </nav>
                 </div>
-
-
-                @if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 8) == true)
-                    <!-- button -->
-                    <div>
-                        <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasRight">Upload File</a>
-                    </div>
-                @endif
 
             </div>
         </div>
@@ -92,6 +83,7 @@
                                     <tr>
                                         <th scope="col">S/No</th>
                                         <th scope="col">File</th>
+                                        <th scope="col">Client</th>
                                         <th scope="col">Uploaded By</th>
                                         <th scope="col">Shared With</th>
                                         <th scope="col">Comment</th>
@@ -108,6 +100,8 @@
                                                 data-uploadedfile="{{ $file->uploaded_file }}"
                                                 data-filetype="{{ $file->file_type }}" style="cursor: pointer">
                                                 {{ $file->file_name }}</td>
+                                            <td class="align-middle">
+                                                {{ $file->user->organization }}</td>
                                             <td class="align-middle">
                                                 {{ $file->user->last_name . ' ' . $file->user->other_names }}</td>
                                             <td class="align-middle">
@@ -131,7 +125,7 @@
                                     <div class="text-center mt-4"><i class="bi bi-emoji-frown"
                                             style="font-size: 48px"></i>
                                         <h3 class="mt-2">No Record Found</h3>
-                                        <div class="mt-2 text-muted"> There are no uploaded files found.
+                                        <div class="mt-2 text-muted"> There are no shared files found.
                                         </div>
                                     </div>
                                 </div>
@@ -158,76 +152,6 @@
         </div>
     </div>
 </section>
-
-
-
-@if (\App\Http\Controllers\MenuController::canCreate(Auth::user()->role_id, 8) == true)
-    <!-- offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" style="width: 600px;">
-        <div class="offcanvas-body" data-simplebar>
-            <div class="offcanvas-header px-2 pt-0">
-                <h3 class="offcanvas-title" id="offcanvasExampleLabel">Upload File</h3>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                    aria-label="Close"></button>
-            </div>
-            <!-- card body -->
-            <div class="container">
-                <!-- form -->
-                <form class="needs-validation" novalidate method="post" action="{{ route('admin.storeFile') }}"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="row">
-                        <!-- form group -->
-
-                        <div class="mb-3 col-12">
-                            <label class="form-label">File <span class="text-danger">*</span></label>
-                            <input type="file" name="file" class="form-control" placeholder="Select File"
-                                required>
-                            <div class="invalid-feedback">Please select file.</div>
-                        </div>
-
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Share With </label>
-                            <select id="userrole" name="client" class="form-control" data-width="100%">
-                                <option value="">Select Account</option>
-                                @foreach ($customers as $cust)
-                                    <option value="{{ $cust->id }}">
-                                        {{ $cust->last_name . ' ' . $cust->other_names }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback">Please select customer.</div>
-                        </div>
-
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Name Your File <span class="text-danger">*</span></label>
-                            <input type="text" name="file_name" class="form-control" placeholder="Name Your File"
-                                required>
-                            <div class="invalid-feedback">Please provide a name for the file.</div>
-                        </div>
-
-                        <div class="mb-3 col-12">
-                            <label class="form-label">Comment <span class="text-danger">*</span></label>
-                            <textarea name="comment" class="form-control" placeholder="Enter Comment" required style="resize: none"
-                                rows="5"></textarea>
-                            <div class="invalid-feedback">Please provide comment.</div>
-                        </div>
-
-
-
-                        <div class="col-md-12 border-bottom"></div>
-                        <!-- button -->
-                        <div class="col-12 mt-4">
-                            <button class="btn btn-primary" type="submit">Upload File</button>
-                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-dismiss="offcanvas"
-                                aria-label="Close">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-@endif
 
 <div class="modal fade" id="uploadedFileModal" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
     aria-hidden="true">
@@ -291,7 +215,8 @@
 
 
 <script type="text/javascript">
-    document.getElementById("files").classList.add('active');
+    document.getElementById("navFolder").classList.add('show');
+    document.getElementById("sharedFiles").classList.add('active');
 </script>
 
 @endsection

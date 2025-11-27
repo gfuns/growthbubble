@@ -67,9 +67,9 @@ class AdminController extends Controller
                 "onHoldTasks"    => CustomerTasks::where("status", "on hold")->count(),
             ];
 
-            $products   = Product::all();
-            $tasks      = CustomerTasks::all();
-            $activities = PlatformActivities::orderBy("id", "desc")->get();
+            $products   = Product::orderBy("id", "desc")->limit(10)->get();
+            $tasks      = CustomerTasks::orderBy("id", "desc")->limit(10)->get();
+            $activities = PlatformActivities::orderBy("id", "desc")->limit(15)->get();
             return view("admin.dashboard", compact("params", "products", "tasks", "activities"));
         } else {
             $params = [
@@ -1387,7 +1387,7 @@ class AdminController extends Controller
 
         $query = Project::query();
 
-        $query->where("product_id", $id);
+        $query->orderBy("id", 'desc')->where("product_id", $id);
 
         if (isset(request()->search)) {
             $query->where(function ($param) use ($search) {
@@ -1548,7 +1548,7 @@ class AdminController extends Controller
 
         $query = CustomerTasks::query();
 
-        $query->where("product_id", $id);
+        $query->orderBy("id", "desc")->where("product_id", $id);
 
         if (isset(request()->search)) {
             $query->where(function ($param) use ($search) {
@@ -2293,18 +2293,18 @@ class AdminController extends Controller
     }
 
     /**
-     * files
+     * myFiles
      *
      * @return void
      */
-    public function files()
+    public function myFiles()
     {
         $search = request()->search;
         $client = request()->client;
 
         $query = CustomerFiles::query();
 
-        $query->orderBy("id", "desc");
+        $query->orderBy("id", "desc")->where("creator", Auth::user()->id);
 
         if (isset(request()->search)) {
             $query->where('file_name', $search);
@@ -2324,7 +2324,34 @@ class AdminController extends Controller
 
         $customers = User::where("role_id", 0)->get();
 
-        return view("admin.customer_files", compact("files", "search", "client", "customers", "marker", "lastRecord"));
+        return view("admin.my_files", compact("files", "search", "client", "customers", "marker", "lastRecord"));
+    }
+
+    /**
+     * sharedFiles
+     *
+     * @return void
+     */
+    public function sharedFiles()
+    {
+        $search = request()->search;
+        $client = request()->client;
+
+        $query = CustomerFiles::query();
+
+        $query->orderBy("id", "desc")->where("shared_with", Auth::user()->id);
+
+        if (isset(request()->search)) {
+            $query->whereLike('file_name', $search);
+        }
+
+        $lastRecord = $query->count();
+        $marker     = $this->getMarkers($lastRecord, request()->page);
+        $files      = $query->paginate(50);
+
+        $customers = User::where("role_id", 0)->get();
+
+        return view("admin.shared_files", compact("files", "search", "marker", "lastRecord", "customers", "client"));
     }
 
     /**
@@ -2339,7 +2366,6 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'file'      => 'required',
             'file_name' => 'required',
-            'comment'   => 'required',
             'client'    => 'nullable',
         ]);
 

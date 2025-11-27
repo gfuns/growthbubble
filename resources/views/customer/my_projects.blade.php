@@ -101,7 +101,7 @@
                                     @foreach ($customerProjects as $cProj)
                                         <tr>
                                             <td class="align-middle"> {{ $loop->index + 1 }}</td>
-                                            <td class="align-middle"> {{ $cProj->project_title }} </td>
+                                            <td class="align-middle"> {{ Str::limit($cProj->project_title, 50) }} </td>
                                             <td class="align-middle"> {{ $cProj->tasks->count() }} Task(s)</td>
                                             <td class="align-middle">
                                                 {{ date_format($cProj->created_at, 'jS M, Y g:ia') }} </td>

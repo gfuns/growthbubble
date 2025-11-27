@@ -52,9 +52,9 @@ class CustomerController extends Controller
             "totalTasks"     => CustomerTasks::where("user_id", Auth::user()->id)->count(),
         ];
 
-        $tasks      = CustomerTasks::where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->get();
-        $projects   = Project::where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->get();
-        $activities = PlatformActivities::orderBy("id", "desc")->where("owner_id", Auth::user()->id)->get();
+        $tasks      = CustomerTasks::orderBy("id", "desc")->where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->limit(10)->get();
+        $projects   = Project::orderBy("id", "desc")->where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->limit(10)->get();
+        $activities = PlatformActivities::orderBy("id", "desc")->where("owner_id", Auth::user()->id)->limit(15)->get();
         return view("customer.dashboard", compact("params", "projects", "tasks", "activities"));
     }
 
@@ -324,7 +324,8 @@ class CustomerController extends Controller
 
         $query = Project::query();
 
-        $query->where("user_id", Auth::user()->id);
+        $query->orderBy("id", "desc")->where("user_id", Auth::user()->id);
+
         $query->where("product_id", $id);
 
         if (isset(request()->search)) {
@@ -481,7 +482,7 @@ class CustomerController extends Controller
 
         $query = CustomerTasks::query();
 
-        $query->where("product_id", $id);
+        $query->orderBy("id", "desc")->where("product_id", $id);
 
         $query->where("user_id", Auth::user()->id);
 
@@ -1002,7 +1003,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'file'      => 'required',
             'file_name' => 'required',
-            'comment'   => 'required',
+            'comment'   => 'nullable',
             'client'    => 'nullable',
         ]);
 

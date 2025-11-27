@@ -47,6 +47,8 @@ Route::post('/initiatePasswordReset', [OnboardingController::class, 'initiatePas
 
 Route::get('/reset/password/{token}', [OnboardingController::class, 'verifyPasswordReset'])->name("verifyPasswordReset");
 
+Route::post('/resetPassword', [OnboardingController::class, 'resetPassword'])->name("resetPassword");
+
 Route::group([
     'prefix'     => 'portal/admin',
     'middleware' => ['webauthenticated', 'g2fa', 'fpu'],
@@ -189,7 +191,9 @@ Route::group([
 
     Route::get('/export-payments', [AdminController::class, 'downloadInvoice'])->name('admin.downloadInvoice');
 
-    Route::get('/files', [AdminController::class, 'files'])->name('admin.files');
+    Route::get('/my-files', [AdminController::class, 'myFiles'])->name('admin.myFiles');
+
+    Route::get('/shared-files', [AdminController::class, 'sharedFiles'])->name('admin.sharedFiles');
 
     Route::post('/storeFile', [AdminController::class, 'storeFile'])->name('admin.storeFile');
 

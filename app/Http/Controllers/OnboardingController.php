@@ -628,38 +628,29 @@ class OnboardingController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'password' => 'required',
+            'email'    => 'required',
+            'password' => 'required|confirmed',
         ]);
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             $errors = implode("<br>", $errors);
-            toast($errors, 'error');
-            return back();
+            return back()->with(['error' => $errors]);
         }
 
-        $user = Auth::user();
-
-        if (! Hash::check($request->current_password, $user->password)) {
-            toast('Invalid current password provided.', 'error');
-            return back();
+        if ($request->password != $request->password_confirmation) {
+            return back()->with(['error' => "Your newly seleted passwords do not match."]);
         } else {
-            if ($request->new_password != $request->new_password_confirmation) {
-                toast('Your newly seleted passwords do not match.', 'error');
-                return back();
+            $user           = User::where("email", $request->email)->first();
+            $user->password = Hash::make($request->password);
+            $user->token    = null;
+            if ($user->save()) {
+                return redirect()->route("login")->with(['success' => "Password was reset successfully"]);
             } else {
-                $user->password = Hash::make($request->new_password);
-                $user->save();
+                return back()->with(['error' => "Something went wrong. Request could not be processed."]);
             }
         }
 
-        $user = User::where("token", $token)->first();
-        if (! $user) {
-            Session::put("passwordResetFailed", "We could not verify the token for this request.");
-            return view("auth.passwords.email", compact("user"));
-        }
-
-        return view("auth.passwords.reset", compact("user"));
     }
 
 }
