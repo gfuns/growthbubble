@@ -84,7 +84,7 @@
                                 @csrf
                                 <!-- Username -->
                                 <div class="mb-3">
-                                    <label>New Password</label>
+                                    <label class="form-label">New Password</label>
                                     <input type="password" id="password" name="password" class="form-control"
                                         placeholder="Enter your new password"
                                         value="{{ old('email') }}" required>
@@ -92,7 +92,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label>Password Confirmation</label>
+                                    <label class="form-label">Password Confirmation</label>
                                     <input type="password" id="password_cofirmation" name="password_cofirmation" class="form-control"
                                         placeholder="Re-enter your new password"
                                         value="{{ old('email') }}" required>

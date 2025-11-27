@@ -617,4 +617,49 @@ class OnboardingController extends Controller
         return view("auth.passwords.reset", compact("user"));
     }
 
+    /**
+     * resetPassword
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function resetPassword(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $user = Auth::user();
+
+        if (! Hash::check($request->current_password, $user->password)) {
+            toast('Invalid current password provided.', 'error');
+            return back();
+        } else {
+            if ($request->new_password != $request->new_password_confirmation) {
+                toast('Your newly seleted passwords do not match.', 'error');
+                return back();
+            } else {
+                $user->password = Hash::make($request->new_password);
+                $user->save();
+            }
+        }
+
+        $user = User::where("token", $token)->first();
+        if (! $user) {
+            Session::put("passwordResetFailed", "We could not verify the token for this request.");
+            return view("auth.passwords.email", compact("user"));
+        }
+
+        return view("auth.passwords.reset", compact("user"));
+    }
+
 }

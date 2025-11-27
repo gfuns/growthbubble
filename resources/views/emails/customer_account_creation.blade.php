@@ -59,7 +59,7 @@
             <img src="{{ $message->embed(public_path('images/logo.png')) }}" alt="BPP Logo">
         </div>
         <h1>Account Creation</h1>
-        <p>Dear {{ $user->other_names }}</p>
+        <p>Dear {{ $user->other_names }},</p>
         <p>A customer account has been created for you on the {{ env('APP_NAME') }} Application.</p>
         <p>You can access the portal using the URL: {{ env('APP_URL') }}</p>
         <p>Your temporary password is: <b>{{ $password }}</b></p>

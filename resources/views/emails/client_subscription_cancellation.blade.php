@@ -104,7 +104,7 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi Admin</p>
+        <p>Hi Admin,</p>
 
         <p>{{$customer->other_names}} has cancelled their subscription.</p>
 

@@ -104,7 +104,7 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi Admin</p>
+        <p>Hi Admin,</p>
 
         <p>A payment attempt for {{ $customer->other_names }} has failed.</p>
 

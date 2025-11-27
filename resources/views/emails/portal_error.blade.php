@@ -104,7 +104,7 @@
                 alt="{{ env('APP_NAME') }} Logo">
         </div>
 
-        <p>Hi Admin</p>
+        <p>Hi Admin,</p>
 
         <p>An error occurred in the Growth Bubbles Concierge portal.</p>
 
