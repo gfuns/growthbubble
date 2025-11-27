@@ -171,7 +171,9 @@
                     </div>
                     <div class="mb-3">
                         <div>
-                            <strong><span style="font-size:17px; color:black; font-weight:bold"><u>Plan Summary: {{ $subscription->product->product }}  {{ $subscription->plan->plan }}</u></span></strong>
+                            <strong><span style="font-size:17px; color:black; font-weight:bold"><u>Plan Summary:
+                                        {{ $subscription->product->product }}
+                                        {{ $subscription->plan->plan }}</u></span></strong>
                         </div>
                     </div>
 
@@ -278,15 +280,18 @@
         const form = document.getElementById('payment-form');
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-            document.getElementById('submit-btn').disabled = true;
+
 
             let country = document.getElementById("country").value;
             let address = document.getElementById("address").value;
+            let terms = document.getElementById("agree").checked;
 
-            console.log("Country:", country);
-            console.log("Address:", address);
+            // Validate fields before doing anything else
+            if (country === "" || address === "" || !terms) {
+                return;
+            }
 
-
+            document.getElementById('submit-btn').disabled = true;
 
             const {
                 error,
