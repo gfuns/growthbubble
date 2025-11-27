@@ -413,6 +413,8 @@
                 e.preventDefault();
                 $("#priorityModal").modal("show");
             }
+
+            allowCheck = false;
         });
 
         $("#acceptPriority").on("click", function() {
@@ -421,7 +423,7 @@
             $("#priorityModal").modal("hide"); // close modal
 
             // reset allowCheck after a small delay (optional)
-            setTimeout(() => allowCheck = false, 300);
+            // setTimeout(() => allowCheck = false, 300);
         });
     });
 

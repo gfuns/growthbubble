@@ -389,7 +389,8 @@
             </div>
             <div class="modal-body">
                 <p>
-                    By upgrading, your task will be marked as priority and processed faster and your default card on file will be charged &pound;{{ number_format(39, 2) }}
+                    By upgrading, your task will be marked as priority and processed faster and your default card on
+                    file will be charged &pound;{{ number_format(39, 2) }}
                 </p>
             </div>
 
@@ -436,11 +437,12 @@
         let allowCheck = false;
 
         $("#regularTimeline").on("click", function(e) {
-            // If the click is not allowed yet, prevent checking
             if (!allowCheck) {
                 e.preventDefault();
                 $("#priorityModal").modal("show");
             }
+
+             allowCheck = false;
         });
 
         $("#acceptPriority").on("click", function() {
@@ -449,9 +451,16 @@
             $("#priorityModal").modal("hide"); // close modal
 
             // reset allowCheck after a small delay (optional)
-            setTimeout(() => allowCheck = false, 300);
+            // setTimeout(() => allowCheck = false, 300);
         });
+
+        // $("#declinePriority").on("click", function() {
+        //     let allowCheck = false;
+        //     $("#priorityUpgrade").prop("checked", false);
+        //     $("#priorityModal").modal("hide");
+        // });
     });
+
 
 
     var quill = new Quill('#editor', {

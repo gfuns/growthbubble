@@ -62,7 +62,7 @@
                                 </div>
 
                                 <div class="row mb-2">
-                                   <div class="mb-3 col-md-7">
+                                    <div class="mb-3 col-md-7">
                                         <label class="form-label d-block">Priority:</label>
                                         <span class="text-dark">{{ ucwords($task->priority) }}</span>
                                     </div>
@@ -77,13 +77,13 @@
                                 <div class="row mb-2">
                                     <div class="mb-3 col-md-7">
                                         <label class="form-label d-block">Website</label>
-                                        <span class="text-dark">{{$task->website }}</span>
+                                        <span class="text-dark">{{ $task->website }}</span>
                                     </div>
 
                                     <div class="mb-3 col-md-5">
                                         <label class="form-label d-block">Date Created:</label>
                                         <span
-                                            class="text-dark">{{ date_format(new $task->created_at, 'jS F, Y') }}</span>
+                                            class="text-dark">{{ date_format(new $task->created_at(), 'jS F, Y') }}</span>
                                     </div>
 
                                 </div>
@@ -224,7 +224,7 @@
                             <div class="mb-2">
                                 This task is yet to have any conversation.
                             </div>
-                             <div class="col-12 mb-4">
+                            <div class="col-12 mb-4">
                                 <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
                                     data-bs-target="#viewConversations">Start A Conversation</button>
 
@@ -518,9 +518,73 @@
 
                     </div>
 
+                    <div class="modal-footer">
+                        <div class="col-12 mb-4">
+                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                data-bs-target="#addComment" data-priority="{{ $task->priority }}"
+                                data-status="{{ $task->status }}">Add Comment</button>
+
+                        </div>
+                    </div>
+
                     {{-- <div class="modal-footer">
             <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
             </div> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="addComment" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                        Add Comment and Provide Insight On Your Task.
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form class="needs-validation" novalidate method="post"
+                        action="{{ route('customer.updateTask') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <!-- form group -->
+
+                            <div class="mb-3 col-12">
+                                <label class="form-label">Comment </label>
+                                <div id="editor" style="height: 250px">
+                                    <p>&nbsp;</p>
+                                </div>
+                                <input type="hidden" name="comment" id="hiddenContent">
+
+                                <div class="invalid-feedback">Please select team member.</div>
+                            </div>
+
+                            <div class="mb-3 col-md-12">
+                                <!-- Title -->
+                                <label class="form-label">Attach Files</label>
+                                <input type="file" name="attached_files" id=""
+                                    class="form-control text-dark" placeholder="Attached Files">
+                                <div class="invalid-feedback">Please provide a response.</div>
+                            </div>
+
+                            <input type="hidden" name="task_id" value="{{ $task->id }}"
+                                class="form-control text-dark" required>
+
+                            <div class="col-md-12 border-bottom"></div>
+                            <!-- button -->
+                            <div class="col-12 mt-4">
+                                <button id="submitbutton2" class="btn btn-success" type="submit">Submit Task
+                                    Update</button>
+                                <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
+                                    aria-label="Close">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>

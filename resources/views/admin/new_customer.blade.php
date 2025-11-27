@@ -45,11 +45,11 @@
                             <div class="row">
                                 <!-- form group -->
                                 <div class="mb-3 col-md-6 col-12">
-                                    <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="last_name" value="{{ old('last_name') }}"
-                                        class="form-control @error('last_name') is-invalid @enderror"
-                                        placeholder="Enter Last Name" required>
-                                    @error('last_name')
+                                    <label class="form-label">First Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="first_name" value="{{ old('first_name') }}"
+                                        class="form-control @error('first_name') is-invalid @enderror"
+                                        placeholder="Enter First Name" required>
+                                    @error('first_name')
                                         <span class="" role="alert">
                                             <strong style="color: #b02a37; font-size:12px">{{ $message }}</strong>
                                         </span>
@@ -57,11 +57,11 @@
                                 </div>
 
                                 <div class="mb-3 col-md-6 col-12">
-                                    <label class="form-label">First Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="first_name" value="{{ old('first_name') }}"
-                                        class="form-control @error('first_name') is-invalid @enderror"
-                                        placeholder="Enter First Name" required>
-                                    @error('first_name')
+                                    <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="last_name" value="{{ old('last_name') }}"
+                                        class="form-control @error('last_name') is-invalid @enderror"
+                                        placeholder="Enter Last Name" required>
+                                    @error('last_name')
                                         <span class="" role="alert">
                                             <strong style="color: #b02a37; font-size:12px">{{ $message }}</strong>
                                         </span>

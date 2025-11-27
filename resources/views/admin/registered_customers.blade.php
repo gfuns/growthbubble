@@ -20,7 +20,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                             </li>
-                             <li class="breadcrumb-item">
+                            <li class="breadcrumb-item">
                                 <a href="#">CRM</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -120,9 +120,10 @@
                                     @foreach ($customers as $cust)
                                         <tr style="cursor: pointer" data-bs-toggle="modal"
                                             data-bs-target="#viewCustomer" data-myid="{{ $cust->id }}"
-                                            data-representative="{{ $cust->other_names.' '.$cust->last_name }}"
-                                           data-email="{{ $cust->email }}"
-                                            data-phone="{{ $cust->phone_number }}"
+                                            data-representative="{{ $cust->other_names . ' ' . $cust->last_name }}"
+                                            data-lastname="{{ $cust->last_name }}"
+                                            data-othernames="{{ $cust->other_names }}"
+                                            data-email="{{ $cust->email }}" data-phone="{{ $cust->phone_number }}"
                                             data-client="{{ $cust->organization }}"
                                             data-photo="{{ $cust->profile_photo ?? asset('assets/images/avatar/avatar.webp') }}"
                                             data-product="{{ $cust->selectedProduct() }}"
@@ -318,9 +319,10 @@
                 @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
                     <div class="row mt-4">
                         <div class="col-3">
-                            <button id="editDetailsBtn" class="btn btn-primary btn-sm w-100" data-bs-toggle="offcanvas"
-                                data-bs-target="#editCustomer"><i class="fe fe-edit dropdown-item-icon"
-                                    style="color:white; font-weight: bold"></i> Edit Details</button>
+                            <button id="editDetailsBtn" class="btn btn-primary btn-sm w-100"
+                                data-bs-toggle="offcanvas" data-bs-target="#editCustomer"><i
+                                    class="fe fe-edit dropdown-item-icon" style="color:white; font-weight: bold"></i>
+                                Edit Details</button>
                         </div>
 
 
@@ -332,7 +334,8 @@
                         <div class="col-3">
                             <a id="suspendLink" href="#"
                                 onclick="return confirm('Are you sure you want to suspend this customer?');">
-                                <button class="btn btn-primary btn-sm w-100"><i class="fe fe-x-circle dropdown-item-icon"
+                                <button class="btn btn-primary btn-sm w-100"><i
+                                        class="fe fe-x-circle dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Suspend Account</button>
                             </a>
                         </div>
@@ -471,17 +474,17 @@
                     <div class="row">
                         <!-- form group -->
                         <div class="mb-3 col-12">
-                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                            <input id="lastname" type="text" name="last_name" class="form-control"
-                                placeholder="Enter Last Name" required>
-                            <div class="invalid-feedback">Please provide last name.</div>
-                        </div>
-
-                        <div class="mb-3 col-12">
                             <label class="form-label">First Name <span class="text-danger">*</span></label>
                             <input id="othernames" type="text" name="first_name" class="form-control"
                                 placeholder="Enter First Name" required>
                             <div class="invalid-feedback">Please provide first name.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input id="lastname" type="text" name="last_name" class="form-control"
+                                placeholder="Enter Last Name" required>
+                            <div class="invalid-feedback">Please provide last name.</div>
                         </div>
 
                         <div class="mb-3 col-12">

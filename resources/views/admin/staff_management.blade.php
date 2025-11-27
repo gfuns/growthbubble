@@ -213,17 +213,17 @@
                     <div class="row">
                         <!-- form group -->
                         <div class="mb-3 col-12">
-                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                            <input type="text" name="last_name" class="form-control"
-                                placeholder="Enter Last Name" required>
-                            <div class="invalid-feedback">Please provide last name.</div>
-                        </div>
-
-                        <div class="mb-3 col-12">
                             <label class="form-label">First Name <span class="text-danger">*</span></label>
                             <input type="text" name="first_name" class="form-control"
                                 placeholder="Enter First Name" required>
                             <div class="invalid-feedback">Please provide first name.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" name="last_name" class="form-control"
+                                placeholder="Enter Last Name" required>
+                            <div class="invalid-feedback">Please provide last name.</div>
                         </div>
 
                         <div class="mb-3 col-12">
@@ -286,17 +286,17 @@
                     <div class="row">
                         <!-- form group -->
                         <div class="mb-3 col-12">
-                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                            <input id="lastname" type="text" name="last_name" class="form-control"
-                                placeholder="Enter Last Name" required>
-                            <div class="invalid-feedback">Please provide last name.</div>
-                        </div>
-
-                        <div class="mb-3 col-12">
                             <label class="form-label">First Name <span class="text-danger">*</span></label>
                             <input id="othernames" type="text" name="first_name" class="form-control"
                                 placeholder="Enter First Name" required>
                             <div class="invalid-feedback">Please provide first name.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input id="lastname" type="text" name="last_name" class="form-control"
+                                placeholder="Enter Last Name" required>
+                            <div class="invalid-feedback">Please provide last name.</div>
                         </div>
 
                         <div class="mb-3 col-12">
