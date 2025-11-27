@@ -33,7 +33,7 @@
     <div class="py-6">
         <!-- row -->
         <div class="row">
-            @if (Auth::user()->profile_updated == 0)
+            {{-- @if (Auth::user()->profile_updated == 0) --}}
                 <div class="offset-xl-2 col-xl-8 col-md-12 col-12">
                     <div class="alert alert-danger">Please Update Your Profile Information.</div>
 
@@ -129,7 +129,7 @@
 
                     </div>
                 </div>
-            @else
+            {{-- @else
                 <div class="offset-xl-1 col-xl-10 col-md-12 col-12">
                     <div class="card">
                         <!-- card body -->
@@ -172,7 +172,7 @@
 
                     </div>
                 </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 </section>

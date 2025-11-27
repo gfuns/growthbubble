@@ -470,10 +470,8 @@ class AdminController extends Controller
         if ($user->save()) {
             try {
                 Mail::to($user)->send(new AccountCreationMail($user, $password));
-                dd("Email sent to staff successfully");
             } catch (\Exception $e) {
                 report($e);
-                dd("Email not sent to staff successfully");
             }
             toast('Staff Information Stored Successfully.', 'success');
             return back();
