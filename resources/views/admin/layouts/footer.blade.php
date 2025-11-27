@@ -346,6 +346,10 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var myid = button.data('myid') // Extract info from data-* attributes
             var category = button.data('category') // Extract info from data-* attributes
+            var icon = button.data('icon') // Extract info from data-* attributes
+            var bgcolor = button.data('bgcolor') // Extract info from data-* attributes
+            var bordercolor = button.data('bordercolor') // Extract info from data-* attributes
+            var textcolor = button.data('textcolor') // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
@@ -353,6 +357,10 @@
             // modal.find('.modal-body #myid').val(myid)
             offcanvas.find('.offcanvas-body #myid').val(myid)
             offcanvas.find('.offcanvas-body #category').val(category)
+            offcanvas.find('.offcanvas-body #icon').val(icon)
+            offcanvas.find('.offcanvas-body #bgColor').val(bgcolor)
+            offcanvas.find('.offcanvas-body #borderColor').val(bordercolor)
+            offcanvas.find('.offcanvas-body #textColor').val(textcolor)
         })
 
 

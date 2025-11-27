@@ -15,6 +15,9 @@ return new class extends Migration
             $table->increments("id");
             $table->integer("product_id")->unsigned();
             $table->string('category');
+            $table->string('icon');
+            $table->string('bg_color');
+            $table->string('text_color');
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });

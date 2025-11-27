@@ -212,68 +212,17 @@
 
                         <div class="mb-5 col-md-12">
                             <div class="task-tags">
-
-                                <label class="tag-item design">
-                                    <input type="radio" name="fake_category" class="form-check-input">
-                                    <span class="tag-icon">🎨</span>
-                                    <span class="tag-text">Design</span>
-                                </label>
-
-                                <label class="tag-item web">
-                                    <input type="radio" name="fake_category" class="form-check-input">
-                                    <span class="tag-icon">🌐</span>
-                                    <span class="tag-text">Web</span>
-                                </label>
-
-                                <label class="tag-item automation">
-                                    <input type="radio" name="fake_category" class="form-check-input">
-                                    <span class="tag-icon">⚙️</span>
-                                    <span class="tag-text">Automation</span>
-                                </label>
-
-                                <label class="tag-item video">
-                                    <input type="radio" name="fake_category" class="form-check-input">
-                                    <span class="tag-icon">📹</span>
-                                    <span class="tag-text">Video</span>
-                                </label>
-
-                                <label class="tag-item copywriting">
-                                    <input type="radio" name="fake_category" class="form-check-input">
-                                    <span class="tag-icon">✍️</span>
-                                    <span class="tag-text">Copywriting</span>
-                                    <span class="beta">Beta</span>
-                                </label>
-
-                                <label class="tag-item security">
-                                    <input type="radio" name="fake_category" class="form-check-input">
-                                    <span class="tag-icon">🛑</span>
-                                    <span class="tag-text">Security</span>
-                                </label>
-
-                                <label class="tag-item unsure">
-                                    <input type="radio" name="fake_category" class="form-check-input">
-                                    <span class="tag-icon">❓</span>
-                                    <span class="tag-text">Unsure</span>
-                                </label>
-
-                            </div>
-                        </div>
-
-                        <div class="mb-3 col-md-12">
-                            <!-- Title -->
-                            <label class="form-label d-block">What Type of Task is this? <span
-                                    class="text-danger">*</span></label>
-                            <div class="d-inline-flex">
                                 @foreach ($taskCategories as $taskCat)
-                                    <div class="form-check me-3">
-                                        <input type="radio" id="category{{ $taskCat->id }}" name="task_category"
-                                            class="form-check-input" value="{{ $taskCat->id }}" />
-                                        <label class="form-check-label"
-                                            for="category{{ $taskCat->id }}">{{ $taskCat->category }}</label>
-                                    </div>
+                                    <label class="tag-item" style="background: {{ $taskCat->bg_color }}; border-color: {{ $taskCat->border_color }}">
+                                        <input type="radio" id="category{{ $taskCat->id }}" name="task_category" class="form-check-input" value="{{ $taskCat->id }}">
+                                        <span class="tag-icon"><i class="bi bi-{{ $taskCat->icon }}"
+                                                style="color:{{ $taskCat->text_color }}"></i></span>
+                                        <span class="tag-text"
+                                            style="color: {{ $taskCat->text_color }}">{{ $taskCat->category }}</span>
+                                    </label>
                                 @endforeach
+
                             </div>
-                            <div class="invalid-feedback">Please provide a response.</div>
                         </div>
 
                         <div class="mb-3 col-md-12">
@@ -442,7 +391,7 @@
                 $("#priorityModal").modal("show");
             }
 
-             allowCheck = false;
+            allowCheck = false;
         });
 
         $("#acceptPriority").on("click", function() {

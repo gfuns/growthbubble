@@ -1319,8 +1319,12 @@ class AdminController extends Controller
     public function storeTaskCategory(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category'   => 'required',
-            'product_id' => 'required',
+            'category'     => 'required',
+            'icon'         => 'required',
+            'bg_color'     => 'required',
+            'border_color' => 'required',
+            'text_color'   => 'required',
+            'product_id'   => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -1330,9 +1334,13 @@ class AdminController extends Controller
             return back();
         }
 
-        $category             = new TaskCategory;
-        $category->product_id = $request->product_id;
-        $category->category   = $request->category;
+        $category               = new TaskCategory;
+        $category->product_id   = $request->product_id;
+        $category->category     = $request->category;
+        $category->icon         = $request->icon;
+        $category->bg_color     = $request->bg_color;
+        $category->border_color = $request->border_color;
+        $category->text_color   = $request->text_color;
         if ($category->save()) {
             toast('Task Category Created Successfully.', 'success');
             return back();
@@ -1353,8 +1361,12 @@ class AdminController extends Controller
     public function updateTaskCategory(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category_id' => 'required',
-            'category'    => 'required',
+            'category_id'  => 'required',
+            'category'     => 'required',
+            'icon'         => 'required',
+            'bg_color'     => 'required',
+            'border_color' => 'required',
+            'text_color'   => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -1364,8 +1376,12 @@ class AdminController extends Controller
             return back();
         }
 
-        $category           = TaskCategory::find($request->category_id);
-        $category->category = $request->category;
+        $category               = TaskCategory::find($request->category_id);
+        $category->category     = $request->category;
+        $category->icon         = $request->icon;
+        $category->bg_color     = $request->bg_color;
+        $category->border_color = $request->border_color;
+        $category->text_color   = $request->text_color;
         if ($category->save()) {
             toast('Task Category Updated Successfully.', 'success');
             return back();

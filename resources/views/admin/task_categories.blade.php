@@ -54,7 +54,11 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th width="5%">#</th>
-                                            <th width="85%">Task Category</th>
+                                            <th width="">Task Category</th>
+                                            <th width="">Icon</th>
+                                            <th width="15%">Background Color</th>
+                                            <th width="15%">Border Color</th>
+                                            <th width="15%">Text Color</th>
                                             @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 1) == true)
                                                 <th width="10%"><i class="nav-icon bi bi-three-dots me-2"></i></th>
                                             @endif
@@ -66,6 +70,18 @@
                                             <tr>
                                                 <td style="vertical-align: top !important">{{ $loop->index + 1 }}</td>
                                                 <td style="vertical-align: top !important">{{ $cat->category }}
+                                                </td>
+                                                <td style="vertical-align: top !important"><i
+                                                        class="bi bi-{{ $cat->icon }}" style="font-size:20px"></i>
+                                                </td>
+                                                <td style="vertical-align: top !important">
+                                                    <div style="background: {{ $cat->bg_color }}">&nbsp;</div>
+                                                </td>
+                                                <td style="vertical-align: top !important">
+                                                    <div style="background: {{ $cat->border_color }}">&nbsp;</div>
+                                                </td>
+                                                <td style="vertical-align: top !important">
+                                                    <div style="background: {{ $cat->text_color }}">&nbsp;</div>
                                                 </td>
                                                 @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 1) == true)
                                                     <td class="align-middle">
@@ -82,7 +98,11 @@
                                                                         data-bs-toggle="offcanvas"
                                                                         data-bs-target="#editTaskCategory"
                                                                         data-myid="{{ $cat->id }}"
-                                                                        data-category="{{ $cat->category }}"><i
+                                                                        data-category="{{ $cat->category }}"
+                                                                        data-icon="{{ $cat->icon }}"
+                                                                        data-bgcolor="{{ $cat->bg_color }}"
+                                                                        data-bordercolor="{{ $cat->border_color }}"
+                                                                        data-textcolor="{{ $cat->text_color }}"><i
                                                                             class="fe fe-edit dropdown-item-icon"></i>Update
                                                                         Details</a>
 
@@ -133,8 +153,8 @@
             <!-- card body -->
             <div class="container">
                 <!-- form -->
-                <form class="needs-validation" novalidate method="post" action="{{ route('admin.storeTaskCategory') }}"
-                    enctype="multipart/form-data">
+                <form class="needs-validation" novalidate method="post"
+                    action="{{ route('admin.storeTaskCategory') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <!-- form group -->
@@ -144,6 +164,36 @@
                             <input type="text" name="category" class="form-control" placeholder="Enter Task Category"
                                 required>
                             <div class="invalid-feedback">Please provide category.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Icon <span class="text-danger">*</span> <a
+                                    href="https://icons.getbootstrap.com/?q=up" target="_blank"
+                                    class="ms-4"><small>View Bootstrap Icons</small></a></label>
+                            <input type="text" name="icon" class="form-control" placeholder="Enter Icon"
+                                required>
+                            <div class="invalid-feedback">Please provide icon.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Background Color <span class="text-danger">*</span></label>
+                            <input type="color" name="bg_color" class="form-control"
+                                placeholder="Enter Background Color" required>
+                            <div class="invalid-feedback">Please provide background color.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Border Color <span class="text-danger">*</span></label>
+                            <input type="color" name="border_color" class="form-control"
+                                placeholder="Enter Border Color" required>
+                            <div class="invalid-feedback">Please provide border color.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Text Color <span class="text-danger">*</span></label>
+                            <input type="color" name="text_color" class="form-control"
+                                placeholder="Enter Background Color" required>
+                            <div class="invalid-feedback">Please provide text color.</div>
                         </div>
 
                         <input id="myid" type="hidden" name="product_id" value="{{ $product->id }}"
@@ -184,6 +234,34 @@
                             <input id="category" type="text" name="category" class="form-control"
                                 placeholder="Enter Task Category" required>
                             <div class="invalid-feedback">Please provide task category.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Icon <span class="text-danger">*</span></label>
+                            <input id="icon" type="text" name="icon" class="form-control"
+                                placeholder="Enter Task Category" required>
+                            <div class="invalid-feedback">Please provide task category.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Background Color <span class="text-danger">*</span></label>
+                            <input id="bgColor" type="color" name="bg_color" class="form-control"
+                                placeholder="Enter Background Color" required>
+                            <div class="invalid-feedback">Please provide background color.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Border Color <span class="text-danger">*</span></label>
+                            <input id="borderColor" type="color" name="border_color" class="form-control"
+                                placeholder="Enter Border Color" required>
+                            <div class="invalid-feedback">Please provide border color.</div>
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label class="form-label">Text Color <span class="text-danger">*</span></label>
+                            <input id="textColor" type="color" name="text_color" class="form-control"
+                                placeholder="Enter Task Category" required>
+                            <div class="invalid-feedback">Please provide text color.</div>
                         </div>
 
                         <input id="myid" type="hidden" name="category_id" class="form-control" required>

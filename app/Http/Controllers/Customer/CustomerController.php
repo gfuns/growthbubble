@@ -1265,8 +1265,8 @@ class CustomerController extends Controller
             return back();
         }
 
-        $subscription                      = CustomerSubscription::find($request->subscription_id);
-        $subscription->status              = "terminated";
+        $subscription = CustomerSubscription::find($request->subscription_id);
+        // $subscription->status              = "terminated";
         $subscription->cancellation_reason = $request->reason;
         if ($subscription->save()) {
 
