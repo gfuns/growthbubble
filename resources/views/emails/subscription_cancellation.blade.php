@@ -106,7 +106,7 @@
 
         <p>Hi {{ $user->other_names }},</p>
 
-        <p>We’ve processed your request to cancel your Growth Bubbles Concierge subscription.</p>
+        <p>We’ve processed your request to cancel your Growth Bubbles {{$sub->product->product}} subscription.</p>
 
         <p>Your plan will remain active until {{ date_format(new DateTime($sub->expiry_date), 'jS M, Y') }}. After that date, your account will be paused.</p>
 

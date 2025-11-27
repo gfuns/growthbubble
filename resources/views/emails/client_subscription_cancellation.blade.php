@@ -125,18 +125,6 @@
             </tbody>
         </table>
 
-
-        <p>Your plan will remain active until {{ date_format(new DateTime($sub->expiry_date), 'jS M, Y') }}. After that date, your account will be paused.</p>
-
-        <p>We’d love to hear your feedback — it helps us improve.</p>
-
-        <div class="code">
-            <a href="{{ route('admin.customers') }}">
-                <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">View Client Profile</button>
-            </a>
-        </div>
-
         <div class="">
             <p>— Growth Bubbles System</p>
         </div>

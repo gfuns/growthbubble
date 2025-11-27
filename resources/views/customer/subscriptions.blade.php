@@ -20,7 +20,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
-                             <li class="breadcrumb-item">
+                            <li class="breadcrumb-item">
                                 <a href="#">Account</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -59,6 +59,7 @@
                                         <th scope="col">Amount</th>
                                         <th scope="col">Date Paid</th>
                                         <th scope="col">Expiry Date</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -74,7 +75,37 @@
                                             <td class="align-middle">
                                                 {{ date_format(new DateTime($sub->expiry_date), 'jS F, Y') }} </td>
                                             <td>
-                                                <a href="{{ route("customer.subscriptionReceipt", [$sub->id]) }}"> <span class="badge text-primary bg-light-primary">Download Receipt</span></a>
+                                                @if ($sub->status == 'active')
+                                                    <span
+                                                        class="badge text-success bg-light-success">{{ ucwords($sub->status) }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge text-danger bg-light-danger">{{ ucwords($sub->status) }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="hstack gap-4">
+                                                    <span class="dropdown dropstart">
+                                                        <a class="btn btn-primary bg-light-primary text-primary btn-sm"
+                                                            href="#" role="button" data-bs-toggle="dropdown"
+                                                            data-bs-offset="-20,20" aria-expanded="false">
+                                                            Action</a>
+
+                                                        <span class="dropdown-menu"><span
+                                                                class="dropdown-header">Action</span>
+                                                            <a href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#cancelSubscription"
+                                                                data-myid="{{ $sub->id }}" class="dropdown-item">
+                                                                <i class="bi bi-x-square dropdown-item-icon"></i>Cancel
+                                                                Subscription</a>
+                                                            <a href="#" class="dropdown-item">
+                                                                <i
+                                                                    class="bi bi-arrow-up-right-circle dropdown-item-icon"></i>Upgrade
+                                                                Plan</a>
+
+                                                        </span>
+                                                    </span>
+                                                </div>
                                             </td>
 
                                         </tr>
@@ -102,7 +133,38 @@
     </div>
 </section>
 
+<div class="modal fade" id="cancelSubscription" tabindex="-1" role="dialog" aria-labelledby="newCatgoryLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title mb-0" id="newCatgoryLabel">
+                    Subscription Cancellation
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
+            <form method="POST" action="{{ route('customer.cancelSubscription') }}">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3 col-md-12">
+                        <!-- Title -->
+                        <label class="form-label">Reason For Cancellation</label>
+                        <textarea rows="10" name="reason" style="resize: none" class="form-control"></textarea>
+                        <div class="invalid-feedback">Please provide a response.</div>
+                    </div>
+
+                    <input type="hidden" id="myid" name="subscription_id" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success ms-2">Cancel Subscription</button>
+                    <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     document.getElementById("navSettings").classList.add('show');

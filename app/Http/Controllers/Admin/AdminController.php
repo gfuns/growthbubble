@@ -2202,6 +2202,8 @@ class AdminController extends Controller
 
         $query = Invoice::query();
 
+        $query->orderBy('id', "desc");
+
         if (isset(request()->search)) {
             $query->where('invoice_number', $search)
                 ->orWhereHas('customer', fn($q) => $q->whereLike(['last_name', 'other_names'], $search));

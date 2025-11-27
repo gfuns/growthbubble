@@ -3,8 +3,10 @@ namespace App\Http\Controllers\Customer;
 
 use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
+use App\Mail\ClientSubscriptionCancellation as ClientSubscriptionCancellation;
 use App\Mail\PriorityPaymentConfirmation as PriorityPaymentConfirmation;
 use App\Mail\RevisionRequest as RevisionRequest;
+use App\Mail\SubscriptionCancellation as SubscriptionCancellation;
 use App\Mail\TaskSubmitted as TaskSubmitted;
 use App\Models\CustomerCards;
 use App\Models\CustomerFiles;
@@ -1154,7 +1156,7 @@ class CustomerController extends Controller
 
         $query = Invoice::query();
 
-        $query->where("user_id", Auth::user()->id);
+        $query->orderBy("id", "desc")->where("user_id", Auth::user()->id);
 
         if (isset(request()->search)) {
             $query->whereLike('invoice_number', $search);
@@ -1240,6 +1242,50 @@ class CustomerController extends Controller
         return $pdf->download($fileName);
 
         return view("customer.receipts.payment", compact("payment"));
+    }
+
+    /**
+     * cancelSubscription
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function cancelSubscription(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'subscription_id' => 'required',
+            'reason'          => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $subscription                      = CustomerSubscription::find($request->subscription_id);
+        $subscription->status              = "terminated";
+        $subscription->cancellation_reason = $request->reason;
+        if ($subscription->save()) {
+
+            try {
+                $admin = env("ADMIN_MAIL");
+                $user  = User::find($subscription->user_id);
+                Mail::to($user)->send(new SubscriptionCancellation($user, $subscription));
+                Mail::to($admin)->send(new ClientSubscriptionCancellation($user, $subscription));
+            } catch (\Throwable $e) {
+                report($e);
+            } finally {
+                toast('Subscription Cancelled Successfully', 'success');
+                return back();
+            }
+
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
     }
 
     /**

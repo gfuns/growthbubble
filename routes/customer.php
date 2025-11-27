@@ -143,4 +143,6 @@ Route::group([
 
     Route::get('/export-payments', [CustomerController::class, 'downloadInvoice'])->name('customer.downloadInvoice');
 
+    Route::post('/cancelSubscription', [CustomerController::class, 'cancelSubscription'])->name('customer.cancelSubscription');
+
 });
