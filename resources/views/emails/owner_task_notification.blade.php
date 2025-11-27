@@ -106,7 +106,7 @@
 
         <p>Hi {{ $user->other_names }},</p>
 
-        <p>A task has been created for you:</p>
+        <p>A task has been created for you by one of our staff {{ $task->creator() }}:</p>
 
         <table>
             <tbody>

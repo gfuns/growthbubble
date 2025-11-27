@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task submission confirmation.</title>
+    <title>Client Task Submitted ✅</title>
     <style>
         /* CSS Styles */
         body {
@@ -106,7 +106,9 @@
 
         <p>Hi {{ $user->other_names }},</p>
 
-        <p>You have created a task for a client:</p>
+        <p>You have successfully created a task on behalf of {{ $task->user->organization }}.</p>
+
+        <p>The client has also been notified.</p>
 
         <table>
             <tbody>
@@ -117,19 +119,19 @@
             </tbody>
         </table>
 
-        <p>Our team has received it and will review the details shortly. You’ll receive another email when we begin
-            work.</p>
+        <p>Our team has received it and will review the details shortly. </p>
 
-        <p>You can check your task status anytime here:</p>
-
+        <p>You can work on or check the task status anytime here:</p>
 
         <div class="code">
-            <a href="{{ route('customer.taskDetails', [$task->id]) }}">
+            <a href="{{ route('admin.taskDetails', [$task->id]) }}">
                 <button class="btn btn-primary btn-md"
                     style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">View
                     Task</button>
             </a>
         </div>
+
+
 
         <div class="">
             <p>— The Growth Bubbles Team</p>

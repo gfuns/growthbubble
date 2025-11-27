@@ -29,7 +29,7 @@ class CreatorTaskConfirmation extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: 'Task submission confirmation.',
+            subject: 'Client Task Submitted ✅',
         );
     }
 
