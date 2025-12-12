@@ -1609,7 +1609,7 @@ class AdminController extends Controller
      */
     public function newCustomerTask($id)
     {
-        $taskCategories = TaskCategory::where("product_id", $id)->get();
+        $taskCategories = TaskCategory::orderByRaw("CASE WHEN category = 'Others' THEN 1 ELSE 0 END")->where("product_id", $id)->get();
         $customers      = User::where("role_id", 0)->get();
         $product        = Product::find($id);
         return view("admin.new_customer_task", compact("taskCategories", "customers", "product"));

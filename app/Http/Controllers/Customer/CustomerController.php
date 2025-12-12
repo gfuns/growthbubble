@@ -521,9 +521,10 @@ class CustomerController extends Controller
      */
     public function newCustomerTask($id)
     {
-        $taskCategories = TaskCategory::where("product_id", $id)->get();
-        $websites       = OnboardingDetails::where("user_id", Auth::user()->id)->whereIn("operation", ["website 1", "website 2", "website 3"])->get();
-        $product        = Product::find($id);
+        $taskCategories = TaskCategory::orderByRaw("CASE WHEN category = 'Others' THEN 1 ELSE 0 END")->where("product_id", $id)->get();
+
+        $websites = OnboardingDetails::where("user_id", Auth::user()->id)->whereIn("operation", ["website 1", "website 2", "website 3"])->get();
+        $product  = Product::find($id);
         return view("customer.new_task", compact("taskCategories", "websites", "product"));
     }
 
