@@ -329,12 +329,14 @@
             var button = $(event.relatedTarget) // Button that triggered the modal
             var title = button.data('title') // Extract info from data-* attributes
             var btnlabel = button.data('btnlabel') // Extract info from data-* attributes
+            var reqrev = button.data('reqrevision') // Extract info from data-* attributes
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
             var modal = $(this)
             document.getElementById("modtitle").innerHTML = title;
             document.getElementById("btnlabel").innerHTML = btnlabel;
+            modal.find('.modal-body #reqrev').val(reqrev)
         })
 
         $('#changeCustomerPlan').on('show.bs.offcanvas', function(event) {

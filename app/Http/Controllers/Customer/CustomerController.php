@@ -7,6 +7,7 @@ use App\Mail\ClientSubscriptionCancellation as ClientSubscriptionCancellation;
 use App\Mail\PaymentConfirmation as PaymentConfirmation;
 use App\Mail\PaymentNotification as PaymentNotification;
 use App\Mail\PriorityPaymentConfirmation as PriorityPaymentConfirmation;
+use App\Mail\RequestRevision as RequestRevision;
 use App\Mail\StaffNewMessage as StaffNewMessage;
 use App\Mail\SubscriptionCancellation as SubscriptionCancellation;
 use App\Mail\TaskSubmitted as TaskSubmitted;
@@ -743,9 +744,10 @@ class CustomerController extends Controller
     public function updateTask(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'task_id'        => 'required',
-            'comment'        => 'required',
-            'attached_files' => 'nullable',
+            'task_id'          => 'required',
+            'comment'          => 'required',
+            'request_revision' => 'required',
+            'attached_files'   => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -758,6 +760,12 @@ class CustomerController extends Controller
             DB::beginTransaction();
 
             $task = CustomerTasks::find($request->task_id);
+
+            if ($request->request_revision == "yes") {
+                $task->status = "review requested";
+                $task->save();
+            }
+
             if ($task->status == "waiting on client") {
                 $task->status = "in progress";
                 $task->save();
@@ -794,7 +802,11 @@ class CustomerController extends Controller
             try {
                 $staff = User::find($task->assigned_to);
                 if (isset($staff)) {
-                    Mail::to($staff)->send(new StaffNewMessage($staff, $task));
+                    if ($request->request_revision == "yes") {
+                        Mail::to($staff)->send(new RequestRevision($staff, $task));
+                    } else {
+                        Mail::to($staff)->send(new StaffNewMessage($staff, $task));
+                    }
                 }
             } catch (\Exception $e) {
                 report($e);

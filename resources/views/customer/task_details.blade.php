@@ -47,7 +47,7 @@
                         <div class="mt-2 d-flex align-items-center">
                             <button class="btn btn-sm btn-primary me-5">Approve Completion</button>
                             <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#updateTask"
-                                data-title="Request Revision For Your Task" data-btnlabel="Request Revision">Request
+                                data-title="Request Revision For Your Task" data-btnlabel="Request Revision" data-reqrevision="yes">Request
                                 Revision</button>
                         </div>
                     </div>
@@ -309,6 +309,9 @@
                         <input type="hidden" name="task_id" value="{{ $task->id }}"
                             class="form-control text-dark" required>
 
+                        <input id="reqrev" type="hidden" name="request_revision" value=""
+                            class="form-control text-dark" required>
+
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->
                         <div class="col-12 mt-4">
@@ -385,7 +388,7 @@
                     <div class="col-12 mb-4">
                         <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
                             data-bs-target="#updateTask" data-title="Add Comment and Provide Insight On Your Task."
-                            data-btnlabel="Add Comment">Add Comment</button>
+                            data-btnlabel="Add Comment" data-reqrevision="no">Add Comment</button>
 
                     </div>
                 </div>
