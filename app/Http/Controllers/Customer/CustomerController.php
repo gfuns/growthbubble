@@ -758,6 +758,10 @@ class CustomerController extends Controller
             DB::beginTransaction();
 
             $task = CustomerTasks::find($request->task_id);
+            if ($task->status == "waiting on client") {
+                $task->status = "in progress";
+                $task->save();
+            }
 
             if (isset($request->comment)) {
                 $activity           = new TaskActivities;
