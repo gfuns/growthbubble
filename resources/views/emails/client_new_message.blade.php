@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your task has been updated</title>
+    <title>New Message</title>
     <style>
         /* CSS Styles */
         body {
@@ -106,23 +106,17 @@
 
         <p>Hi {{ $user->other_names }},</p>
 
-        <p>We’ve made updates to your task{{ $task->title }}.</p>
+        <p>{{ $staff }} just added a new message on the {{ $user->organization }}’s task: {{ $task->title }} thread.</p>
 
        <div class="code">
             <a href="{{ route('customer.taskDetails', [$task->id]) }}">
                 <button class="btn btn-primary btn-md"
-                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">View Updated Task</button>
+                    style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">Check It Out</button>
             </a>
         </div>
 
-         <p>Here’s a quick summary of what’s changed:</p>
-
-         <p>@php echo $summary; @endphp</p>
-
-         <p>Let us know if there’s anything else you’d like us to adjust.</p>
-
-        <div class="">
-            <p>— The Growth Bubbles Team</p>
+         <div class="">
+            <p>— Growth Bubbles</p>
         </div>
 
 

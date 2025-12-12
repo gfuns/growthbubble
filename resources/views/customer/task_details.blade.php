@@ -17,7 +17,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
-                             <li class="breadcrumb-item">
+                            <li class="breadcrumb-item">
                                 <a href="#">{{ $product->product }}</a>
                             </li>
                             <li class="breadcrumb-item">
@@ -34,6 +34,14 @@
         <!-- row -->
         <div class="row">
             <div class="col-md-8 col-12 mb-5">
+                @if ($task->status == 'waiting on client')
+                    <div class="alert alert-primary d-flex justify-content-between align-items-center">
+                        <div>We are waiting for some more information from you to continue working
+                            on this task. Please provide it as soon as possible via the chat conversation.
+                        </div>
+                    </div>
+                @endif
+
                 <div id="scrollContainer">
                     <div id="assessmentInfo">
                         <!-- card -->
@@ -62,7 +70,7 @@
                                 </div>
 
                                 <div class="row mb-2">
-                                   <div class="mb-3 col-md-7">
+                                    <div class="mb-3 col-md-7">
                                         <label class="form-label d-block">Priority:</label>
                                         <span class="text-dark">{{ ucwords($task->priority) }}</span>
                                     </div>
@@ -77,13 +85,13 @@
                                 <div class="row mb-2">
                                     <div class="mb-3 col-md-7">
                                         <label class="form-label d-block">Website</label>
-                                        <span class="text-dark">{{$task->website }}</span>
+                                        <span class="text-dark">{{ $task->website }}</span>
                                     </div>
 
                                     <div class="mb-3 col-md-5">
                                         <label class="form-label d-block">Date Created:</label>
                                         <span
-                                            class="text-dark">{{ date_format(new $task->created_at, 'jS F, Y') }}</span>
+                                            class="text-dark">{{ date_format(new $task->created_at(), 'jS F, Y') }}</span>
                                     </div>
 
                                 </div>
@@ -104,6 +112,9 @@
                                         @elseif ($task->status == 'cancelled')
                                             <span
                                                 class="badge text-danger bg-light-danger">{{ ucwords($task->status) }}</span>
+                                        @else
+                                            <span
+                                                class="badge text-info bg-light-info">{{ ucwords($task->status) }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -157,7 +168,7 @@
                             <div class="mb-2">
                                 This task is yet to have any conversation.
                             </div>
-                             <div class="col-12 mb-4">
+                            <div class="col-12 mb-4">
                                 <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
                                     data-bs-target="#updateTask">Start A Conversation</button>
 
@@ -316,7 +327,6 @@
                 <div class="scrollable-card-body">
 
                     @foreach ($conversations as $chat)
-
                         @if (Auth::user()->id == $chat->user_id)
                             <!-- My message -->
                             <div class="d-flex justify-content-end mb-3">
@@ -328,8 +338,8 @@
                             @if (isset($chat->uploaded_file))
                                 <div class="d-flex justify-content-end mb-3">
                                     <div class="rounded border" style="max-width: 20%;">
-                                        <img src="{{ $chat->uploaded_file }}"
-                                            class="img-fluid rounded" alt="Shared Image">
+                                        <img src="{{ $chat->uploaded_file }}" class="img-fluid rounded"
+                                            alt="Shared Image">
                                     </div>
                                 </div>
                             @endif
@@ -350,8 +360,8 @@
                             @if (isset($chat->uploaded_file))
                                 <div class="d-flex mb-3">
                                     <div class="rounded border" style="margin-left: 45px; max-width: 20%;">
-                                        <img src="{{ $chat->uploaded_file }}"
-                                            class="img-fluid rounded" alt="Shared Image">
+                                        <img src="{{ $chat->uploaded_file }}" class="img-fluid rounded"
+                                            alt="Shared Image">
                                     </div>
                                 </div>
                             @endif

@@ -134,6 +134,9 @@
                                         @elseif ($task->status == 'cancelled')
                                             <span
                                                 class="badge text-danger bg-light-danger">{{ ucwords($task->status) }}</span>
+                                        @else
+                                            <span
+                                                class="badge text-info bg-light-info">{{ ucwords($task->status) }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -481,8 +484,8 @@
                                 @if (isset($chat->uploaded_file))
                                     <div class="d-flex justify-content-end mb-3">
                                         <div class="rounded border" style="max-width: 20%;">
-                                            <img src="{{ $chat->uploaded_file }}"
-                                                class="img-fluid rounded" alt="Shared Image">
+                                            <img src="{{ $chat->uploaded_file }}" class="img-fluid rounded"
+                                                alt="Shared Image">
                                         </div>
                                     </div>
                                 @endif
@@ -503,8 +506,8 @@
                                 @if (isset($chat->uploaded_file))
                                     <div class="d-flex mb-3">
                                         <div class="rounded border" style="margin-left: 45px; max-width: 20%;">
-                                            <img src="{{ $chat->uploaded_file }}"
-                                                class="img-fluid rounded" alt="Shared Image">
+                                            <img src="{{ $chat->uploaded_file }}" class="img-fluid rounded"
+                                                alt="Shared Image">
                                         </div>
                                     </div>
                                 @endif
@@ -579,7 +582,8 @@
                             <div class="col-md-12 border-bottom"></div>
                             <!-- button -->
                             <div class="col-12 mt-4">
-                                <button id="submitbutton2" class="btn btn-success" type="submit">Add Comment</button>
+                                <button id="submitbutton2" class="btn btn-success" type="submit">Add
+                                    Comment</button>
                                 <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
                                     aria-label="Close">Cancel</button>
                             </div>

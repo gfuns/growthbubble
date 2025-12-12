@@ -10,16 +10,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class TaskRevision extends Mailable
+class AwaitingCustomerResponse extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(protected User $user, protected CustomerTasks $task, $summary)
+    public function __construct(protected User $user, protected CustomerTasks $task)
     {
-        $this->summary = $summary;
+        //
     }
 
     /**
@@ -29,7 +29,7 @@ class TaskRevision extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: "Your task has been updated",
+            subject: 'More info needed for your task',
         );
     }
 
@@ -39,11 +39,10 @@ class TaskRevision extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.task_revision',
+            view: 'emails.awaiting_customer_response',
             with: [
-                'user'    => $this->user,
-                'task'    => $this->task,
-                'summary' => $this->summary,
+                'user' => $this->user,
+                'task' => $this->task,
             ],
         );
     }
