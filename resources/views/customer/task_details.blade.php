@@ -41,6 +41,17 @@
                         </div>
                     </div>
                 @endif
+                @if ($task->status == 'ready to complete')
+                    <div class="alert alert-primary">
+                        <div>We believe this task has been achieved based on the requirements provided.</div>
+                        <div class="mt-2 d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary me-5">Approve Completion</button>
+                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#updateTask"
+                                data-title="Request Revision For Your Task" data-btnlabel="Request Revision">Request
+                                Revision</button>
+                        </div>
+                    </div>
+                @endif
 
                 <div id="scrollContainer">
                     <div id="assessmentInfo">
@@ -265,7 +276,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title mb-0" id="newCatgoryLabel">
-                    Add Comment and Provide Insight On Your Task.
+                    <span id="modtitle"></span>
                 </h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -301,7 +312,7 @@
                         <div class="col-md-12 border-bottom"></div>
                         <!-- button -->
                         <div class="col-12 mt-4">
-                            <button id="submitbutton2" class="btn btn-success" type="submit">Add Comment</button>
+                            <button id="btnlabel" class="btn btn-success" type="submit"></button>
                             <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal"
                                 aria-label="Close">Cancel</button>
                         </div>
@@ -373,8 +384,8 @@
                 <div class="modal-footer">
                     <div class="col-12 mb-4">
                         <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                            data-bs-target="#updateTask" data-priority="{{ $task->priority }}"
-                            data-status="{{ $task->status }}">Add Comment</button>
+                            data-bs-target="#updateTask" data-title="Add Comment and Provide Insight On Your Task."
+                            data-btnlabel="Add Comment">Add Comment</button>
 
                     </div>
                 </div>

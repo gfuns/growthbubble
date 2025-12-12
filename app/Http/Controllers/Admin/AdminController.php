@@ -11,6 +11,7 @@ use App\Mail\CustomerCreationMail as CustomerCreationMail;
 use App\Mail\InternalTaskCompletion as InternalTaskCompletion;
 use App\Mail\OwnerTaskNotification as OwnerTaskNotification;
 use App\Mail\PriorityPaymentConfirmation as PriorityPaymentConfirmation;
+use App\Mail\ReadyToComplete as ReadyToComplete;
 use App\Mail\TaskAssigned as TaskAssigned;
 use App\Mail\TaskCompletion as TaskCompletion;
 use App\Mail\TaskInProgress as TaskInProgress;
@@ -1925,6 +1926,9 @@ class AdminController extends Controller
                 } else if ($task->status == "waiting on client") {
                     $customer = User::find($task->user_id);
                     Mail::to($customer)->send(new AwaitingCustomerResponse($customer, $task));
+                } else if ($task->status == "ready to complete") {
+                    $customer = User::find($task->user_id);
+                    Mail::to($customer)->send(new ReadyToComplete($customer, $task, Auth::user()->other_names));
                 } else {
                     $customer = User::find($task->user_id);
                     Mail::to($customer)->send(new ClientNewMessage($customer, $task, Auth::user()->other_names));
