@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('priority', ["yes", "no"])->default("no");
             $table->enum('recurring', ["yes", "no"])->default("no");
             $table->integer('creator')->unsigned();
-            $table->enum('status', ["queued", "in progress", "quality assurance", "completed", "on hold", "cancelled"])->default("queued");
+            $table->enum('status', ["queued", "in progress", "waiting on client", "quality assurance", "ready to complete", "review requested", "completed", "on hold", "cancelled"])->default("queued");
             $table->date('date_assigned')->nullable();
             $table->integer('assigned_by')->unsigned()->nullable();
             $table->integer('assigned_to')->unsigned()->nullable();
