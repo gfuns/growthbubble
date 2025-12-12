@@ -407,7 +407,9 @@
                                     <option value="">Select Task Priority</option>
                                     <option value="queued">Queued</option>
                                     <option value="in progress">In Progress</option>
+                                    <option value="waiting on client">Waiting On Client</option>
                                     <option value="quality assurance">Undergoing QA</option>
+                                    <option value="ready to complete">Ready To Complete</option>
                                     <option value="completed">Completed</option>
                                     <option value="on hold">On Hold</option>
                                     <option value="cancelled">Cancelled</option>
