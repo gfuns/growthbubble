@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Customer;
 use App\Exports\ExportInvoice;
 use App\Http\Controllers\Controller;
 use App\Mail\ClientSubscriptionCancellation as ClientSubscriptionCancellation;
+use App\Mail\PaymentConfirmation as PaymentConfirmation;
+use App\Mail\PaymentNotification as PaymentNotification;
 use App\Mail\PriorityPaymentConfirmation as PriorityPaymentConfirmation;
 use App\Mail\RevisionRequest as RevisionRequest;
 use App\Mail\SubscriptionCancellation as SubscriptionCancellation;
@@ -18,12 +20,14 @@ use App\Models\OnboardingDetails;
 use App\Models\PlatformActivities;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\SubscriptionPlan;
 use App\Models\TaskActivities;
 use App\Models\TaskCategory;
 use App\Models\TaskConversation;
 use App\Models\TicketResponses;
 use App\Models\User;
 use Auth;
+use Carbon\Carbon;
 use Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -650,6 +654,83 @@ class CustomerController extends Controller
         if (isset($paymentIntent->status) && $paymentIntent->status == "succeeded") {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    /**
+     * chargeCustomerCard
+     *
+     * @return void
+     */
+    public static function chargeCustomerCard(SubscriptionPlan $plan)
+    {
+        try {
+            if ($plan->frequency == "yearly") {
+                $duration = 12;
+            } else if ($plan->frequency == "quarterly") {
+                $duration = 3;
+            } else {
+                $duration = 1;
+            }
+
+            $card = CustomerCards::where("user_id", Auth::user()->id)->where("default_card", 1)->first();
+
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            $paymentIntent = PaymentIntent::create([
+                'customer'       => Auth::user()->stripe_customer_id,
+                'amount'         => ($plan->pricing * 100),
+                'currency'       => 'gbp',
+                'payment_method' => $card->authorization_code,
+                'off_session'    => true,
+                'confirm'        => true,
+            ]);
+
+            $pm = "Credit Card (" . ucwords($card->card_brand) . " ****-****-****-" . $card->last_four_digits . ")";
+
+            DB::beginTransaction();
+
+            $invoice                 = new Invoice;
+            $invoice->user_id        = Auth::user()->id;
+            $invoice->product_id     = $plan->product_id;
+            $invoice->plan_id        = $plan->id;
+            $invoice->due_date       = now();
+            $invoice->amount         = $plan->pricing;
+            $invoice->payment_method = $pm;
+            $invoice->txn_id         = "TXN" . preg_replace("/pi/", "", $paymentIntent->id);
+            $invoice->status         = "paid";
+            $invoice->save();
+
+            $subscription                 = new CustomerSubscription;
+            $subscription->user_id        = Auth::user()->id;
+            $subscription->invoice_id     = $invoice->id;
+            $subscription->product_id     = $plan->product_id;
+            $subscription->plan_id        = $plan->id;
+            $subscription->pricing        = $plan->pricing;
+            $subscription->effective_date = now();
+            $subscription->expiry_date    = Carbon::now()->addMonths($duration);
+            $subscription->save();
+
+            DB::commit();
+
+            try {
+                $staff = env("ADMIN_MAIL");
+                $user  = User::find(Auth::user()->id);
+                Mail::to($user)->send(new PaymentConfirmation($user, $subscription));
+                Mail::to($staff)->send(new PaymentNotification($user, $subscription));
+            } catch (\Exception $e) {
+                report($e);
+            }
+
+            if (isset($paymentIntent->status) && $paymentIntent->status == "succeeded") {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
             return false;
         }
     }
@@ -1284,6 +1365,86 @@ class CustomerController extends Controller
 
         } else {
             toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * changePlan
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function changePlan($id)
+    {
+        $currentPlan = CustomerSubscription::where("user_id", Auth::user()->id)->latest()->first();
+        $plans       = SubscriptionPlan::where("product_id", $id)->where("status", "active")->where("id", "!=", $currentPlan->id)->get();
+        return view('customer.change_plan', compact("plans"));
+    }
+
+    /**
+     * switchPlan
+     *
+     * @param Request request
+     *
+     * @return void
+     */
+    public function switchPlan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'plan' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $errors = implode("<br>", $errors);
+            toast($errors, 'error');
+            return back();
+        }
+
+        $plan = SubscriptionPlan::find($request->plan);
+
+        if ($plan->frequency == "yearly") {
+            $duration = 12;
+        } else if ($plan->frequency == "quarterly") {
+            $duration = 3;
+        } else {
+            $duration = 1;
+        }
+
+        $priorityCharged = self::chargeCustomerCard($plan);
+
+        if ($priorityCharged === false) {
+            toast('We could not charge your card on file for this request.', 'error');
+            return back();
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $subscription = CustomerSubscription::where("user_id", Auth::user()->id)->update([
+                "status" => "terminated",
+            ]);
+
+            $subscription                 = new CustomerSubscription;
+            $subscription->user_id        = Auth::user()->id;
+            $subscription->product_id     = $plan->product_id;
+            $subscription->plan_id        = $plan->id;
+            $subscription->effective_date = Carbon::now();
+            $subscription->pricing        = $plan->pricing;
+            $subscription->expiry_date    = Carbon::now()->addMonths($duration);
+            $subscription->save();
+
+            DB::commit();
+
+            toast('Subscription Plan Changed Successfully.', 'success');
+            return redirect()->route("customer.subscriptions");
+        } catch (\Throwable $e) {
+            report($e);
+            DB::rollback();
+
+            toast('Something went wrong.', 'error');
             return back();
         }
     }

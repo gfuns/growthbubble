@@ -29,7 +29,7 @@ class PaymentConfirmation extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: 'Payment received – let’s start your onboarding 🚀',
+            subject: 'Payment Received',
         );
     }
 

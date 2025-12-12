@@ -1111,6 +1111,7 @@ class AdminController extends Controller
             $customer->organization    = ucwords(strtolower($request->organization));
             $customer->contact_address = $request->contact_address;
             $customer->token           = Str::random(60);
+            $customer->fpu             = 1;
             $customer->save();
 
             $subscription                 = new CustomerSubscription;

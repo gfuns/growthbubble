@@ -145,4 +145,8 @@ Route::group([
 
     Route::post('/cancelSubscription', [CustomerController::class, 'cancelSubscription'])->name('customer.cancelSubscription');
 
+    Route::get('/change-plan/{id}', [CustomerController::class, 'changePlan'])->name('customer.changePlan');
+
+    Route::post('/switchPlan', [CustomerController::class, 'switchPlan'])->name('customer.switchPlan');
+
 });

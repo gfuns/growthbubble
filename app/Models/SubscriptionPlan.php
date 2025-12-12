@@ -12,4 +12,9 @@ class SubscriptionPlan extends Model
     {
         return $this->belongsTo('App\Models\Product', "product_id");
     }
+
+    public function features()
+    {
+        return $this->hasMany('App\Models\PlanFeatures', "plan_id");
+    }
 }

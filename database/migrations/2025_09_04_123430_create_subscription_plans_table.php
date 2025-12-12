@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('plan');
             $table->enum('frequency', ["monthly", "quarterly", "yearly"]);
             $table->double('price', 12, 2);
+            $table->enum('status', ["active", "deactivated"]);
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });

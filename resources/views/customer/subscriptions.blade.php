@@ -98,9 +98,9 @@
                                                                 data-myid="{{ $sub->id }}" class="dropdown-item">
                                                                 <i class="bi bi-x-square dropdown-item-icon"></i>Cancel
                                                                 Subscription</a>
-                                                            <a href="#" class="dropdown-item">
+                                                            <a href="{{ route("customer.changePlan",[Auth::user()->product_id]) }}" class="dropdown-item">
                                                                 <i
-                                                                    class="bi bi-arrow-up-right-circle dropdown-item-icon"></i>Upgrade
+                                                                    class="bi bi-arrow-up-right-circle dropdown-item-icon"></i>Change
                                                                 Plan</a>
 
                                                         </span>
