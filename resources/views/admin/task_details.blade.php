@@ -416,6 +416,9 @@
                                     <option value="completed">Completed</option>
                                     <option value="on hold">On Hold</option>
                                     <option value="cancelled">Cancelled</option>
+                                    @if ($task->status == 'review requested')
+                                        <option value="review requested">Review Requested</option>
+                                    @endif
                                 </select>
                                 <div class="invalid-feedback">Please select task status.</div>
                             </div>
