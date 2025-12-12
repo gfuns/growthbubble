@@ -1073,7 +1073,7 @@ class AdminController extends Controller
             'phone_number'    => 'required|unique:users',
             'organization'    => 'nullable',
             'contact_address' => 'nullable',
-            'product'         => 'nullable',
+            'product'         => 'required',
             'plan'            => 'nullable',
             'effective_date'  => 'nullable',
         ]);
@@ -1098,13 +1098,16 @@ class AdminController extends Controller
 
             DB::beginTransaction();
 
+            $password = Str::random(10);
+
             $customer                  = new User;
             $customer->last_name       = $request->last_name;
             $customer->other_names     = $request->first_name;
             $customer->email           = $request->email;
             $customer->phone_number    = $request->phone_number;
-            $customer->password        = Hash::make($request->phone_number);
+            $customer->password        = Hash::make($password);
             $customer->role_id         = 0;
+            $customer->product_id      = $request->product;
             $customer->organization    = ucwords(strtolower($request->organization));
             $customer->contact_address = $request->contact_address;
             $customer->token           = Str::random(60);
@@ -1122,7 +1125,7 @@ class AdminController extends Controller
             DB::commit();
 
             try {
-                Mail::to($customer)->send(new CustomerCreationMail($customer, $customer->phone_number));
+                Mail::to($customer)->send(new CustomerCreationMail($customer, $password));
             } catch (\Exception $e) {
                 report($e);
             } finally {
