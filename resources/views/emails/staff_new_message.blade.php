@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revision requested by {{ $task->user->other_names }}</title>
+    <title>New Message</title>
     <style>
         /* CSS Styles */
         body {
@@ -106,31 +106,15 @@
 
         <p>Hi {{ $user->other_names }},</p>
 
-        <p>{{ $task->user->other_names }} has requested revisions for the following task:</p>
-
-        <table>
-            <tbody>
-                <tr>
-                    <th>Task</th>
-                    <td>{{ $task->title }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p>Here’s their feedback:</p>
-
-        <p>@php echo $summary; @endphp</p>
-
+        <p>{{ $task->user->other_names }} just added a new message on the {{ $task->user->organization }}’s task: {{ $task->title }} thread</p>
 
         <div class="code">
             <a href="{{ route('admin.taskDetails', [$task->id]) }}">
                 <button class="btn btn-primary btn-md"
                     style="background: #0716AD; border: #0716AD; color:white; padding:15px; border-radius: 5px; font-weight:bold; font-size: 14px ">
-                    Review and Update Task</button>
+                    Check It Out</button>
             </a>
         </div>
-
-        <p>Please address the changes and update the task status when complete.</p>
 
         <div class="">
             <p>— Growth Bubbles System</p>

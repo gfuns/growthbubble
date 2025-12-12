@@ -10,17 +10,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RevisionRequest extends Mailable
+class StaffNewMessage extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(protected User $user, protected CustomerTasks $task, $summary)
+    public function __construct(protected User $user, protected CustomerTasks $task)
     {
-        $this->summary = $summary;
-        $this->client  = $task->user->other_names;
+
     }
 
     /**
@@ -30,7 +29,7 @@ class RevisionRequest extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: "Revision requested by {$this->client}",
+            subject: "New Message",
         );
     }
 
@@ -40,11 +39,10 @@ class RevisionRequest extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.revision_request',
+            view: 'emails.staff_new_message',
             with: [
-                'user'    => $this->user,
-                'task'    => $this->task,
-                'summary' => $this->summary,
+                'user' => $this->user,
+                'task' => $this->task,
             ],
         );
     }

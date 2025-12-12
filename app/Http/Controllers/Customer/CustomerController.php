@@ -7,7 +7,7 @@ use App\Mail\ClientSubscriptionCancellation as ClientSubscriptionCancellation;
 use App\Mail\PaymentConfirmation as PaymentConfirmation;
 use App\Mail\PaymentNotification as PaymentNotification;
 use App\Mail\PriorityPaymentConfirmation as PriorityPaymentConfirmation;
-use App\Mail\RevisionRequest as RevisionRequest;
+use App\Mail\StaffNewMessage as StaffNewMessage;
 use App\Mail\SubscriptionCancellation as SubscriptionCancellation;
 use App\Mail\TaskSubmitted as TaskSubmitted;
 use App\Models\CustomerCards;
@@ -790,7 +790,7 @@ class CustomerController extends Controller
             try {
                 $staff = User::find($task->assigned_to);
                 if (isset($staff)) {
-                    Mail::to($staff)->send(new RevisionRequest($staff, $task, $request->comment));
+                    Mail::to($staff)->send(new StaffNewMessage($staff, $task));
                 }
             } catch (\Exception $e) {
                 report($e);
