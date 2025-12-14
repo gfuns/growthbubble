@@ -139,7 +139,7 @@
                                     <table id="prodTable1" class="table mb-0 table-hover" style="font-size: 13px">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>#</th>
+                                                <th>Timestamp</th>
                                                 <th>Title</th>
                                                 <th>Priority</th>
                                                 <th>Status</th>
@@ -149,7 +149,7 @@
                                         <tbody>
                                             @foreach ($tasks as $tsk)
                                                 <tr>
-                                                    <td>{{ $loop->index + 1 }}</td>
+                                                    <td>{{ date_format($tsk->created_at, "jS M, Y g:ia") }}</td>
                                                     <td class="no-wrap">{{ $tsk->title }}</td>
                                                     <td>{{ ucwords($tsk->priority) }}</td>
                                                     <td>

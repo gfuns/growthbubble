@@ -102,7 +102,7 @@
                                 style="font-size:14px">
                                 <thead class="table-light">
                                     <tr>
-                                        <th scope="col">S/No</th>
+                                        <th scope="col">Timestamp</th>
                                         <th scope="col">Title</th>
                                         <th scope="col">Client</th>
                                         <th scope="col">Creator</th>
@@ -113,7 +113,7 @@
                                 <tbody class="text-dark">
                                     @foreach ($customerTasks as $cTask)
                                         <tr>
-                                            <td class="align-middle"> {{ $loop->index + 1 }}</td>
+                                            <td class="align-middle"> {{ date_format($cTask->created_at, "jS M, Y g:ia") }}</td>
                                             <td class="align-middle">
                                                 <a href="{{ route('admin.taskDetails', [$cTask->id]) }}">
                                                     {{ Str::limit($cTask->title, 50) }}

@@ -59,7 +59,7 @@ class CustomerController extends Controller
             "totalTasks"     => CustomerTasks::where("user_id", Auth::user()->id)->count(),
         ];
 
-        $tasks      = CustomerTasks::orderBy("id", "desc")->where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->limit(10)->get();
+        $tasks      = CustomerTasks::where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->limit(10)->latest()->get();
         $projects   = Project::orderBy("id", "desc")->where("product_id", Auth::user()->product_id)->where("user_id", Auth::user()->id)->limit(10)->get();
         $activities = PlatformActivities::orderBy("id", "desc")->where("owner_id", Auth::user()->id)->limit(15)->get();
         return view("customer.dashboard", compact("params", "projects", "tasks", "activities"));

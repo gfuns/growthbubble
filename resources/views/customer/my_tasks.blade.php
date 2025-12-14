@@ -20,7 +20,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('customer.dashboard') }}">Dashboard</a>
                             </li>
-                             <li class="breadcrumb-item">
+                            <li class="breadcrumb-item">
                                 <a href="#">{{ $product->product }}</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
@@ -32,7 +32,8 @@
 
                 <!-- button -->
                 <div>
-                    <a href="{{ route('customer.newCustomerTask', [Auth::user()->product_id]) }}" class="btn btn-primary btn-sm me-2">Create New
+                    <a href="{{ route('customer.newCustomerTask', [Auth::user()->product_id]) }}"
+                        class="btn btn-primary btn-sm me-2">Create New
                         Task</a>
                 </div>
 
@@ -98,11 +99,10 @@
                                 style="font-size:14px">
                                 <thead class="table-light">
                                     <tr>
-                                        <th scope="col">S/No</th>
+                                        <th scope="col">Timestamp</th>
                                         <th scope="col">Task Title</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Priority</th>
-                                        <th scope="col">Date</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -110,11 +110,11 @@
                                 <tbody class="text-dark">
                                     @foreach ($customerTasks as $cTask)
                                         <tr>
-                                            <td class="align-middle"> {{ $loop->index + 1 }}</td>
+                                            <td class="align-middle">
+                                                {{ date_format($cTask->created_at, 'jS M, Y g:ia') }}</td>
                                             <td class="align-middle">{{ Str::limit($cTask->title, 40) }} </td>
                                             <td class="align-middle">{{ ucwords($cTask->category->category) }}</td>
                                             <td class="align-middle">{{ ucwords($cTask->priority) }}</td>
-                                            <td class="align-middle">{{ date_format($cTask->created_at, "jS F, Y") }}</td>
                                             <td>
                                                 @if ($cTask->status == 'queued' || $cTask->status == 'on hold')
                                                     <span
@@ -128,6 +128,9 @@
                                                 @elseif ($cTask->status == 'cancelled')
                                                     <span
                                                         class="badge text-danger bg-light-danger">{{ ucwords($cTask->status) }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge text-info bg-light-info">{{ ucwords($cTask->status) }}</span>
                                                 @endif
                                             </td>
 

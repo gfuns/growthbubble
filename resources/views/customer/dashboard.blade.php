@@ -161,7 +161,7 @@
                                                 class="table mb-0 table-hover" style="font-size: 13px">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>#</th>
+                                                        <th>Timestamp</th>
                                                         <th>Title</th>
                                                         <th>Priority</th>
                                                         <th>Status</th>
@@ -170,7 +170,8 @@
                                                 <tbody>
                                                     @foreach ($tasks as $tsk)
                                                         <tr class="text-dark">
-                                                            <td>{{ $loop->index + 1 }}</td>
+                                                            <td>{{ date_format($tsk->created_at, 'jS M, Y g:ia') }}
+                                                            </td>
                                                             <td class="no-wrap">
                                                                 <a href="{{ route('customer.taskDetails', [$tsk->id]) }}"
                                                                     class="text-dark">
@@ -191,6 +192,9 @@
                                                                 @elseif ($tsk->status == 'cancelled')
                                                                     <span
                                                                         class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
+                                                                @else
+                                                                    <span
+                                                                        class="badge text-info bg-light-info">{{ ucwords($tsk->status) }}</span>
                                                                 @endif
                                                             </td>
                                                         </tr>

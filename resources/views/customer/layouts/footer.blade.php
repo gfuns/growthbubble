@@ -41,6 +41,7 @@
             search: true, // disable pagination
             paging: true, // disable pagination
             info: false,
+            ordering:false,
             language: {
                 lengthMenu: "_MENU_" // only show the dropdown
             },
@@ -55,6 +56,7 @@
             search: true, // disable pagination
             paging: true, // disable pagination
             info: false,
+            ordering:false,
             language: {
                 lengthMenu: "_MENU_" // only show the dropdown
             },

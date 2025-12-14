@@ -149,7 +149,7 @@
                                     <table id="myTasks" class="table mb-0 table-hover" style="font-size: 13px">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>#</th>
+                                                <th>Timestamp</th>
                                                 <th>Task</th>
                                                 <th>Client</th>
                                                 <th>Priority</th>
@@ -159,7 +159,7 @@
                                         <tbody>
                                             @foreach ($tasks as $tsk)
                                                 <tr class="text-dark">
-                                                    <td>{{ $loop->index + 1 }}</td>
+                                                    <td>{{ date_format($tsk->created_at, "jS M, Y g:ia") }}</td>
                                                     <td class="no-wrap">
                                                         <a href="{{ route('admin.taskDetails', [$tsk->id]) }}"
                                                             class="text-dark">{{ Str::limit($tsk->title, 30) }}
