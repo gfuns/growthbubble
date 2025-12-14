@@ -1902,7 +1902,7 @@ class AdminController extends Controller
                     return back();
                 }
 
-                $activeTasks    = CustomerTasks::where("user_id", $task->user_id)->whereIn("status", ["in progress", "quality assurance", "client feedback"])->count();
+                $activeTasks    = CustomerTasks::where("user_id", $task->user_id)->whereIn("status", ["in progress", "waiting on client", "quality assurance", "ready to complete", "review requested"])->count();
                 $maxActiveTasks = User::find($task->user_id)->allowedActiveTasks();
 
                 if ($activeTasks >= $maxActiveTasks) {
