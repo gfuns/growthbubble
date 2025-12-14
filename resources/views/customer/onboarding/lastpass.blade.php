@@ -74,6 +74,39 @@
         content: "✓";
         /* checkmark */
     }
+
+    /* Mobile only */
+    @media (max-width: 767px) {
+        .onboarding-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            /* smooth iOS scrolling */
+        }
+
+        .onboardingSteps {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .onboardingSteps li {
+            list-style: none;
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            margin: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .onboardingSteps li a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+    }
 </style>
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -115,24 +148,25 @@
                 <!-- tab pane -->
                 <div class="tab-pane fade show active" id="tabPaneList" role="tabpanel" aria-labelledby="tabPaneList">
                     <!-- card -->
-                    <div class="d-flex  justify-content-between gap-2">
-                        <div class="card mb-4 col-md-3">
-                            <div class="kycinstruction">
-                                <ul class="onboardingSteps">
-                                    <li class="@if (Auth::user()->onbInst() == true) completed @endif"><a
-                                            href="{{ route('onboarding.instructions') }}">Onboarding Instruction</a>
-                                    </li>
-                                    <li class="@if (Auth::user()->website(1) == true) completed @endif"><a
-                                            href="{{ route('onboarding.websites') }}">Step 1 - Website Submission</a>
-                                    </li>
-                                    <li class="active @if (Auth::user()->lastpass() == true) completed @endif"><a
-                                            href="{{ route('onboarding.lastpass') }}">Step 2 - Share Password
-                                            Securely</a></li>
-                                </ul>
-
+                    <div class="row g-3">
+                        <div class="col-12 col-md-3">
+                            <div class="card">
+                                <div class="kycinstruction">
+                                    <ul class="onboardingSteps onboarding-scroll">
+                                        <li class="@if (Auth::user()->onbInst()) completed @endif">
+                                            <a href="{{ route('onboarding.instructions') }}">Instructions</a>
+                                        </li>
+                                        <li class="@if (Auth::user()->website(1)) completed @endif">
+                                            <a href="{{ route('onboarding.websites') }}">Website(s)</a>
+                                        </li>
+                                        <li class="active @if (Auth::user()->lastpass()) completed @endif">
+                                            <a href="{{ route('onboarding.lastpass') }}">Passwords</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-9 card mb-4 p-6 pt-3 text-dark">
+                        <div class="col-12 col-md-9 card mb-4 p-6 pt-3 text-dark">
                             <h4 class="text-dark mb-3"><strong>Secure Password Sharing</strong></h4>
 
                             <div class="mb-3">We use LastPass to manage client password to ensure enhanced security.

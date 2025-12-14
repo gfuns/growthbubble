@@ -74,6 +74,39 @@
         content: "✓";
         /* checkmark */
     }
+
+    /* Mobile only */
+    @media (max-width: 767px) {
+        .onboarding-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            /* smooth iOS scrolling */
+        }
+
+        .onboardingSteps {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .onboardingSteps li {
+            list-style: none;
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            margin: 10px 0px 10px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .onboardingSteps li a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+    }
 </style>
 <!-- Container fluid -->
 <section class="container-fluid p-4">
@@ -115,25 +148,26 @@
                 <!-- tab pane -->
                 <div class="tab-pane fade show active" id="tabPaneList" role="tabpanel" aria-labelledby="tabPaneList">
                     <!-- card -->
-                    <div class="d-flex  justify-content-between gap-2">
-                        <div class="card mb-4 col-md-3">
-                            <div class="kycinstruction">
-                                <ul class="onboardingSteps">
-                                    <li class="@if (Auth::user()->onbInst() == true) completed @endif"><a
-                                            href="{{ route('onboarding.instructions') }}">Onboarding Instruction</a>
-                                    </li>
-                                    <li class="active @if (Auth::user()->website(1) == true) completed @endif"><a
-                                            href="{{ route('onboarding.websites') }}">Step 1 - Website Submission</a>
-                                    </li>
-                                    <li class="@if (Auth::user()->lastpass() == true) completed @endif"><a
-                                            href="{{ route('onboarding.lastpass') }}">Step 2 - Share Password
-                                            Securely</a></li>
-                                </ul>
-
+                    <div class="row g-3">
+                        <div class="col-12 col-md-3">
+                            <div class="card">
+                                <div class="kycinstruction">
+                                    <ul class="onboardingSteps onboarding-scroll">
+                                        <li class="@if (Auth::user()->onbInst()) completed @endif">
+                                            <a href="{{ route('onboarding.instructions') }}">Instructions</a>
+                                        </li>
+                                        <li class="active @if (Auth::user()->website(1)) completed @endif">
+                                            <a href="{{ route('onboarding.websites') }}">Website(s)</a>
+                                        </li>
+                                        <li class="@if (Auth::user()->lastpass()) completed @endif">
+                                            <a href="{{ route('onboarding.lastpass') }}">Passwords</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-9 card mb-4 p-6 pt-3 text-dark">
-                             <h4 class="text-dark mb-3"><strong>Provide Website Details</strong></h4>
+                        <div class="col-12 col-md-9 card mb-4 p-6 pt-3 text-dark">
+                            <h4 class="text-dark mb-3"><strong>Provide Website Details</strong></h4>
 
                             <form class="register-form validate validate-modern" method="POST"
                                 action="{{ route('onboarding.storeWebsite') }}">
@@ -142,7 +176,8 @@
                                 <div class="row">
                                     <!-- form group -->
                                     <div class="mb-3 col-12">
-                                        <label class="form-label">Website URL beginning with https:// <span class="text-danger">*</span></label>
+                                        <label class="form-label">Website URL beginning with https:// <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" name="website_url" value="{{ $data->website_url ?? '' }}"
                                             class="form-control @error('website_url') is-invalid @enderror"
                                             placeholder="Website URL" required>
@@ -154,7 +189,8 @@
                                     </div>
 
                                     <div class="mb-3 col-12">
-                                        <label class="form-label">Admin Login URL for WordPress beginning with https:// <span class="text-danger">*</span></label>
+                                        <label class="form-label">Admin Login URL for WordPress beginning with https://
+                                            <span class="text-danger">*</span></label>
                                         <input type="text" name="admin_url" value="{{ $data->admin_url ?? '' }}"
                                             class="form-control @error('admin_url') is-invalid @enderror"
                                             placeholder="Admin Login URL for WordPress" required>
@@ -166,7 +202,8 @@
                                     </div>
 
                                     <div class="mb-3 col-12">
-                                        <label class="form-label">Admin Username <span class="text-danger">*</span></label>
+                                        <label class="form-label">Admin Username <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" name="admin_username" value="{{ $data->username ?? '' }}"
                                             class="form-control @error('admin_username') is-invalid @enderror"
                                             placeholder="Admin Login URL for WordPress" required>
@@ -180,9 +217,10 @@
 
 
                                 <div class="mb-5 mt-2" style="font-size: 14px;">
-                                    <strong><u>Please Note:</u></strong> <br/>Kindly ensure that
+                                    <strong><u>Please Note:</u></strong> <br />Kindly ensure that
                                     you have shared the necessary access with us and that they are valid. Otherwise, we
-                                    will not be able to work on your website.</div>
+                                    will not be able to work on your website.
+                                </div>
 
                                 <button type="submit" class="btn btn-primary btn-block btn-md w-100">Save and Continue
                                     &nbsp;<i class="fas fa-chevron-circle-right"></i></button>
