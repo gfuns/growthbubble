@@ -45,9 +45,12 @@
                     <div class="alert alert-primary">
                         <div>We believe this task has been achieved based on the requirements provided.</div>
                         <div class="mt-2 d-flex align-items-center">
-                            <button class="btn btn-sm btn-primary me-5">Approve Completion</button>
+                            <a href="{{ route('customer.approveCompletion', [$task->id]) }}"
+                                onclick="return confirm('Are you sure you want to mark this task as completed?');"><button
+                                    class="btn btn-sm btn-primary me-5">Approve Completion</button></a>
                             <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#updateTask"
-                                data-title="Request Revision For Your Task" data-btnlabel="Request Revision" data-reqrevision="yes">Request
+                                data-title="Request Revision For Your Task" data-btnlabel="Request Revision"
+                                data-reqrevision="yes">Request
                                 Revision</button>
                         </div>
                     </div>
@@ -383,15 +386,17 @@
                     @endforeach
 
                 </div>
+                @if ($task->status != 'completed')
+                    <div class="modal-footer">
+                        <div class="col-12 mb-4">
+                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                data-bs-target="#updateTask"
+                                data-title="Add Comment and Provide Insight On Your Task." data-btnlabel="Add Comment"
+                                data-reqrevision="no">Add Comment</button>
 
-                <div class="modal-footer">
-                    <div class="col-12 mb-4">
-                        <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                            data-bs-target="#updateTask" data-title="Add Comment and Provide Insight On Your Task."
-                            data-btnlabel="Add Comment" data-reqrevision="no">Add Comment</button>
-
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>

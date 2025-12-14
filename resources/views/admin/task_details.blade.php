@@ -164,43 +164,44 @@
             </div>
 
             <div class="col-md-4 col-12">
+                @if ($task->status != 'completed')
+                    <!-- card -->
+                    <div id="assessmentSummary" class="card mb-4">
+                        <!-- card body -->
+                        <div class="card-header card-header-height d-flex align-items-center">
+                            <h4 class="mb-0">Update Task Progress</h4>
+                        </div>
 
-                <!-- card -->
-                <div id="assessmentSummary" class="card mb-4">
-                    <!-- card body -->
-                    <div class="card-header card-header-height d-flex align-items-center">
-                        <h4 class="mb-0">Update Task Progress</h4>
-                    </div>
+                        <div class="card-body">
 
-                    <div class="card-body">
+                            @if (!isset($task->assigned_to) && Auth::user()->role_id == 1)
+                                <div class="mb-2">
+                                    This Task Is Yet To Be Assigned.
+                                </div>
+                                <div class="col-md-8 mb-2"></div>
+                                <div class="col-12 mb-4">
+                                    <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#taskAssignment">Assign Task To Team Member</button>
 
-                        @if (!isset($task->assigned_to) && Auth::user()->role_id == 1)
+                                </div>
+                            @endif
+
                             <div class="mb-2">
-                                This Task Is Yet To Be Assigned.
+                                Update task progress and activities.
                             </div>
                             <div class="col-md-8 mb-2"></div>
                             <div class="col-12 mb-4">
                                 <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#taskAssignment">Assign Task To Team Member</button>
+                                    data-bs-target="#updateTask" data-priority="{{ $task->priority }}"
+                                    data-status="{{ $task->status }}">Manage Task Information</button>
 
                             </div>
-                        @endif
 
-                        <div class="mb-2">
-                            Update task progress and activities.
-                        </div>
-                        <div class="col-md-8 mb-2"></div>
-                        <div class="col-12 mb-4">
-                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                data-bs-target="#updateTask" data-priority="{{ $task->priority }}"
-                                data-status="{{ $task->status }}">Manage Task Information</button>
 
                         </div>
-
 
                     </div>
-
-                </div>
+                @endif
 
                 <!-- card -->
                 <div id="assessmentSummary" class="card mb-4">
@@ -220,7 +221,8 @@
                             <div class="col-md-8 mb-2"></div>
                             <div class="col-12 mb-4">
                                 <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#viewConversations">View Conversations</button>
+                                    data-bs-target="#viewConversations">View
+                                    Conversations</button>
 
                             </div>
                         @else
@@ -229,15 +231,15 @@
                             </div>
                             <div class="col-12 mb-4">
                                 <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#addComment">Start A Conversation</button>
+                                    data-bs-target="#addComment">Start A
+                                    Conversation</button>
 
                             </div>
                         @endif
-
-
                     </div>
 
                 </div>
+
 
 
                 <div class="card" style="max-height: 425px;">
@@ -526,14 +528,16 @@
 
                     </div>
 
-                    <div class="modal-footer">
-                        <div class="col-12 mb-4">
-                            <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
-                                data-bs-target="#addComment" data-priority="{{ $task->priority }}"
-                                data-status="{{ $task->status }}">Add Comment</button>
+                    @if ($task->status != 'completed')
+                        <div class="modal-footer">
+                            <div class="col-12 mb-4">
+                                <button class="btn btn-outline-success w-100" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#addComment" data-priority="{{ $task->priority }}"
+                                    data-status="{{ $task->status }}">Add Comment</button>
 
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     {{-- <div class="modal-footer">
             <button type="button" class="btn btn-outline-success ms-2" data-bs-dismiss="modal">Close</button>

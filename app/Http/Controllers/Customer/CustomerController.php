@@ -1467,6 +1467,26 @@ class CustomerController extends Controller
     }
 
     /**
+     * approveCompletion
+     *
+     * @param mixed id
+     *
+     * @return void
+     */
+    public function approveCompletion($id)
+    {
+        $task         = CustomerTasks::find($id);
+        $task->status = "completed";
+        if ($task->save()) {
+            toast('Task successfully marked as completed.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong.', 'error');
+            return back();
+        }
+    }
+
+    /**
      * getMarkers Helper Function
      *
      * @param mixed lastRecord

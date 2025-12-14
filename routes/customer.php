@@ -149,4 +149,6 @@ Route::group([
 
     Route::post('/switchPlan', [CustomerController::class, 'switchPlan'])->name('customer.switchPlan');
 
+    Route::get('/approve-completion/{id}', [CustomerController::class, 'approveCompletion'])->name('customer.approveCompletion');
+
 });
