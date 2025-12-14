@@ -125,6 +125,10 @@ Route::group([
 
     Route::post('/updatePlanFeature', [AdminController::class, 'updatePlanFeature'])->name('admin.updatePlanFeature');
 
+    Route::get('/deactivate-plan/{id}', [AdminController::class, 'deactivatePlan'])->name('admin.deactivatePlan');
+
+    Route::get('/activate-plan/{id}', [AdminController::class, 'activatePlan'])->name('admin.activatePlan');
+
     Route::get('/registered-customers', [AdminController::class, 'registeredCustomers'])->name('admin.customers');
 
     Route::get('/new-customer', [AdminController::class, 'newCustomer'])->name('admin.newCustomer');

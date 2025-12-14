@@ -70,7 +70,7 @@ class AdminController extends Controller
             ];
 
             $products   = Product::orderBy("id", "desc")->limit(10)->get();
-            $tasks      = CustomerTasks::orderBy("id", "desc")->limit(10)->get();
+            $tasks      = CustomerTasks::orderBy("id", "desc")->limit(10)->latest()->get();
             $activities = PlatformActivities::orderBy("id", "desc")->limit(15)->get();
             return view("admin.dashboard", compact("params", "products", "tasks", "activities"));
         } else {
@@ -83,7 +83,7 @@ class AdminController extends Controller
                 "onHoldTasks"    => CustomerTasks::where("assigned_to", Auth::user()->id)->where("status", "on hold")->count(),
             ];
 
-            $tasks = CustomerTasks::where("assigned_to", Auth::user()->id)->get();
+            $tasks = CustomerTasks::where("assigned_to", Auth::user()->id)->latest()->get();
             return view("admin.dashboard_staff", compact("params", "tasks"));
         }
 
@@ -834,6 +834,42 @@ class AdminController extends Controller
             toast('Something went wrong. Please try again', 'error');
             return back();
 
+        }
+    }
+
+    /**
+     * deactivatePlan
+     *
+     * @return void
+     */
+    public function deactivatePlan($id)
+    {
+        $plan         = SubscriptionPlan::find($id);
+        $plan->status = "deactivated";
+        if ($plan->save()) {
+            toast('Susbscription Plan Deactivated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
+        }
+    }
+
+    /**
+     * activatePlan
+     *
+     * @return void
+     */
+    public function activatePlan($id)
+    {
+        $plan         = SubscriptionPlan::find($id);
+        $plan->status = "active";
+        if ($plan->save()) {
+            toast('Susbscription Plan Activated Successfully.', 'success');
+            return back();
+        } else {
+            toast('Something went wrong. Please try again', 'error');
+            return back();
         }
     }
 

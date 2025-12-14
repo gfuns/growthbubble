@@ -62,6 +62,7 @@
                                             <th>Payment Frequency</th>
                                             <th>Pricing</th>
                                             <th>Active Tasks</th>
+                                            <th>Status</th>
                                             <th><i class="nav-icon bi bi-three-dots me-2"></i></th>
                                         </tr>
                                     </thead>
@@ -76,7 +77,15 @@
                                                 <td style="vertical-align: top !important">
                                                     {{ ucwords($plan->frequency) }}</td>
                                                 <td class="wrap-text"> &pound;{{ number_format($plan->pricing, 2) }}
-                                                <td class="wrap-text"> {{ $plan->active_tasks }}
+                                                <td class="wrap-text"> {{ $plan->active_tasks }}</td>
+                                                <td class="wrap-text">
+                                                    @if ($plan->status == 'active')
+                                                        <span
+                                                            class="badge text-success bg-light-success">{{ ucwords($plan->status) }}</span>
+                                                    @else
+                                                        <span
+                                                            class="badge text-danger bg-light-danger">{{ ucwords($plan->status) }}</span>
+                                                    @endif
                                                 </td>
 
                                                 <td class="align-middle">
@@ -112,6 +121,19 @@
                                                                     data-url="{{ env('APP_URL') }}/checkout?product={{ $plan->product->product }}&plan={{ $plan->plan }}&duration={{ $plan->frequency }}"><i
                                                                         class="fe fe-copy dropdown-item-icon"></i>Copy
                                                                     Plan URL</a>
+                                                                @if ($plan->status == 'active')
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('admin.deactivatePlan', [$plan->id]) }}"
+                                                                        onclick="return confirm('Are you sure you want to deactivate this plan?');"><i
+                                                                            class="fe fe-x-circle dropdown-item-icon"></i>Deactivate
+                                                                        Plan</a>
+                                                                @else
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('admin.activatePlan', [$plan->id]) }}"
+                                                                        onclick="return confirm('Are you sure you want to activate this plan?');"><i
+                                                                            class="fe fe-check-circle dropdown-item-icon"></i>Activate
+                                                                        Plan</a>
+                                                                @endif
                                                             </span>
                                                         </span>
 

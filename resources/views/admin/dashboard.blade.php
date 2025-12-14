@@ -159,11 +159,11 @@
                                         <tbody>
                                             @foreach ($tasks as $tsk)
                                                 <tr class="text-dark">
-                                                    <td>{{ date_format($tsk->created_at, "jS M, Y g:ia") }}</td>
+                                                    <td>{{ date_format($tsk->created_at, 'jS M, Y g:ia') }}</td>
                                                     <td class="no-wrap">
                                                         <a href="{{ route('admin.taskDetails', [$tsk->id]) }}"
                                                             class="text-dark">
-                                                           {{ Str::limit($tsk->title, 30) }}
+                                                            {{ Str::limit($tsk->title, 30) }}
                                                         </a>
                                                     </td>
                                                     <td class="no-wrap">
@@ -183,6 +183,9 @@
                                                         @elseif ($tsk->status == 'cancelled')
                                                             <span
                                                                 class="badge text-danger bg-light-danger">{{ ucwords($tsk->status) }}</span>
+                                                        @else
+                                                            <span
+                                                                class="badge text-info bg-light-info">{{ ucwords($tsk->status) }}</span>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -246,7 +249,7 @@
                                                             <tr class="text-dark" data-bs-toggle="modal"
                                                                 data-bs-target="#viewCustomer"
                                                                 data-myid="{{ $cust->customer->id }}"
-                                                                data-representative="{{ $cust->customer->other_names.' '.$cust->customer->last_name }}"
+                                                                data-representative="{{ $cust->customer->other_names . ' ' . $cust->customer->last_name }}"
                                                                 data-lastname="{{ $cust->customer->last_name }}"
                                                                 data-othernames="{{ $cust->customer->other_names }}"
                                                                 data-email="{{ $cust->customer->email }}"
@@ -448,15 +451,16 @@
                     @if (\App\Http\Controllers\MenuController::canEdit(Auth::user()->role_id, 3) == true)
                         <div class="row mt-4">
                             <div class="col-3">
-                                <button id="editDetailsBtn" class="btn btn-primary btn-sm w-100" data-bs-toggle="offcanvas"
-                                    data-bs-target="#editCustomer"><i class="fe fe-edit dropdown-item-icon"
+                                <button id="editDetailsBtn" class="btn btn-primary btn-sm w-100"
+                                    data-bs-toggle="offcanvas" data-bs-target="#editCustomer"><i
+                                        class="fe fe-edit dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Edit Details</button>
                             </div>
 
 
                             <div class="col-3">
-                                <button id="changePlan" class="btn btn-primary btn-sm w-100" data-bs-toggle="offcanvas"
-                                    data-bs-target="#changeCustomerPlan"><i
+                                <button id="changePlan" class="btn btn-primary btn-sm w-100"
+                                    data-bs-toggle="offcanvas" data-bs-target="#changeCustomerPlan"><i
                                         class="fe fe-refresh-cw dropdown-item-icon"
                                         style="color:white; font-weight: bold"></i> Change Plan</button>
                             </div>

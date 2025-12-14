@@ -113,7 +113,8 @@
                                 <tbody class="text-dark">
                                     @foreach ($customerTasks as $cTask)
                                         <tr>
-                                            <td class="align-middle"> {{ date_format($cTask->created_at, "jS M, Y g:ia") }}</td>
+                                            <td class="align-middle">
+                                                {{ date_format($cTask->created_at, 'jS M, Y g:ia') }}</td>
                                             <td class="align-middle">
                                                 <a href="{{ route('admin.taskDetails', [$cTask->id]) }}">
                                                     {{ Str::limit($cTask->title, 50) }}
@@ -121,7 +122,7 @@
                                             </td>
                                             <td class="align-middle" data-bs-toggle="modal"
                                                 data-bs-target="#viewCustomer" data-myid="{{ $cTask->user->id }}"
-                                                data-representative="{{ $cTask->user->other_names.' '.$cTask->user->last_name }}"
+                                                data-representative="{{ $cTask->user->other_names . ' ' . $cTask->user->last_name }}"
                                                 data-email="{{ $cTask->user->email }}"
                                                 data-lastname="{{ $cTask->user->last_name }}"
                                                 data-othernames="{{ $cTask->user->other_names }}"
@@ -151,6 +152,9 @@
                                                 @elseif ($cTask->status == 'cancelled')
                                                     <span
                                                         class="badge text-danger bg-light-danger">{{ ucwords($cTask->status) }}</span>
+                                                @else
+                                                    <span
+                                                        class="badge text-info bg-light-info">{{ ucwords($cTask->status) }}</span>
                                                 @endif
                                             </td>
 
