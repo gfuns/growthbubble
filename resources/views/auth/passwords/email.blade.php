@@ -56,13 +56,13 @@
                     <div class="card shadow ">
                         <!-- Card body -->
                         <div class="card-body p-6">
-                            <div class="mb-4 row">
-                                <div class="col-md-3 col-4">
-                                    <a href="/"><img src="{{ asset('images/logo.png') }}" class="mb-4"
-                                            alt="" style="max-height: 80px"></a>
+                             <div class="mb-4 row">
+                                <div class="col-md-4 col-12">
+                                    <a href="/"><img src="{{ asset('images/logo.png') }}" class="mb-4 mt-3"
+                                            alt="" style="max-height: 40px"></a>
                                 </div>
-                                <div class="col-md-9 col-8">
-                                    <h2 class="mt-2 mb-1 fw-bold">Password Reset</h2>
+                                <div class="col-md-8 col-12">
+                                    <h1 class="mb-1 fw-bold">Password Reset</h1>
                                     <small class="text-black" style="font-weight: bolder;">REGAIN ACCESS TO YOUR
                                         ACCOUNT</small>
                                 </div>

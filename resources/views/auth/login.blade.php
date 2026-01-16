@@ -57,13 +57,13 @@
                         <!-- Card body -->
                         <div class="card-body p-6">
                             <div class="mb-4 row">
-                                <div class="col-md-3 col-4">
-                                    <a href="/"><img src="{{ asset('images/logo.png') }}" class="mb-4"
-                                            alt="" style="max-height: 80px"></a>
+                                <div class="col-md-4 col-12">
+                                    <a href="/"><img src="{{ asset('images/logo.png') }}" class="mb-4 mt-3"
+                                            alt="" style="max-height: 40px"></a>
                                 </div>
-                                <div class="col-md-9 col-8">
+                                <div class="col-md-8 col-12">
                                     <h1 class="mb-1 fw-bold">Sign In</h1>
-                                    <small style="font-weight: bolder;">SIGN INTO YOUR ACCOUNT</small>
+                                    <small class="text-black" style="font-weight: bolder;">SIGN INTO YOUR ACCOUNT</small>
                                 </div>
                             </div>
 

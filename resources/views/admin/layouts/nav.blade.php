@@ -3,8 +3,7 @@
         <!-- Brand logo -->
         <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
             <h3 class="fw-bold"><img src="{{ asset('images/logo.png') }}" alt=""
-                    style="filter: brightness(0) invert(1);"> <span style="color: white; margin-left: 15px">Growth
-                    Bubble</span>
+                    style="filter: brightness(0) invert(1); width: 150px; height: 35px">
             </h3>
         </a>
         <!-- Navbar nav -->
