@@ -189,7 +189,7 @@
             <tr>
                 <td>
                     <div class="company-info">
-                        <img src="https://portal.growthbubbles.com/images/logo.png" alt="" style="height: 50px">
+                        <img src="https://portal.growthbubbles.com/images/logo.png?version={{ date("his") }}" alt="" style="height: 50px">
                         <h1>Growth Bubbles Ltd.</h1>
                         <p>86-90, Paul Street, London EC2A 4NE</p>
                         <p>hello@growthbubbles.com</p>

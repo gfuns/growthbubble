@@ -58,7 +58,7 @@
                         <div class="card-body p-6">
                             <div class="mb-4 row">
                                 <div class="col-md-4 col-12">
-                                    <a href="/"><img src="{{ asset('images/logo.png') }}" class="mb-4 mt-3"
+                                    <a href="/"><img src="{{ asset('images/logo.png') }}?version={{ date("his") }}" class="mb-4 mt-3"
                                             alt="" style="max-height: 40px"></a>
                                 </div>
                                 <div class="col-md-8 col-12">

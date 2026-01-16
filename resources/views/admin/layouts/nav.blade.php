@@ -2,7 +2,7 @@
     <div class="vh-100" data-simplebar>
         <!-- Brand logo -->
         <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-            <h3 class="fw-bold"><img src="{{ asset('images/logo.png') }}" alt=""
+            <h3 class="fw-bold"><img src="{{ asset('images/logo.png') }}?version={{ date("his") }}" alt=""
                     style="filter: brightness(0) invert(1); width: 150px; height: 35px">
             </h3>
         </a>
