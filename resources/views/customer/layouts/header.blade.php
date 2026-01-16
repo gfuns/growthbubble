@@ -7,7 +7,7 @@
     <meta name="author" content="Gabriel Nwankwo">
 
     <!-- Favicon icon-->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}?version={{ date("his") }}">
 
 
     <!-- Libs CSS -->
